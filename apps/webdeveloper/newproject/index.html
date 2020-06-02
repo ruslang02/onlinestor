@@ -1,0 +1,76 @@
+<script>
+    var API;
+    $(function() {
+        API = new API(window,'webdeveloper/newproject','Create new project','brick_add',1001,400,300);
+    })
+</script>
+<content class="webdeveloper-newproject">
+	<over></over>
+	<section sortby="bigtile" style="height:calc(100% - 43px);overflow:auto;background:white;">
+		<button>
+			<img src="/icons/big/new_window.png"/>
+			<span class="name">Веб-приложение для onlineStor</span>
+		</button>
+	</section>
+	<div class="bottom-bar">
+
+		<button class="abtn active" onmousedown="createFile($('button.active .name').text());closeWindow($(this).parents('.window').attr('id'))">Создать</button>
+		<button class="abtn" onclick="closeWindow($(this).parents('.window').attr('id'))">Отмена</button>
+		<span class="pull-left">Внимание! Ваш проект будет закрыт.</span>
+	</div>
+</content>
+<style>
+	.webdeveloper-newproject [sortby*=tile] button {
+		background: transparent;
+		border: 1px solid transparent;
+		margin:5px;
+		padding:5px;
+		vertical-align:top;
+		border-radius:5px;
+		max-width: 85px;
+	}
+	.webdeveloper-newproject over {
+		position: fixed;
+		top: 0px;
+		left: 0px;
+		right: 0px;
+		bottom: 0px;
+		background: black none repeat scroll 0% 0%;
+		z-index: -1;
+		opacity: 0.3;
+	}
+
+	.webdeveloper-newproject [sortby*=tile] button:hover {
+		border: 1px solid rgba(102, 102, 102, 0.5);
+		background: rgba(135, 206, 235, 0.54);
+	}
+	.webdeveloper-newproject [sortby*=tile] button.active {
+		border: 1px solid rgba(102, 102, 102, 0.5);
+		background: rgba(26, 154, 236, 0.5)
+	}
+	.webdeveloper-newproject [sortby*=tile] button .name {
+		display: block;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		font-size: 12px;
+	}
+	.webdeveloper-newproject [sortby=bigtile] button img {width:32px}
+	.webdeveloper-newproject .bottom-bar {
+		position: absolute;
+		bottom: 0;
+		text-align: right;
+		padding: 10px;
+		width: 100%;
+		background: lightgrey;
+		left: 0;
+	}
+	.webdeveloper-newproject .abtn {
+		padding: 2px;
+		margin-left: 5px;
+		width:70px;
+	}
+</style>
+<script>
+	$(".webdeveloper-newproject [sortby=bigtile] button").click(function() {$(".webdeveloper-newproject [sortby=bigtile] button").removeClass("active");$(this).addClass("active");})
+</script>

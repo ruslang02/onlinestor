@@ -1,0 +1,243 @@
+﻿.loadingApp {
+	display:none;
+	position: absolute;
+	padding: 15px;
+	right: 5px;
+	bottom: 45px;
+	top:auto !important;
+}
+.preview {
+	text-align:right;
+	position:absolute;
+	bottom:45px;
+	right:5px;
+	color:white;
+	opacity:0.7;
+	z-index:0;
+	font-size: 18pt;
+	font-weight: 100;
+}
+#PROMO {z-index: 0;}
+
+#info .info-sidebar {
+	position: absolute;
+	display: inline-block;
+	top: 0;
+	left: 0;
+	color: black;
+}
+#info .info-date {
+	color: white;
+	font-size: 1.5em;
+	text-align: center;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 150px;
+	margin: auto
+}
+.info-sidebar button {
+	font-size: 14px;
+	text-align: center;
+	color: rgb(255, 255, 255);
+	border: 0;
+	width: 29px;
+	padding: 7px;
+}
+.info-sidebar button:active {
+	background: black;
+}
+
+
+.notificationBalloon {
+	position:absolute;
+	background: rgb(247,251,252);
+	background: -moz-linear-gradient(top, rgba(247,251,252,1) 0%, rgba(217,237,242,1) 40%, rgba(173,217,228,1) 100%);
+	background: -webkit-linear-gradient(top, rgba(247,251,252,1) 0%,rgba(217,237,242,1) 40%,rgba(173,217,228,1) 100%);
+	background: linear-gradient(to bottom, rgba(247,251,252,1) 0%,rgba(217,237,242,1) 40%,rgba(173,217,228,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7fbfc', endColorstr='#add9e4',GradientType=0 );
+	min-width: 250px;
+	min-height: 70px;
+	box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.52);
+	border-radius: 3px;
+	border: 1px solid rgb(56, 56, 56);
+	padding: 5px 10px;
+	z-index:10000;
+}
+.notificationBalloon .closeNote {
+	float: right;
+	margin-top: 3px;
+}
+.notificationBalloon .closeNote:hover {
+	filter:brightness(150%);
+	-webkit-filter:brightness(150%);
+}
+.notificationBalloon .closeNote:active {
+	filter:brightness(50%);
+	-webkit-filter:brightness(50%);
+}
+
+
+
+
+
+#info.calendar {
+	width: 320px !important;
+	position: absolute;
+	bottom: 45px;
+	right: 5px;
+	padding: 5px;
+	box-shadow: 0px 0px 2px 0px #000;
+	height: 220px !important;
+}
+
+
+div.widget {
+    position:absolute;
+}
+.widget:hover .widget-controls {
+	opacity:1;
+}
+.widget .widget-controls {
+	float: right;
+	position: relative;
+	right:-16px;
+	opacity:0;
+	height: 0;
+	transition: opacity .3s ease;
+}
+.widget .widget-controls * {
+	background: lightgray;
+	outline:2px outset lightgray;
+	color: black;
+	border: 0px;
+	width: 16px;
+	height: 16px;
+	display:block;
+	padding:0;margin:0;text-align:center;cursor:normal;
+}
+.widget .widget-controls button:hover {
+	background:darkblue;
+}
+.widget-close::after {
+content: "\D7";
+margin: -8px;
+display: inline-block;
+font-size: 14pt;
+margin-top: -7px;
+}
+.widget-move::after {
+	content: "\205E\205E\205E";
+	font-family: sans-serif;
+	font-size: 13px;
+	color: #AAAAAA;
+	font-weight: 900;
+	cursor:default;
+}
+
+
+
+#taskbar {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+		z-index:10000;
+		min-height: 0px !important;
+    height: 36px;
+		background: lightgray !important;
+		overflow:hidden;
+		outline: 2px outset lightgray;
+}
+#taskbar a.clock {
+	color: black !important;
+	text-align: center;
+	display: inline-block;
+	height: 100%;
+	font-size: 2em;
+}
+#taskbar #Start img, #taskbar #Start {
+	width: 28px;
+	border-radius: 100px;
+	float: left;
+	position: relative;
+	top: -2px;
+}
+#taskbar #Start {
+    margin: 1px 10px;padding:0
+}
+#taskbar #Start:hover {
+		border:0;
+}
+#taskbar #Start:active {
+		border:0;
+}
+#taskbar .navbar-right {
+    width: 300px;
+    text-align: right;
+    HEIGHT: 100%;
+    padding-right: 16px;
+    float:right;
+	margin-bottom: 0;
+}
+
+#taskbar .navbar-btn{
+    border:none;
+    margin: 0px 2px; 
+    height: 100%; 
+    width: 54px;
+	vertical-align:top;
+}
+
+#taskbar .navbar-btn:not(.no) img {width:32px}
+#taskbar .navbar-btn:hover {
+    filter: brightness(120%);-webkit-filter: brightness(120%);
+}
+#taskbar .navbar-btn.active-btn {box-shadow: 0px -37px 28px -25px white inset;}
+#taskbar .navbar-btn:not(.no) {
+	border-bottom: 2px solid white;
+	padding-top: 1px;
+}
+#taskbar .navbar-btn.notification {
+	height: 100%;
+	display: inline-block;
+	vertical-align: bottom;
+	width: 25px;
+	padding: 13px 4px;
+}
+
+
+
+
+
+
+.desk {
+	width: 100%;
+	height: 100%;
+	padding-top: 10px;
+}
+.desk button.deskicon,.desk files button {
+	margin: 10px;
+	padding: 5px;
+	border-radius: 5px;
+	width: 75px;
+	border:1px solid transparent;
+	vertical-align:top;
+	text-align:center;
+	display:block;
+}
+.desk files button .name,.desk button.deskicon div {
+	color: white;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	display: block;
+}
+.desk .size {display:none}
+.desk button:not(:disabled):active .name,.desk button:not(:disabled):active div {
+	background-color: darkblue;
+}
+.desk button:not(:disabled):focus .name,.desk button:not(:disabled):focus div {
+	outline:2px solid lightgray;
+}

@@ -1,0 +1,117 @@
+
+<header class="menubar">
+    <button data-to-menu="filemenu" class="menubutton list-style" onclick="API.ToggleMenu(this,'filemenu');" translate>File</button>
+    <div class="menu hide" id="filemenu">
+        <button disabled translate>Открыть</button>
+        <button disabled translate>Удалить</button>
+        <br>
+        <button id="close" onclick='API.Close()' translate>Exit</button>
+        <over></over>
+    </div>
+    <button data-to-menu="accountmenu" class="menubutton list-style" onclick="API.ToggleMenu(this,'accountmenu');" translate>Account</button>
+    <div class="menu hide" id="accountmenu">
+        <button id="authorize-button" onclick='handleAuthClick(event)' translate>Log in</button>
+        <over></over>
+    </div>
+</header>
+<div id="files">
+
+</div>
+<div class="menu hide" id="filemenu">
+    <button translate>Открыть</button>
+    <button translate>Удалить</button>
+
+</div>
+<script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
+<script type="text/javascript">
+    var API;
+    var CLIENT_ID = '298931091939-ujjbhnk7355hiaopnfbl0ijoumqg54k6.apps.googleusercontent.com';
+    var SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
+    $(function () {
+        API = new API(window, 'godrive', "Google Drive", "google", 111);
+    });
+    function checkAuth() {
+        gapi.auth.authorize({
+            'client_id': CLIENT_ID,
+            'scope': SCOPES.join(' '),
+            'immediate': true
+        }, handleAuthResult);
+    }
+    function handleAuthResult(authResult) {
+        if (authResult && !authResult.error) {
+            $("#authorize-button").hide();
+            loadDriveApi();
+        } else {
+            $("#authorize-button").show();
+        }
+    }
+    function handleAuthClick(event) {
+        gapi.auth.authorize(
+            {client_id: CLIENT_ID, scope: SCOPES, immediate: false},
+            handleAuthResult);
+        return false;
+    }
+    function loadDriveApi() {
+        gapi.client.load('drive', 'v3', listFiles);
+    }
+    function listFiles() {
+        $("#files").html("");
+        var request = gapi.client.drive.files.list({
+            'pageSize': 10,
+            'fields': "nextPageToken, files(id, name)"
+        });
+
+        request.execute(function (resp) {
+            var files = resp.files;
+            if (files && files.length > 0) {
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    var request2 = gapi.client.drive.files.get({
+                        'fileId': file.id,
+                        'fields': "name,id,fullFileExtension, iconLink, size, mimeType"
+                    });
+                    request2.execute(function (resp) {
+                        if(resp.size == undefined) resp.size = "н/д";
+                        $("#files").append("<button data-file-id='" + resp.id + "' onclick='openFile(this)' class='list-style' title='Tип файла: " + resp.mimeType + "'><img src='" + resp.iconLink + "'> " + resp.name + "<span class='pull-right'>" + resp.size + "</span></span></button>")
+                    });
+                 }
+            } else {
+                $("#files").attr("data-empty","true");
+            }
+        });
+    }
+
+    function openFile(element) {
+        var request = gapi.client.drive.files.get({
+            'fileId': $(element).attr("data-file-id"),
+            'fields': "webViewLink"
+        });
+
+        request.execute(function (resp) {
+            API.Open("webapp",{url: resp.webViewLink,title: "Просмотр документа из Google Drive",icon: "google"});
+        });
+    }
+</script>
+<style>
+    header.menubar {
+        background: #F0F0F0;
+        padding:3px;
+    }
+    header.menubar > button {
+        padding:2px;
+        margin:0;
+        margin-right:3px;
+        width:auto;
+    }
+    #files {
+        padding:5px;
+        overflow:auto;
+    }
+    #files[data-empty=true]::before {
+        content:"Нет элементов.";
+        display:inline-block;
+        width:100%;
+        text-align:center;
+        color:grey;
+    }
+</style>

@@ -1,0 +1,92 @@
+﻿<?php session_start(); ?>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Об OnlineStor™</title>
+    <link href="/libs/img/favicon.ico" rel="shortcut icon">
+    <link href="/libs/img/favicon.ico" rel="icon">
+    <link href="/libs/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Навигация</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand active" href="/"><img height="20" src="/libs/img/logoLong.png"
+                                                         style="display: inline-block;"><a href="/en"
+                                                                                           style="vertical-align: sub;font-size: 12px;color: darkgreen;">english</a></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Продукты <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/products/desktop">OnlineStor™ Desktop</a></li>
+                        <li><a href="/products/mobile">OnlineStor™ Mobile</a></li>
+                        <li><a href="/products/mediacenter">OnlineStor™ Media Center</a></li>
+                    </ul>
+                </li>
+                <li><a href="/news">Новости</a></li>                 <li><a href="/support">Поддержка</a></li>
+                <li class="active"><a href="/about">О нас</a></li>
+            </ul>
+            <div class="navbar-right">    <?php if(!empty($_SESSION['token'])) { $url = "http://onlinestor.net/server/action.php"; $post_data = array("action" => "getsid","token" => $_SESSION['token']);$ch = curl_init();curl_setopt($ch, CURLOPT_URL, $url);curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);curl_setopt($ch, CURLOPT_POST, 1);curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);$output = curl_exec($ch);curl_close($ch);if(strpos($output,"failed") > -1) {header("Location: http://onlinestor.net/desktop?action=logout");exit();}echo '<p class="navbar-text">Здравствуйте, ' . $output . '</p> &nbsp;&nbsp;<a href="/redirect" class="navbar-btn btn btn-info">Перейти в Вебтоп</a>&nbsp;&nbsp;<a href="/desktop?action=logout" class="navbar-btn btn btn-danger">Выход</a>';} else echo '<a href="/register" class="navbar-btn btn btn-success">Зарегистрироваться</a> <a href="/login" class="navbar-btn btn btn-primary">Войти</a>';?>
+
+            </div>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="container">
+    <center><h1>О нас</h1>
+        <p class="lead">А точнее, обо мне, об авторе этого проекта</p></center>
+    <hr/>
+    <p>Проект разрабатывается уже 1.5 года и представлялся в конференциях "Шаг в будущее" с октября 2015 года.</p><br>
+    <h3>Связаться со мной</h3>
+    <ul>
+        <li>ВКонтакте: <a href="https://vk.com/ruslan_g02">/ruslan_g02</a></li>
+        <li>Почта: <a href="mailto:ruslan@onlinestor.net">ruslan@onlinestor.net</a></li>
+    </ul><br>
+    <h3>Помощь проекту</h3><br />
+    <iframe frameborder="0" allowtransparency="true" scrolling="no"
+            src="https://money.yandex.ru/quickpay/shop-widget?account=41001666109626&quickpay=shop&payment-type-choice=on&mobile-payment-type-choice=on&writer=buyer&targets-hint=%D0%95%D1%81%D0%BB%D0%B8+%D1%85%D0%BE%D1%82%D0%B8%D1%82%D0%B5%2C+%D0%BC%D0%BE%D0%B6%D0%B5%D1%82%D0%B5+%D0%BE%D1%82%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D1%82%D1%8C+%D0%BC%D0%BD%D0%B5+%D0%BF%D0%BE%D0%B6%D0%B5%D0%BB%D0%B0%D0%BD%D0%B8%D0%B5+%D0%B8+%D0%BA%D0%BE%D0%BD%D1%82%D0%B0%D0%BA%D1%82%D1%8B&default-sum=10&button-text=04&successURL=https%3A%2F%2Fonlinestor.net%2Fthanks"
+            width="450" height="222"></iframe>
+
+</div>
+<script src="/libs/js/jquery.min.js"></script>
+<script src="/libs/js/bootstrap.min.js"></script>
+<br><br>
+<nav class="navbar navbar-default hidden-xs navbar-fixed-bottom" style="margin:0;">
+    <div class="container">
+        <div class="navbar-header" style="width: 100%;    margin-left: 0;">
+            <!-- HotLog -->
+            <span id="hotlog_counter" style="margin: 10px;display: inline-block;"></span>
+            <span id="hotlog_dyn"></span>
+            <script type="text/javascript">
+                var hot_s = document.createElement('script');
+                hot_s.type = 'text/javascript';
+                hot_s.async = true;
+                hot_s.src = 'https://js.hotlog.ru/dcounter/2541598.js';
+                hot_d = document.getElementById('hotlog_dyn');
+                hot_d.appendChild(hot_s);
+            </script>
+            <div class="navbar-text pull-right">©2014-2016 OnlineStor™. Все права защищены лицензией <a href="/license">Creative
+                Commons</a>.
+            </div>
+        </div>
+    </div>
+</nav>
+</body>
+</html>
+

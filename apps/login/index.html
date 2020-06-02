@@ -1,0 +1,68 @@
+
+<content class="logon-body">
+    <form>
+        <span translate>User</span>: <input type="text" class="form-control" name="user"> <br>
+        <span translate>Pass</span>: <input type="password" class="form-control" name="pass" value=""> <br>
+        <div style="    margin-top: 10px;
+    text-align: center;">
+            <button type="submit" class="abtn active" translate>OK</button>
+            <a href="/" class="abtn" translate>Exit</a></div>
+        <div class="xhttp" ></div>
+    </form>
+    <style>
+        .window[data-app=login] {
+            background: rgba(255, 255, 255, 0.6) !important;
+            overflow: hidden;
+            border: 0;
+            border-radius: 20px;
+        }
+
+        .logon-body input, .logon-body select {
+            float: right;
+            width: calc(100% - 85px);
+            margin-top: 4px;
+        }
+
+        .logon-body form {
+            padding: 10px;
+            line-height: 28px;
+        }
+
+        .logon-body button, .logon-body a {
+            margin-left: 5px;
+            padding: 3px;
+            min-width: 85px;
+            font-size: 14px;
+        }
+        .xhttp {
+            float: right;
+            margin-top: -20px;
+            margin-right: 5px;
+        }
+    </style>
+    <script>
+        var API;
+        $(function() {
+            API = new API(window,"login","Login","key_solid",1000,400,140);
+            $(".logon-body .active").on({
+                click: function (e) {
+                    e.preventDefault();
+                    var user = $("input[name='user']").val();
+                    var pwd = $("input[name='pass']").val();
+                    $.post("/apps/login/auth.php",{user:user,pass:pwd},function(a) {
+                        $(".xhttp").html(a);
+                    });
+                }
+            });
+        });
+        function startSystem() {
+            parent.sID = sID;
+            parent.token = token;
+            parent.closeWindow("w0");
+            $(parent).find(".window").remove();
+            parent.newService("coreUI", "sID=" + parent.sID);
+        }
+    </script>
+    <script>
+    </script>
+</content>

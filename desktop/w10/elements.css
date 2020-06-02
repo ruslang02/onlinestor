@@ -1,0 +1,176 @@
+button::-moz-focus-inner {border:none}
+
+* {
+	outline:0;
+	box-sizing: border-box;
+	font-family: Segoe UI,Trebuchet MS,Tahoma,sans-serif;
+	background:none;
+	line-height:1.4;
+}
+body {margin:0;font-size:12px;}
+code, samp, output {
+	font-family:Consolas,Courier New,monospace;
+}
+
+
+.list-style {
+	padding: 2px;
+	margin-bottom:3px;
+	width:100%;
+	text-align:left;
+	border: 1px solid transparent;
+}
+.list-style:disabled,.list-style.disabled {
+	filter: grayscale(100%);
+	-webkit-filter: grayscale(100%);
+	pointer-events:none;
+}
+
+.list-style img {
+	margin: 1px 6px 0 1px;
+	vertical-align:top;
+}
+
+.list-style:not(:disabled):hover,.list-style:not(:disabled):focus,.list-style:not(:disabled):hover:focus,.list-style:not(.disabled):hover,.list-style:not(.disabled):focus,.list-style:not(.disabled):hover:focus {
+	background-color: rgba(0,0,0,0.15);
+	text-decoration: none;
+}
+
+
+
+
+a.link {
+	margin: 5px;
+	color: rgb(47, 47, 180);
+	text-shadow: 0px 0px 3px white;
+	cursor: url('/cursors/Link Select.cur'),pointer !important;
+}
+
+
+
+
+.form-control {
+background: rgb(255, 255, 255);
+border: 1px solid grey;
+padding: 3px;
+transition: all .5s ease;
+}
+select.form-control {padding:0;}
+.form-control:hover {
+ border-color:rgb(76, 175, 80);
+}
+.form-control:focus {border: 1px solid rgb(76, 175, 80);box-shadow: inset 0px 0px 1px rgb(76, 175, 80), 0px 0px 7px -3px black;}
+.form-control.form-control-inverse {margin-left: -1px}
+.form-control:disabled:focus,.form-control.disabled:focus,.form-control[readonly]:focus {
+	border-color:orange;
+}
+
+
+content {
+	width:100%;
+	display:block;
+	height:100%;
+	overflow:hidden;
+}
+
+
+.abtn {
+	background: rgb(225, 225, 225);
+	border: 1px solid rgb(173, 173, 173);
+	min-width:75px;
+	padding: 2px;
+	font-size:inherit;
+	display:inline-block;
+	text-align:center;
+	transition: all .5s ease;
+}
+.abtn:disabled {
+	color:grey !important;
+	pointer-events:none !important;
+}
+.abtn.disabled {
+	pointer-events: none;
+	color: grey;
+}
+.abtn.active {
+	outline: 2px solid dodgerblue;
+outline-offset: -2px;
+}
+.abtn:hover,.abtn.hover {
+	background: rgb(229, 241, 251);
+	border: 1px solid dodgerblue;
+}
+.abtn:active,.abtn.activebtn {
+	background: rgb(209, 221, 231);
+	border: 1px solid dodgerblue;
+}
+
+
+
+.menubutton {
+	background:transparent;
+	border: 1px solid transparent;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	border-radius: 3px;
+}
+.menubutton:not(.open):hover {
+	background-color: rgb(221, 236, 253);
+	border-color: rgb(125, 162, 206);
+}
+.menubutton.open {
+color: rgb(0, 0, 0);
+background-color: rgb(155, 202, 255);
+border-color: rgb(125, 162, 206);
+}
+
+
+.menu {
+	position: absolute;
+	min-width: 135px;
+	max-width: 150px;
+	z-index: 2000;
+	background: rgba(76, 175, 80, 0.8);
+	padding:5px 0;
+}
+.menu button {
+	width: 100%;
+	text-align: left;
+	border: 0;
+	color: white;
+	padding: 3px 10px;
+}
+
+.menu button:not(:disabled):hover {
+	background-color: rgba(0,0,0,0.3);
+	color: white;
+	text-decoration: none;
+	box-shadow: inset 0px 0px 5px black;
+}
+.menu button:disabled {
+	color:grey !important;
+}
+.menu vert-bar {
+	display:none
+}
+.menu divider {
+	border-top: 1px solid black;
+	box-shadow: 0px 0px 1px white;
+	margin-bottom: 3px;
+}
+.menu button > .tick {
+	margin-left: 0 !important;
+	position: absolute;
+	right: 10px;}
+.menu over {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+}
+.menu img {
+	display:none
+}
+.hide[class*=hide] {display:none ;}

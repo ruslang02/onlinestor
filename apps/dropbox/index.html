@@ -1,0 +1,101 @@
+<header class="menubar">
+    <button data-to-menu="filemenu" class="menubutton list-style" onclick="API.ToggleMenu(this,'filemenu');" translate>File</button>
+    <div class="menu hide" id="filemenu">
+        <button disabled translate>Открыть</button>
+        <button disabled translate>Удалить</button>
+        <br>
+        <button id="close" onclick='API.Close()' translate>Exit</button>
+        <over></over>
+    </div>
+    <button data-to-menu="accountmenu" class="menubutton list-style" onclick="API.ToggleMenu(this,'accountmenu');" translate>Account</button>
+    <div class="menu hide" id="accountmenu">
+        <button id="authorize-button" onclick='handleAuthClick(event)' translate>Log in</button>
+        <over></over>
+    </div>
+</header>
+<div id="files">
+
+</div>
+<div class="menu hide" id="filemenu">
+    <button translate>Открыть</button>
+    <button translate>Удалить</button>
+
+</div>
+<script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
+<script type="text/javascript">
+    var API;
+    $(function () {
+        API = new API(window, 'dropbox', "Dropbox", "box", 111);
+        loadDirectory("");
+    });
+    function handleAuthClick() {
+        $.post("https://api.dropboxapi.com/oauth2/token",{
+            client_id: "63zl1121uxhl94o",
+            client_secret: "5lz3gcd3gy9ywrp"
+        },function(auth_data) {
+        },"json");
+    }
+    function loadDirectory(dir) {
+        $("#files *").remove();
+        $.ajax("https://api.dropboxapi.com/2/files/list_folder",{
+            dataType:"json",
+            data: '{"path": "' + dir + '"}',
+            method: "post",
+            statusCode: {
+                401: function() {
+                    console.log("Истек срок токена (401)")
+                },
+                409: function() {
+                    console.log("Ошибка в JSON (409)")
+                },
+                429: function() {
+                    console.log("Превышение лимита запросов (429)")
+                }
+            },
+            beforeSend: function(xhr){
+                xhr.setRequestHeader('Authorization', 'Bearer JhBPAwdWbvAAAAAAAAAAEynAl9v4u8DDhtArHkvoGs3RtsNfPCMOOfy_n89U-fWg');
+                xhr.setRequestHeader('Content-type', 'application/json');
+            },
+            error: function(xhr,error,errno) {
+                parent.Notification("Ошибка API DropBox","Возникла ошибка при попытки отправки запроса: " + error + ". Код ошибки:" + errno);
+            },
+            success: function(folderList) {
+                folderList = folderList.entries;
+                $.map(folderList, function(value, index) {
+                    return [value];
+                });
+                folderList.forEach(function(item) {
+                    if(item[".tag"] == "folder") {
+                        $("#files").append("<button data-path='" + item.path_display + "' class='list-style'><img src='/icons/big/folder.png'> " + item.name + "</button>")
+                    }
+                    if(item[".tag"] == "file") {
+                        $("#files").append("<button data-path='" + item.path_display + "' class='list-style'><img src='/icons/big/file_extension_" + item.name.substring(item.name.lastIndexOf(".") + 1) + ".png'> " + item.name + "<span class='pull-right'>" + item.size + "</span></button>")
+                    }
+                })
+            }
+        });
+    }
+</script>
+<style>
+    header.menubar {
+        background: #F0F0F0;
+        padding:3px;
+    }
+    header.menubar > button {
+        padding:2px;
+        margin:0;
+        margin-right:3px;
+        width:auto;
+    }
+    #files {
+        padding:5px;
+        overflow:auto;
+    }
+    #files[data-empty=true]::before {
+        content:"Нет элементов.";
+        display:inline-block;
+        width:100%;
+        text-align:center;
+        color:grey;
+    }
+</style>

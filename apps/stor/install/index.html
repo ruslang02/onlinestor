@@ -1,0 +1,190 @@
+<content>
+  <div class="install-body install-body-one"> <img class="pull-left" src="/apps/stor/install/install.png">
+    <h2>
+			Подготовка к установке...
+		</h2>
+    <p> Пожалуйста подождите, пока мы подключаемся к серверу... </p>
+  </div>
+  <div class="install-body install-body-two hide">
+    <div class="install-head"> <b>Соглашение об установке</b>
+      <p>Пожалуйста, прочтите следующую важную информацию перед тем, как продолжить.</p> <img src="/icons/big/office_apps.png" style="width: 32px;"> </div>
+    <div class="install-main">
+      <p>Пожалуйста, прочтите следующее Соглашение. Вы должны принять условия этого соглашения перед тем, как продолжить.</p>
+      <div class="install-permissions"> Устанавливая это приложение, вы соглашаетесь на то, что оно сможет использовать данные из папки /AppData, а также будет иметь доступ к вашему уникальному временному Токену. Это приложение доступно бесплатно. </div>
+      <p>Нажимая кнопку "Установить", вы принимаете условия Соглашения и начинаете установку.</p>
+    </div>
+  </div>
+  <div class="install-bottom">
+    <button id="install-cancel" onclick="API.Close()" class="abtn pull-right hide">Отмена</button>
+    <button id="install-next" class="abtn pull-right hide">Далее &gt;</button>
+  </div>
+  <script>
+      var API;
+      var storjson = Array();
+      var installedApps = Array();
+      $(function() {
+          API = new API(window,"stor/install","Preparing for installation...","installer_box",111,500,400);
+          API.Server("getFile", {
+              path: "/AppData/apps.json"
+          }, function(xhr) {
+              $("#install-next").removeClass("hide");
+              $("#install-cancel").removeClass("hide");
+              try {
+                  storjson = $.parseJSON(xhr);
+                  for (i=0;i<storjson.length;i++) installedApps.push(storjson[i].app);
+              } catch (e) {
+              }
+              if (installedApps.indexOf(API.getArgument("app")) > -1) {
+                  API.Change("Деинсталяция – " + API.getArgument("name"));
+                  $(".install-body-one p").html("Программа " + API.getArgument("name") + " уже установлена на ваш рабочий стол. <br><br>Нажмите \"Завершить\", чтобы выйти из программы установки или \"Удалить\", чтобы деинсталлировать программу.");
+                  $(".install-body-one h2").text("Деинсталяция приложения " + API.getArgument("name"));
+                  $("#install-next").text("Удалить");
+                  $("#install-next").off().click(function() {
+                      storjson.splice(installedApps.indexOf(API.getArgument("app")),1);
+                      API.Server("write", {
+                          arg: JSON.stringify(storjson),
+                          path: "/AppData/apps.json"
+                      });
+                      $(".install-body-one p").html("Программа " + API.getArgument("name") + " деинсталлирована из вашего рабочего стола. Необходимо перезапустить Магазин, чтобы изменения вошли в силу. Приложение можно установить обратно из приложения Магазин.<br><br>Нажмите \"Завершить\", чтобы выйти из программы установки.");
+                      $(".install-body-one h2").text("Завершение Мастера установки " + API.getArgument("name"));
+                      $(this).text("Завершить");
+                      API.parent.reload();
+                      $(this).off().click(API.Close);
+                      $("#install-cancel").css("opacity", "0").css("pointer-events", "none");
+                  });
+                  $("#install-cancel").text("Завершить");
+              } else {
+                  API.Change("Установка – " + API.getArgument("name"));
+                  $(".install-body-one p").html('Программа установит ' + API.getArgument("name") + ' на ваш рабочий стол.<br><br>Рекомендуется закрыть все прочие приложения перед тем, как продолжить. <br><br>Нажмите «Далее», чтобы продолжить, или «Отмена», чтобы выйти из программы установки.');
+                  $(".install-body-one h2").html('Добро пожаловать на установку ' + API.getArgument("name"));
+                  $("#install-next").click(function(e) {
+                      $(this).text("Установить");
+                      $(".install-body-one").addClass("hide");
+                      $(".install-body-two").removeClass("hide");
+                      $(this).off().click(function() {
+                          storjson.push({
+                              app: API.getArgument("app"),
+                              name: API.getArgument("name"),
+                              icon: API.getArgument("icon")
+                          });
+                          API.Server("write", {
+                              arg: JSON.stringify(storjson),
+                              path: "/AppData/apps.json"
+                          });
+                          $(".install-body-one").removeClass("hide");
+                          $(".install-body-two").addClass("hide");
+                          $(".install-body-one p").html("Программа " + API.getArgument("name") + " установлена на ваш рабочий стол. Необходимо перезапустить Магазин, чтобы изменения вошли в силу. Приложение можно запустить с помощью соответствующего значка.<br><br>Нажмите \"Завершить\", чтобы выйти из программы установки.");
+                          $(".install-body-one h2").text("Завершение Мастера установки " + API.getArgument("name"));
+                          $(this).text("Завершить");
+                          $(this).off().click(function() {
+                              API.parent.reload();
+                              parent.loadDesktop();API.Close()
+                          });
+                          $("#install-cancel").css("opacity", "0");
+                          $("#install-cancel").css("pointer-events", "none");
+                      });
+                  });
+                  $("appname").text(API.getArgument("app"), "name");
+          $(".install-body-two img").attr("src", "/icons/big/" + API.getArgument("icon") + ".png");
+      }
+      });
+      });
+
+  </script>
+</content>
+<style>
+  .install-body .install-main {
+    padding: calc(2em + 7px);
+    padding-top: 0;
+    background: lightgray;
+    border-top: 1px solid white;
+  }
+  .install-body .install-main p {
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .install-body .install-head {
+    border-bottom: 1px solid gray;
+    background: white;
+    line-height: 1;
+    padding: 7px;
+  }
+  .install-body .install-head b {
+    padding-left: 1em;
+    display: inline-block;
+    padding-bottom: 0px;
+  }
+  .install-body .install-head p {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    padding-left: 2em;
+    line-height: 1.1;
+  }
+  .install-body .install-head img {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+  .install-body-two {
+    background: lightgray;
+  }
+  .install-body {
+    background: white;
+    height: 312px;
+  }
+  .install-body h2 {
+    font-size: 12pt;
+    padding: 10px;
+    display: inline-block;
+    width: calc(100% - 165px);
+    margin: 0px;
+    line-height: initial;
+    font-family: Tahoma;
+    font-weight: 900;
+  }
+  .install-body-one.install-body p {
+    padding: 10px;
+    display: inline-block;
+    margin-top: 0px;
+    width: calc(100% - 165px);
+    font-size: 8pt;
+    font-family: Tahoma;
+  }
+  .install-body > p {
+    padding: 10px;
+    display: inline-block;
+    margin-top: 0px;
+    width: calc(100% - 159px);
+    font-size: 10pt;
+  }
+  .install-permissions {
+    background: white;
+    font-family: Tahoma;
+    font-size: 8pt;
+    border: 2px inset grey;
+    overflow-y: scroll;
+    height: 131px;
+  }
+  .install-bottom {
+    height: 58px;
+    background: lightgray;
+  }
+  .install-bottom button {
+    margin: 14px;
+    font-family: Tahoma;
+    font-size: 11px;
+  }
+  .install-bottom button:last-child {
+    margin-right: 0;
+  }
+  .install-bottom {
+    height: 47px;
+    background: lightgray;
+    border-top: 1px outset rgb(0, 0, 0);
+    box-shadow: 0px 1px 0px rgb(255, 255, 255) inset;
+  }
+  appname {
+    font: inherit;
+  }
+</style>

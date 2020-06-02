@@ -1,0 +1,48 @@
+<content class="maps-body">
+	<div id="maps-map" style="height:100%;">
+	
+	</div>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBjUlSrbeYq4AmaG0jjdtEFlxJd4ZVRyc&callback=initMap" defer></script>
+	<script>
+		var map;
+		var marker;
+		var wID = $(".window").last().attr("id");
+		var API;
+		$(function() {
+		    API = new API(window,'maps','Google Maps','map',111,null,null,initMap);
+        });
+		function initMap() {
+			var infowindow = new google.maps.InfoWindow({
+				content: "<h3>Выберите действие:</h3><a href='javascript:void(0)' id='maps-createevent'>Создать событие в Календаре</a>"
+			});
+			var coords = {lat:0,lng:0};
+				if(API.getArgument('title')) coords = new google.maps.LatLng(API.getArgument('coords').y,API.getArgument('coords').x);
+			map = new google.maps.Map(document.getElementById('maps-map'), {
+				center: coords,
+				zoom: 2
+			});
+			if(API.getArgument('title')) {
+				var eventinfo = new google.maps.InfoWindow({
+					content: "<b>" + API.getArgument('title') + "</b><br><br>" + API.getArgument('descr')
+				});
+			
+				marker = new google.maps.Marker();
+				marker.setPosition(coords);
+				marker.setMap(map);
+				eventinfo.open(map,marker);
+			} else {
+			map.addListener('click', function(event) {
+				try {marker.setMap(null);} catch(e) {}
+				marker = new google.maps.Marker({
+					position: event.latLng,
+					label: "+",
+					map: map
+				});
+				infowindow.open(map,marker);
+				var coords = {x:event.latLng.lng(),y:event.latLng.lat()};
+				$("#maps-createevent").click(function(e) {API.Open("calendar/new",{local:true,coords:coords})});
+			});
+}
+		}
+	</script>
+</content>

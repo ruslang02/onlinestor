@@ -1,0 +1,12 @@
+﻿{
+	"ru": {
+		"News Feed":"Новости",
+		"New Channel":"Добавить ленту",
+		"Number of Articles:":"Кол-во статей:",
+		"Loading...":"Загрузка...",
+		"Feed List":"Все ленты",
+		"Welcome to oNews, the news aggregator":"Добро пожаловать в оНовости, RSS-агрегатор",
+		"To create a new news feed, press \"New Channel\" and specify a name and URL of RSS-feed. To view a news feed, select it on the left panel.":"Чтобы добавить RSS-ленту, нажмите кнопку \"Добавить ленту\" и укажите название ленту и его URL адрес. Посмотреть существующие ленты вы можете нажав соотвутствующий пункт списка справа.",
+		"There was an error loading the feed.":"Возникла ошибка при загрузке ленты новостей."
+	}
+}

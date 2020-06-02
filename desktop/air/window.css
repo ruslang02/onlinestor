@@ -1,0 +1,117 @@
+.window {
+	position: absolute !important;
+	width: 600px;
+	height: 500px;
+	top: 10vh;
+	left: 10vw;
+	border-radius: 7px;
+	padding: 0px 5px 5px;
+	box-shadow: 0px 0px 8px -1px black, inset 0px 0px 3px 0px white, 0px 0px 0 10000px rgba(255, 255, 255, 0.37) inset;
+}
+.window .body > .loadings {
+	display: none;
+}
+.window.loading .body > .loadings {
+	color: white;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
+	font-size: 10em;
+	margin: auto;
+	width: 1em;
+	height: 1em;
+	display: inline-block !important;
+}
+.window.loading .body content {
+	display: none !important;
+}
+.window iframe {
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+.window .overlay {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background: black;
+	opacity: 0.2;
+}
+.window.full {
+	top: -1px !important;
+	left: -5px !important;
+	right: auto !important;
+	bottom: auto !important;
+	width: calc(100% + 10px) !important;
+	height: calc(100% - 34px) !important;
+}
+.window.activeWin {
+	box-shadow: 0px 0px 13px 0px black, 0px 0px 0px 10000px rgba(25, 80, 236, 0.35) inset, inset 0px 0px 0px 1px white;
+}
+.window .close {
+	background-color: #e00000;
+}
+
+.window.activeWin buttons button, .window buttons .close  {
+    background-image: -moz-linear-gradient(rgba(255, 255, 255, 0.5) 0%, rgba(241, 241, 241, 0.5) 50%, rgba(188, 173, 173, 0.38) 51%, rgba(176, 176, 176, 0) 100%);
+    background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.5) 0%, rgba(241, 241, 241, 0.5) 50%, rgba(188, 173, 173, 0.38) 51%, rgba(176, 176, 176, 0) 100%);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.5) 0%, rgba(241, 241, 241, 0.5) 50%, rgba(188, 173, 173, 0.38) 51%, rgba(176, 176, 176, 0) 100%);
+}
+.window .body {
+	height: calc(100% - 25px);
+	position: relative;
+}
+.window content {
+	width: 100%;
+	display: block;
+	height: 100%;
+}
+.window .up h3 img {
+	width: 16px;
+	vertical-align: bottom;
+}
+.window .up {
+	height: 25px
+}
+.window .up h3 {
+	display: inline-block;
+	padding: 5px;
+	margin: 0;
+	font-weight: 100;
+	text-shadow: 0px 0px 15px white, 0px 0px 15px white, 0px 0px 15px white, 0px 0px 15px white;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: calc(100% - 100px);
+	white-space: nowrap;
+	font-size:inherit;
+}
+
+buttons {
+	float: right;
+	border: 1px solid rgb(0, 85, 147);
+	border-top: none;
+	border-radius: 0px 0px 5px 5px;
+	overflow: hidden;
+}
+buttons button:hover {
+	box-shadow: 0 0 1px 1px rgba(255,255,255,0.4) inset, 0 0 6px 4px rgba(90,210,255,0.5)
+}
+buttons button:active {
+	box-shadow: 0px 0px 5px -2px black inset !important
+}
+buttons button {
+	width: 26px;
+	height: 18px;
+	border: 0;
+	vertical-align: top;
+}
+buttons button.close {
+	width: 45px
+}
+buttons button:not(:last-child) {
+	border-right: 1px solid rgba(80, 36, 25, 0.7)
+}

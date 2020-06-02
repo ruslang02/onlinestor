@@ -1,0 +1,162 @@
+<content class="app-calendar-body">
+    <div class="toolbar desktoponly">
+        <button onclick="API.Open('calendar/new');"><img src="/icons/small/calendar_add.png"> <span translate>New event</span></button>
+        <button id="calendar-edit" disabled><img src="/icons/small/calendar_edit.png"></button>
+        <button id="calendar-link" disabled><img src="/icons/small/calendar_link.png"></button>
+        <button id="calendar-delete" disabled><img src="/icons/small/calendar_delete.png"></button>
+        <button style="float:right;" onclick="calendarLoadEvents()"><img src="/icons/small/arrow_refresh.png"></button>
+    </div>
+    <div class="calendar-body">
+        <select id="calendar-list" size="5">
+            <option value="" class="calendar-default hide" id="calendar-loader" disabled translate>Loading...</option>
+            <option id="calendar-root" value="" class="calendar-default hide" disabled translate>Events List</option>
+        </select>
+        <style>#calendar-loader::before {content:"\f110";font-family:'FontAwesome'; padding:0 2px}#calendar-root::before {content:"\f133";font-family:'FontAwesome'; padding:0 2px}</style>
+        <div id="calendar-output">
+            <div id="calendar-view-event" class="hide">
+                <div class="header" translate>View event</div>
+                <b translate>Name:</b> <span id="calendar-event-name"></span>
+                <br>
+                <b translate>Description:</b> <span id="calendar-event-description"></span>
+                <br>
+                <b translate>Date:</b> <span id="calendar-event-date"></span>
+                <br><br>
+                <a href="javascript:void(0);" id="calendar-event-map" class="hide" translate>Open Google Maps</a>
+            </div>
+            <div id="calendar-home">
+                <div class="header" translate>Welcome to Calendar</div>
+                <div translate>Calendar has been updated. We've changed interface and the way it works in a whole.</div>
+            </div>
+        </div>
+    </div>
+</content>
+
+<style>
+    div.calendar-body div.toolbar button:disabled {
+        filter: grayscale(100%);-webkit-filter: grayscale(100%);-moz-filter: grayscale(100%);
+        border: 1px solid transparent;
+        background: none;
+    }
+    .calendar-body #calendar-list {
+        width: 30%;
+        border: 0;
+        border-right: 1px solid grey;
+        min-width: 180px;
+        max-width: 250px;
+        order: 1;
+    }
+    .calendar-body {
+        overflow: initial;
+        line-height: 35px;
+        height: calc(100% - 30px);
+        display:flex;
+    }
+    #calendar-output {
+        order:2;
+        flex-grow:1;
+        padding: 1em;
+        line-height: 1.5;
+        font-size: 14px;
+    }
+    .calendar-body .calendar-active {font-weight:bold;font-style:italic}
+    .calendar-default {color:black;pointer-events:none;}
+    #calendar-root,#calendar-loader {pointer-events:none;}
+    .calendar-body option:not(.calendar-default)::before {
+        padding:0 5px;
+        content:"\f112";
+        transform:rotate(180deg);
+        font-family:'FontAwesome';
+        display:inline-block;
+    }
+    body.mobile .app-calendar span {
+        margin-left:0;
+    }
+    .app-calendar-body {
+        background: white;
+        height: 100%;
+    }
+
+    .toolbar {
+        height: 29px;
+        border-bottom: 1px solid grey;
+        padding: 2px;
+    }
+    .app-calendar-body .toolbar button,.app-calendar-body .toolbtn {
+        border:1px solid white;
+        height:24px;
+        float:left;
+        margin-right: 5px;
+        border-radius: 3px;
+    }
+    .app-calendar-body .toolbar button:focus,.app-calendar-body .toolbtn:focus {
+        border: 1px solid rgba(0, 21, 255, 0.35);
+    }
+    .app-calendar-body .toolbar button:hover,.app-calendar-body .app-calendar-body span:hover,.app-calendar-body .toolbtn:hover {
+        border: 1px solid rgba(0, 21, 255, 0.35);
+        background: rgba(0, 210, 245, 0.35);
+    }
+    .app-calendar-body .toolbar button:active,.app-calendar-body .toolbtn:active {
+        box-shadow: inset 0 0 5px 0 black;
+        border: 1px solid rgba(0, 21, 255, 0.35);
+        background: rgba(0, 210, 245, 0.35);
+    }
+    .app-calendar-body .toolbar img {
+        vertical-align:top;
+    }
+    .header {
+        color: darkblue;
+        font-size: 1.5em;
+        margin-bottom:5px;
+    }
+</style>
+<script>
+    var API;
+    var events;
+    $(function() {
+        API = new API(window,"calendar","Calendar","calendar_view_month",111,false,false);
+        calendarLoadEvents()
+    });
+
+    function calendarDeleteEvent(id) {
+        events.splice(id,1);
+        API.Server("write",{path: "/AppData/calendar.json",arg: JSON.stringify(events)});
+        calendarLoadEvents();
+        calendarInit();
+    }
+    function calendarLoadEvents() {
+        $("#calendar-list option:not(.calendar-default)").remove();
+        $(".calendar-default").addClass("hide");
+        $("#calendar-loader").removeClass("hide");
+        API.Server("getFile",{path: "/AppData/calendar.json"},function(a) {
+            events = $.parseJSON(a);
+            $(".calendar-default").addClass("hide");
+            $("#calendar-root").removeClass("hide");
+            events.forEach(function(item,i,arr) {
+                $("#calendar-list").append("<option value=" + i + ">" + item.date + "</option>");
+            });
+            calendarInit();
+        });
+    }
+    function calendarInit() {
+        $("#calendar-list").change(function(e) {
+            $("#calendar-edit,#calendar-delete").removeAttr("disabled");
+            $("#calendar-edit").off().click(function(e) {API.Open("calendar/new",{id: $("#calendar-list").val()})});
+            $("#calendar-delete").off().click(function(e) {
+                calendarDeleteEvent($("#calendar-list").val());
+            });
+            $("#calendar-event-name").text(events[$(this).val()].name);
+            $("#calendar-event-description").text(events[$(this).val()].description);
+            $("#calendar-event-date").text(events[$(this).val()].date);
+            if(events[$(this).val()].coords) {
+                var that = this;
+                $("#calendar-event-map").removeClass("hide").off().click(function() {
+                    API.Open("maps",{coords:events[$(that).val()].coords,title:events[$(that).val()].name,descr:events[$(that).val()].description});
+                });
+            } else {
+                $("#calendar-event-map").addClass("hide")
+            }
+            $("#calendar-view-event").removeClass("hide");
+            $("#calendar-home").addClass("hide");
+        });
+    }
+</script>

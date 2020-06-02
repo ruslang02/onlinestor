@@ -1,0 +1,78 @@
+﻿<content class="cmd-body">
+<output></output>
+</content>
+<script>
+    var API;
+    $(function() {
+        API = new API(window,"cmd","Command Line","terminal",111,500,300);
+    });
+	var currentDir = "C:\\";
+	function cmdquit() {
+		cmdwritePath();
+	}
+	function cmdwritePath() {
+		cmdwriteLn(currentDir);
+		cmdread("cmdexec");
+	}
+	function cmdwrite(text) {
+		$(".cmd-body output").append(text);
+	}
+	function cmdwriteLn(text) {
+		cmdwrite("<br>" + text);
+	}
+	function cmdclear() {
+		$(".cmd-body output").html("");
+	}
+	function cmdread(callback) {
+		$(".cmd-body output").append("<input autofocus>");
+		$(".cmd-body input").focus().keypress(function(e) {
+			if(e.key != "Backspace" && e.key != "Delete") $(this).css("width",(parseInt($(this).css("width")) + 7).toString() + "px"); else $(this).css("width",(parseInt($(this).css("width")) - 7).toString() + "px");
+			if(e.key == "Enter") eval(callback + '(' + $(".cmd-body input").val() + ');');
+		});
+		
+	}
+	function cmdexec(command) {
+		if (eval("cmd" + command + "()") === FALSE) {
+			cmdwriteLn("\"" + command + "\" is incorrect.");
+		}
+	}
+</script>
+
+<script>
+	function cmdver() {
+		cmdclear();
+		cmdwrite("Onlinestor DOS 1.0");
+		cmdwriteLn("Copyright 2015-2016 Onlinestor Team.");
+		cmdwriteLn("");
+		cmdquit();
+	}
+</script>
+<style>
+	.cmd-body output {
+		height:100%;
+		width:100%;
+		background:black;
+		font-family: Consolas, 'Courier New', monospace;
+		color:#EEEEEE;
+		display:inline-block;
+	}
+	.cmd-body output::after {
+		display:inline-block;
+		content:"";
+		height:3px;
+		width:9px;
+		background:#eeeeee;
+	}
+	.cmd-body input {
+		border: 0;
+		height: 15px;
+		resize: none;
+		color: white;
+		width: 0px;
+		font-family: consolas;
+		padding: 0;
+		vertical-align: top;
+		margin-top: 2px;
+		margin-right: 2px;
+	}
+</style>

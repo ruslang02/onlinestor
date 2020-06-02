@@ -1,0 +1,19 @@
+{
+	"ru": {
+		"Upload files...":"Загрузка файлов...",
+		"Choose files":"Выбрать файл",
+		"Upload more":"Загрузить еще",
+		"Exit":"Выйти",
+		"Upload your files here. Note, that you can't upload a file, which size is bigger than 15 Megabytes because of disk space limits.":"Загружать файлы вы можете здесь. Стоит отметить, что невозможна загрузка файла, у которого размера больше,чем 15 МегаБайт.",
+		"Link to uploadable files:":"Загружаемый файл:",
+		"Uploading files into":"Путь для загрузки файла",
+		"If exists:":"Если файл существует, ",
+		"Overwrite":"Перезаписывать",
+		"Add Suffix":"Добавить номер",
+		"Upload":"Загрузить",
+		"Uploading...":"Загружаем...",
+		"File(-s) was successfully uploaded.":"Файл был успешно загружен.",
+		"Sorry, but we couldn't upload your file(-s).":"Извините, но мы не смогли загрузить файл."
+		
+	}
+}

@@ -1,0 +1,48 @@
+<content style="padding:10px;" id="newsReaderNew">
+	<div class="header" translaye>New Feed</div>
+
+	<label><span translate>Name:</span> <input class="descr form-control" type="text"></label><br>
+	<label style="display: block;	transform: translate(0px,5px);"><span translate>Feed URL:</span> <textarea style="resize:vertical;width:100%;border:1px solid grey;" class="moredescr form-control"></textarea></label><br>
+
+	<div class="bottom-bar">
+		<button class="abtn" id="rss-add" translate>Add</button><button onclick="closeWindow($(this).parents('.window').attr('id'))" class="abtn" translate>Cancel</button>
+	</div>
+
+<style>
+	#newsReaderNew .bottom-bar {
+		position: absolute;
+		bottom: 0;
+		text-align: right;
+		padding: 10px;
+		width: 100%;
+		background: lightgrey;
+		left: 0;
+	}
+	#newsReaderNew .header {
+		color: orange;
+		font-size: 14pt;
+		margin-bottom:10px;
+	}
+	#newsReaderNew .abtn {
+		margin-right: 10px;
+	}
+    #newsReaderNew label {display:flex;    margin: 5px 0;}
+    #newsReaderNew label input,#new-event label textarea {flex-grow:2;margin-left: 10px;}
+    #newsReaderNew label span {line-height:18px;}
+
+</style>
+<script>
+$("#rss-add").click(function() {
+    newRSS($("#newsReaderNew .moredescr").val(),$("#newsReaderNew .descr").val());
+});
+function newRSS(str,name) {
+    API.Server("getFile",{path: "/AppData/rssreader.xml"},function(a,b,c) {
+        var $lines = $(c.responseText);
+        $lines.append("<option value=" + str + ">" + name + "</option>");
+        API.Server("write", {path: "/AppData/rssreader.xml",arg: $lines.html().trim() });
+    });
+    API.Close();
+}
+
+</script>
+</content>

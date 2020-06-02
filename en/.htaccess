@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteRule ^login$ /en/login.html [L]
+RewriteRule ^register$ /en/register.html [L]
+RewriteRule ^news$ /en/news.html [L]
+RewriteRule ^about$ /en/about.html [L]

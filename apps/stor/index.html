@@ -1,0 +1,283 @@
+<content class="store-body">
+    <div class="titlebar"><button class="material-icons">shopping_basket</button><h3>Магазин приложений</h3>
+    <buttons><button onclick="parent.hideWindow(API.ID)" class="minus material-icons">expand_more</button><button onclick="parent.fullWindow(API.ID)" class="plus material-icons">expand_less</button><button onclick="parent.closeWindow(API.ID)" class="close material-icons">close</button></buttons>
+		</div>
+    <section class="right-bar" sortby="list">
+        <button class="list-style" onclick='openMyApps()'><img src="/icons/small/box_down.png"><span class="name">Установленные</span>
+        </button>
+        <hr/>
+        <button class="list-style" onclick='openRecommended()'><img src="/icons/small/star.png"><span class="name">Рекомендуем</span>
+        </button>
+        <button class="list-style" onclick='openPopular()'><img src="/icons/small/application_double.png"><span
+                class="name">Популярное</span></button>
+        <button class="list-style hide" onclick='$(".folder").toggle();'><img src="/icons/small/categories.png"><span
+                class="name">Категории</span></button>
+        <div class="folder" style="padding-left:15px;display:none;">
+            <button class="list-style"><img src="/icons/small/protect_share_workbook.png"><span
+                    class="name">Бизнес</span></button>
+            <button class="list-style"><img src="/icons/small/film_photo.png"><span
+                    class="name">Медиа</span></button>
+            <button class="list-style"><img src="/icons/small/insert_element.png"><span
+                    class="name">Др. сервисы</span></button>
+            <hr>
+            <button class="list-style"><img src="/icons/small/application_view_gallery.png"><span
+                    class="name">Демонстрация</span></button>
+            <button class="list-style"><img src="/icons/small/edit_button.png"><span
+                    class="name">В разработке</span></button>
+
+        </div>
+        <hr/>
+        <button class="list-style" onclick='openSearch()'><img src="/icons/small/magnifier.png"><span
+                class="name">Поиск</span></button>
+    </section>
+    <main>
+        <section id="recommend-page" data-before="Рекомендуем эти приложения" class="store-page"></section>
+        <section id="popular-page" data-before="Популярные среди пользователей" class="store-page"></section>
+        <section id="myapps-page" data-before="Установленные приложения" class="store-page"></section>
+        <section id="search-page" data-before="Поиск" class="store-page">
+            <div class="content" style="    margin-top: 2em;">
+                <input id="searchApp" type="text" placeholder="Что поищем?">
+                <br>
+                <br>
+                <input class="abtn primary" onclick="search()" type="button" id="search" value="Искать"><br><br></div>
+            <tile>
+            </tile>
+        </section>
+        <section id="welcome-page" class="store-page">
+            <div><b>Добро пожаловать в магазин приложений.</b><br>
+                Здесь вы можете найти множество приложений на любой вкус.
+            </div>
+        </section>
+    </main>
+</content>
+<style>
+    .store-body {
+        overflow: hidden;
+        display: flex;
+        background: rgba(255, 255, 255, 0.7);
+    }
+
+    .window[data-app=stor] {
+        min-width: 550px;
+    }
+    .store-page::before {
+        content: attr(data-before);
+        font-size: 1.5em;
+        padding: 10px;
+        display: block;
+    }
+
+    .store-body main {
+        flex-grow: 2;
+    }
+
+    .store-body app {
+        display: block;
+        padding: 10px;
+    }
+
+    .store-body app:not(:last-child) {
+        border-bottom: 1px solid grey;
+    }
+
+    .store-body tile {
+        display: inline-block;
+        border: 1px solid grey;
+        border-radius: 3px;
+        box-shadow: 0px 0px 1px 0px grey;
+        width: 90%;
+        text-align: left;
+        line-height: initial;
+    }
+
+    .store-body app img {
+        float: left;
+        width: 32px;
+    }
+
+    .store-body app div.loaded {
+        font-size: 10px;
+        color: grey;
+        float: left;
+        padding: 5px 0px;
+    }
+
+    .store-body app div.name {
+        margin: 8px;
+        padding-left: 32px;
+    }
+
+    #welcome-page, #search-page {
+        text-align: center;
+        display: block;
+    }
+
+    #welcome-page b {
+        font-size: 17px;
+    }
+
+    #welcome-page div.content {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        margin: auto;
+        display: inline-block;
+        height: 45px;
+        line-height: 36px;
+    }
+
+    .store-page {
+        overflow: auto;
+        height: 100%;
+    }
+
+    .store-body input[type=text] {
+        border: 0px;
+        background: rgba(0, 0, 0, 0.1);
+        padding: 5px;
+        width: 250px;
+    }
+
+    .store-body input:hover {
+        background: rgba(152, 152, 152, 0.1);
+    }
+
+    .store-body input:active {
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    .store-body .right-bar {
+        min-width: 150px;
+        width: 30%;
+        border-right: 1px solid grey;
+        padding: 5px;
+    }
+</style>
+<script>
+    var storjson;
+    var installedApps = [];
+    var API;
+    $(function () {
+        API = new API(window, 'stor', 'Download Center', 'basket', 111);
+        reload();
+        $("#welcome-page").show();
+        $("#popular-page").hide();
+        $("#search-page").hide();
+        $("#myapps-page").hide();
+        $("#recommend-page").hide();
+    });
+    function reload() {
+        installedApps = [];
+        API.Server("getFile", {
+            path: "/AppData/apps.json",
+            time: new Date().getTime()
+        }, function (xhr) {
+            try {
+                storjson = $.parseJSON(xhr) || [];
+                for (i = 0; i < storjson.length; i++) installedApps.push(storjson[i].app);
+            } catch (e) {
+            }
+            if ($("#recommend-page:not(:hidden)")) openRecommended();
+            if ($("#popular-page:not(:hidden)")) openPopular();
+            if ($("#search-page:not(:hidden)")) openSearch();
+            if ($("#myapps-page:not(:hidden)")) openMyApps();
+            if ($("#categories-page:not(:hidden)")) openCategories();
+        });
+    }
+    function openRecommended() {
+        $("#welcome-page").hide();
+        $("#popular-page").hide();
+        $("#search-page").hide();
+        $("#myapps-page").hide();
+        $("#recommend-page").show();
+
+        $.getJSON("/server/getApps.php?time=" + new Date().getTime(), {
+            sortby: "DownloadCounter",
+            obd: "DESC",
+            recommended: 1
+        }, function (xhr) {
+            listApps(xhr, "recommend-page");
+        });
+    }
+    function openCategories() {
+        $("#welcome-page").hide();
+        $("#popular-page").hide();
+        $("#search-page").hide();
+        $("#myapps-page").hide();
+        $("#recommend-page").show();
+
+        $.getJSON("/server/getApps.php?time=" + new Date().getTime(), {
+            sortby: "DownloadCounter",
+            obd: "DESC",
+            recommended: 1
+        }, function (xhr) {
+            listApps(xhr, "recommend-page");
+        });
+    }
+    function openPopular() {
+        $("#welcome-page").hide();
+        $("#popular-page").show();
+        $("#search-page").hide();
+        $("#myapps-page").hide();
+        $("#recommend-page").hide();
+        $.getJSON("/server/getApps.php?time=" + new Date().getTime(), {
+            sortby: "DownloadCounter",
+            obd: "DESC",
+            recommended: 0
+        }, function (xhr) {
+            listApps(xhr, "popular-page");
+        });
+    }
+    function openMyApps() {
+        $("#welcome-page").hide();
+        $("#myapps-page").show();
+        $("#popular-page").hide();
+        $("#search-page").hide();
+        $("#recommend-page").hide();
+        $.getJSON("/server/getApps.php?time=" + new Date().getTime(), {
+            sortby: "DownloadCounter",
+            obd: "DESC",
+            recommended: 0
+        }, function (xhr) {
+            listApps(xhr, "myapps-page");
+            $("#myapps-page app:contains('Установить')").remove();
+        });
+    }
+    function openSearch() {
+        $("#welcome-page").hide();
+        $("#popular-page").hide();
+        $("#search-page").show();
+        $("#recommend-page").hide();
+        $("#myapps-page").hide();
+    }
+    function search() {
+        $.getJSON("/server/getApps.php?time=" + new Date().getTime(), {
+            sortby: "DownloadCounter",
+            obd: "DESC",
+            recommended: 0,
+            search: $("#searchApp").get(0).value
+        }, function (json) {
+            listApps(json, "search-page tile")
+        });
+    }
+    function listApps(xhr, tag) {
+        $("#" + tag + " *").remove();
+        xhr.forEach(function (item) {
+            var text = "Установить";
+            if (installedApps.indexOf(item.app) > -1) text = "Удалить";
+            var ntform = $("<div>" + item.name + "</div>");
+            ntform.children("b").remove();
+            $("#" + tag).append("<app data-icon=\"" + item.image + "\" data-app=\"" + item.app + "\" data-name=\"" + ntform.text().trim() + "\"><img src='/icons/big/" + item.image + ".png'><div class='name'><span>" + item.name + "</span></div><div class='descr'>" + item.description + "</div><div class='loaded'>" + item.downloads + " скачиваний</div><button class='abtn pull-right'>" + text + "</button><br></app>");
+        });
+        $("#" + tag + " app button").click(function () {
+            var btn = $(this).parent("app");
+            API.Open("stor/install", {
+                icon: btn.attr("data-icon"),
+                app: btn.attr("data-app"),
+                name: btn.attr("data-name")
+            })
+        });
+    }
+</script>

@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register your own account - OnlineStor™</title>
+    <link href="/libs/img/favicon.ico" rel="shortcut icon">
+    <link href="/libs/img/favicon.ico" rel="icon">
+    <link href="/libs/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand active" href="/en" ><img height="20" src="/libs/img/logoLong.png" style="display: inline-block;"><a href="/" style="vertical-align: sub;font-size: 12px;color: darkgreen;">русский</a></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/news">News (ru)</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Products <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/desktop">OnlineStor™ Desktop</a></li>
+                        <li><a href="/mobile">OnlineStor™ Mobile</a></li>
+                        <li><a href="/mediacenter">OnlineStor™ Media Center</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="navbar-right">
+                <a href="/en/register" class="navbar-btn btn btn-success">Register</a>
+                <a href="/en/login" class="navbar-btn btn btn-primary">Log in</a>
+            </div>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="container">
+    <center><h1>Register</h1>
+        <p class="lead">You are a few steps away from your own desktop.</p></center>
+    <hr/>
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6 text-center">
+            <?php
+                if(isset($_GET['error']) and $_GET['error'] != 0) {
+                    echo '<div class="alert alert-danger text-center" role="alert"> ';
+                    switch ($_GET['error']) {
+                        case 1:
+                            echo 'This username is already taken.';break;
+                        case 2:
+                            echo 'This e-mail is already registered. <a href="/en/login">Log in?</a>';break;
+                        case 3:
+                            echo 'Password is too short. It must contain at least 8 characters. <a href="https://support.google.com/accounts/answer/32040?hl=en" target="_blank">How to create a strong password</a>.';break;
+                        case 4:
+                            echo 'It is not an e-mail.';break;
+                        case 5:
+                            echo 'You forgot to write your e-mail. Don\'t worry, everything is safe.';break;
+                        case 6:
+                            echo 'You forgot your username.';break;
+                        case 7:
+                            echo 'You need to create a password. How can we identify you in the future? <a href="https://support.google.com/accounts/answer/32040?hl=en" target="_blank">How to create a strong password</a>.';break;
+                        default:
+                            echo 'Server is down. Write me: <a href="mailto:problem@onlinestor.net">problem@onlinestor.net</a>';break;
+                    }
+                    echo '</div>';
+                }
+            ?>
+            <form action="/register.php" method="post">
+                <div class="form-horizontal">
+                    <div class="form-group<?php if($_GET['error'] == 2 || $_GET['error'] == 4 || $_GET['error'] == 5) echo ' has-error'; ?>">
+                        <label for="inputemail" class="col-sm-3 control-label">E-mail:</label>
+                        <div class="col-sm-9">
+                            <input type="email" name="email" class="form-control" id="inputemail"
+                                   placeholder="mailbox@example.com" value="<?php echo $_GET['email']; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group<?php if($_GET['error'] == 1 || $_GET['error'] == 6) echo ' has-error'; ?>">
+                        <label for="inputlogin" class="col-sm-3 control-label">Username:</label>
+                        <div class="col-sm-9">
+                            <input type="text" pattern="([A-Za-z0-9\.\_]+)"
+                                   title="Username can contain latin symbols, numbers and a dot"
+                                   name="user" class="form-control" id="inputlogin" placeholder="MyName" value="<?php echo $_GET['user']; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group<?php if($_GET['error'] == 3 || $_GET['error'] == 7) echo ' has-error'; ?>">
+                        <label for="inputpass" class="col-sm-3 control-label">Password:</label>
+                        <div class="col-sm-9">
+                            <input type="password" pattern=".{8,}" name="pass" title="The password should be no less than 8 characters long"
+                                   class="form-control" id="inputpass" placeholder="••••••">
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <a href="/en" class="btn btn-link">&lt;&lt; Return</a>
+                    <button type="submit" class="btn btn-primary">Confirm email >></button>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-3"></div>
+    </div>
+</div>
+<script src="/libs/js/jquery.min.js"></script>
+<script src="/libs/js/bootstrap.min.js"></script>
+<br><br>
+<nav class="navbar navbar-default hidden-xs navbar-fixed-bottom" style="margin:0;">
+    <div class="container">
+        <div class="navbar-header" style="width: 100%;    margin-left: 0;">
+            <!-- HotLog -->
+            <span id="hotlog_counter" style="margin: 10px;display: inline-block;"></span>
+            <span id="hotlog_dyn"></span>
+            <script type="text/javascript">
+                var hot_s = document.createElement('script');
+                hot_s.type = 'text/javascript'; hot_s.async = true;
+                hot_s.src = 'https://js.hotlog.ru/dcounter/2541598.js';
+                hot_d = document.getElementById('hotlog_dyn');
+                hot_d.appendChild(hot_s);
+            </script><div class="navbar-text pull-right">©2014-2016 OnlineStor™. All rights reserved by a <a href="/license">Creative Commons</a> license.</div>
+            </div>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

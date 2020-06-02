@@ -1,0 +1,207 @@
+<script language="javascript">
+	var API;
+    var vkID;
+    var VK = parent.VK;
+    $(function() {
+	    API = new API(window,'vkontakte','VK','vk',111);
+        VK.init({apiId: 5331530});
+        $(".vk-body .menubutton").on({
+            click: function(){
+                var data = $(this).attr("data-to-menu");
+                var left = $(this).position();
+                $(".vk-body #" + data).css("left",left.left);
+                $(".vk-body #" + data).toggleClass("hide");
+                $(this).toggleClass("open");
+
+            }
+        });
+
+        $(".vk-body .addpost button").click(function() {
+            VK.Api.call("wall.post",{owner_id: vkID,message: $(".addpost textarea").val()},function(r) {
+                if(r.response) {
+                    loadWall();
+                }
+            })
+        });
+
+
+        $(".vk-body over,.vk-body .menu *").on({
+            click: function() {
+                $(this).parents(".menu").toggleClass("hide");
+                $(".vk-body *[data-to-menu='" + $(this).parents(".menu").attr("id") + "']").toggleClass("open");
+            }
+        });
+
+    });
+	function authInfo(response) {
+		if (response.session) vkID = response.session.mid; else return false;
+		loadProfile();
+		loadWall();
+		$("#profile").removeClass("hide");
+		$("#start").addClass("hide");
+	}
+
+	function loadProfile() {
+		VK.Api.call('users.get', {user_ids: vkID,fields: "photo_50,bdate,city"}, function(r) {
+			if(r.response) {
+				console.log("users.get Start");
+				$("div#info img").attr("src",r.response[0].photo_50);
+				$("div#info .vk-name").text(r.response[0].first_name + " " + r.response[0].last_name);
+				$("div#info #dateofbirth i").text(r.response[0].bdate);
+				VK.Api.call("database.getCitiesById",{city_ids: r.response[0].city},function(b) {
+					$("div#info #city i").text(b.response[0].name);
+				});
+				console.log("users.get End");
+			}
+		});
+	}
+
+	function loadWall() {
+		VK.Api.call('wall.get', {owner_id: vkID,offset: 0,count:10,filter:"all",extended:1},function(r) {
+			if(r.response) {
+				$(".post").remove();
+				console.log(r);
+				console.log("wall.get Start");
+				r.response.wall.forEach(function(item,i,arr) {
+					if(i > 0) {
+						console.log(item);
+						$("#posts").append('<div id="post' + item.id + '" class="post"><img src=""/><div class="vk-name"></div></div>');
+						VK.Api.call("users.get",{user_ids: item.from_id,fields:"photo_50"},function(z) {
+							if(z.response) {
+								console.log(z.response);
+								$("#post" + item.id + " img").attr("src",z.response[0].photo_50);
+								$("#post" + item.id + " .vk-name").text(z.response[0].first_name + " " + z.response[0].last_name);
+								$("#post" + item.id + ":odd").remove();
+								VK.Api.Call("wall.getComments",{})
+							}
+						});
+						$(".post:last-child").append(item.text);
+					} else {
+						$(".vk-body #totalposts").text(item);
+					}
+				});
+			}
+		});
+	}
+</script>
+<content class="vk-body">
+	<header class="menubar desktoponly">
+		<button data-to-menu="vkfilemenu" class="menubutton" translate>Pages</button>
+		<div class="menu hide" id="vkfilemenu"><vert-bar></vert-bar>
+			<button id="newFile" onclick="VK.Auth.login(authInfo);" translate>Login to VK</button>
+			<divider></divider>
+			<button disabled id="newProject" translate>My Profile</button>
+			<divider></divider>
+			<button id="close" onclick='API.Close()' translate>Exit</button>
+			<over></over>
+		</div>
+	</header>
+	<section id="start" class="desktoponly"></section>
+	<section class="hide" id="profile" style="overflow:auto;height: calc(100% - 28px);">
+		<div id="info">
+			<img src="">
+			<div class="vk-name"></div>
+			<ul>
+				<li id="dateofbirth"><b translate>Birth Date:</b> <i>00.00.0000</i></li>
+				<li id="city"><b translate>City:</b> <i></i></li>
+			</ul>
+		</div>
+		<div id="posts">
+			<div class="totalposts"><span id="totalposts">0</span> <span translate>posts</span></div>
+			<div class="addpost">
+				<textarea oninput="if($(this).val().trim() == '') $('.addpost button').attr('disabled','disabled'); else $('.addpost button').removeAttr('disabled')" class="form-control"></textarea>
+				<button disabled class="abtn active">
+					Отправить
+				</button>
+			</div>
+		</div>
+	</section>
+</content>
+
+<style>
+	.vk-body .addpost {
+		background: #f5f5f5;
+		padding: 10px;
+	}
+	.vk-body .addpost textarea {
+		width: 100%;
+		resize: vertical;
+		height: 64px;
+	}
+	.vk-body .addpost button {
+		margin: 5px 5px 5px 0px;
+	}
+	.vk-body {
+		background:white;
+	}
+	.vk-body .bottom-bar {
+		position: absolute;
+		bottom: 0;
+		text-align: right;
+		padding: 10px;
+		width: 100%;
+		background: lightgrey;
+		left: 0;
+	}
+	.vk-body .abtn {
+		padding: 2px;
+		margin-left: 5px;
+	}
+	.vk-body header.menubar {
+		background: #F0F0F0;
+		padding:3px;
+	}
+	.vk-body header.menubar > button {
+		border:1px solid transparent;
+		color:black;
+		padding:2px;
+		margin-right:3px;
+	}
+	.vk-body header.menubar > button:hover {
+		border:1px solid #3399FF;
+		background-color: #C0DDFF;
+	}
+	.vk-body #info {
+		background-color: #f5f5f5;
+		padding:10px;
+		color:#565656;
+	}
+	.vk-body #info img {
+		float:left;
+	}
+	.vk-body #info .vk-name {
+		font-size: 12pt;
+		margin-left: 10px;
+		display: inline-block;
+		font-weight: bold;
+		width: calc(100% - 60px);
+	}
+	.vk-body #info ul {
+		list-style: none;
+		padding-left: 20px;
+		display: inline-block;
+		margin-top: 5px;
+	}
+	.vk-body #info b {
+		width:100px;display:inline-block;text-align:right;
+	}
+	.vk-body .post .vk-name{
+		font-weight:bold;
+	}
+	.vk-body .post img {
+		float: left;
+		margin: 0px 10px 10px 0px;
+	}
+	.vk-body .post {
+		border-bottom:1px solid #565656;
+		padding:10px;min-height:70px;
+	}
+	.vk-body .totalposts {
+		background-color:#D3DBE3;padding:5px;font-weight:bold
+	}
+	.vk-body button.menubutton.open {
+		border: 1px solid #097BED;
+		background-color: #8EC2FF;
+	}
+</style>
+

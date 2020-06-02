@@ -1,0 +1,257 @@
+
+<script>
+    var API;
+    $(function() {
+        API = new API(window,'zohoshow','Zoho Show','../powerpoint',111,500,500);
+        $("#openzoho").on({
+            click : function() {
+                API.OpenFileDialog("[name=filename]","Презентации Microsoft Office PowerPoint 97-2003 (*.ppt); Презентации Microsoft Office Excel 2007 (*.pptx); Презентации OpenDocument (*.odp)");
+            }
+        });
+        $("#newzoho").on("click",function() {
+            $(".win").show("drop");
+        })
+        if(API.getArgument("file")) {$("[name=filename]").val(API.getArgument("file"));changeoFD();}
+    });
+    function changeoFD() {
+        $(".startpage").hide();
+        $("#preloader").show();
+        $('#status').text("Подключение к серверам Zoho...");
+        API.Server("zoho", {
+            arg: "show",
+            new: "false",
+            path : $("[name=filename]").val()
+        }, function(a) {
+            location.replace(a);
+        });
+    }
+    function newFile() {
+        $("*:not(#preloader *)").hide();
+        $("#preloader").show();
+        $('#status').text("Создание нового файла...");
+        $("body").append("<form action='/server/action.php' method='post'><input name='token' value='" + parent.token + "'><input name='action' value='zoho'><input name='arg' value='show'><input name='new' value='true'><input name='path' value='" + $("#newfile").val() + "'></form>");
+        $("form").submit();
+    }
+</script>
+<content id="zohoshow">
+    <div class="startpage">
+        <h2>Zoho Show</h2>
+        <button id="newzoho"><i class="fa fa-file-o fa-lg"></i>&nbsp;&nbsp;<span translate>New Presentation</span></button>
+        <button id="openzoho"><i class="fa fa-folder-open-o fa-lg"></i>&nbsp;&nbsp;<span translate>Open Presentation</span></button>
+    </div>
+    <div class="win">
+        <h2>Create a new Presentation</h2>
+        <label><div translate>Path to new file:</div><input type="text" class="form-control" id="newfile"></label>
+        <br><br><button class="zohobutton" onclick="newFile()" translate>Create</button><button onclick="$('.win').hide()" class="zohobutton" translate>Cancel</button>
+    </div>
+    <div id="preloader" style="display:none;">
+        <div class="windows8">
+            <div class="wBall" id="wBall_1">
+                <div class="wInnerBall"></div>
+            </div>
+            <div class="wBall" id="wBall_2">
+                <div class="wInnerBall"></div>
+            </div>
+            <div class="wBall" id="wBall_3">
+                <div class="wInnerBall"></div>
+            </div>
+            <div class="wBall" id="wBall_4">
+                <div class="wInnerBall"></div>
+            </div>
+            <div class="wBall" id="wBall_5">
+                <div class="wInnerBall"></div>
+            </div>
+        </div>
+        <br><span id="status" translate>Loading...</span>
+    </div>
+    <input type="hidden" name="filename" onchange="changeoFD()" value="n/a">
+    <style>
+        .win {
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            width: 400px;
+            height: 200px;
+            border: 1px solid rgb(210, 71, 38);
+            box-shadow: 0 0 20px 0 rgb(210, 71, 38), 0 0 20px 0 rgb(210, 71, 38);
+            background: white;
+            padding: 1rem;
+            display:none;
+        }
+        .win h2 {
+            font-size:2em;
+            font-weight:100;
+            margin:0;
+            margin-bottom:1em;
+        }
+        .win label {
+            display:flex;
+            flex-direction:column;
+            width:100%;
+            font-size:1em;
+        }
+        .zohobutton {
+            background: rgb(210, 71, 38);
+            border: 0;
+            padding: 6px;
+            width: 6rem;
+            float: right;
+            color: white;
+            font-size: 1rem;
+            margin-left:1em;
+        }
+        .zohobutton:hover {opacity: 0.7;}
+        #zohoshow {
+            background:rgb(210, 71, 38);
+        }
+        .startpage {
+            left: 0;
+            right: 0;
+            height: 15em;
+            bottom: 0;
+            top: 0;
+            vertical-align: middle;
+            white-space: normal;
+            display: inline-block;
+            text-align: center;
+            position: absolute;
+            margin: auto;
+        }
+        .startpage h2 {
+            color: white;
+            font-size: 3rem;
+            margin: 0;
+            font-weight: 100;
+        }
+        .startpage button {
+            color: white;
+            font-size: 12pt;
+            display: block;
+            margin: 20px auto;
+            border:0;
+        }
+
+        #preloader {
+            text-align:center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            color: rgb(210, 71, 38);
+            margin: auto;
+            width: 100%;
+            height: 150px;
+            bottom: 0;
+            display: inline-block;
+            background: white;
+            font-size: 16pt;
+        }
+
+        .windows8 {
+            position: relative;
+            width: 50px;
+            height:50px;
+            margin:auto;
+            margin-top:20px
+        }
+
+        .windows8 .wBall {
+            position: absolute;
+            width: 47px;
+            height: 47px;
+            opacity: 0;
+            transform: rotate(225deg);
+            animation: orbit 5.1425s infinite;
+        }
+
+        .windows8 .wBall .wInnerBall{
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgb(210, 71, 38);
+            left:0px;
+            top:0px;
+            border-radius: 6px;
+        }
+
+        .windows8 #wBall_1 {
+            animation-delay: 1.126s;
+        }
+
+        .windows8 #wBall_2 {
+            animation-delay: 0.223s;
+        }
+
+        .windows8 #wBall_3 {
+            animation-delay: 0.4465s;
+        }
+
+        .windows8 #wBall_4 {
+            animation-delay: 0.6695s;
+        }
+
+        .windows8 #wBall_5 {
+            animation-delay: 0.903s;
+        }
+
+
+
+        @keyframes orbit {
+            0% {
+                opacity: 1;
+                z-index:99;
+                transform: rotate(180deg);
+                animation-timing-function: ease-out;
+            }
+
+            7% {
+                opacity: 1;
+                transform: rotate(300deg);
+                animation-timing-function: linear;
+                origin:0%;
+            }
+
+            30% {
+                opacity: 1;
+                transform:rotate(410deg);
+                animation-timing-function: ease-in-out;
+                origin:7%;
+            }
+
+            39% {
+                opacity: 1;
+                transform: rotate(645deg);
+                animation-timing-function: linear;
+                origin:30%;
+            }
+
+            70% {
+                opacity: 1;
+                transform: rotate(770deg);
+                animation-timing-function: ease-out;
+                origin:39%;
+            }
+
+            75% {
+                opacity: 1;
+                transform: rotate(900deg);
+                animation-timing-function: ease-out;
+                origin:70%;
+            }
+
+            76% {
+                opacity: 0;
+                transform:rotate(900deg);
+            }
+
+            100% {
+                opacity: 0;
+                transform: rotate(900deg);
+            }
+        }
+    </style>
+</content>

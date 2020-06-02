@@ -1,0 +1,204 @@
+<?php session_start(); ?>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OnlineStor™ - webtop for all your devices</title>
+    <meta name="description" content="Web desktop system."/>
+    <link href="/libs/img/favicon.ico" rel="shortcut icon">
+    <link href="/libs/img/favicon.ico" rel="icon">
+    <link href="/libs/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/libs/css/agency.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+</head>
+
+<body>
+<nav class="navbar navbar-default navbar-static-top" style="margin:0;">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand active" href="/en" ><img height="20" src="/libs/img/logoLong.png" style="display: inline-block;"><a href="/" style="vertical-align: sub;font-size: 12px;color: darkgreen;">русский</a></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Projects <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/en/products/desktop">OnlineStor™ Desktop</a></li>
+                        <li><a href="/en/products/mobile">OnlineStor™ Mobile</a></li>
+                        <li><a href="/en/products/mediacenter">OnlineStor™ Media Center</a></li>
+                    </ul>
+                </li>
+                <li><a href="/en/news">News</a></li>
+                <li><a href="/support">Support (rus)</a></li>
+            </ul>
+            <div class="navbar-right">
+                <?php if(!empty($_SESSION['token'])) { $url = "http://onlinestor.net/server/action.php"; $post_data = array("action" => "getsid","token" => $_SESSION['token']);$ch = curl_init();curl_setopt($ch, CURLOPT_URL, $url);curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);curl_setopt($ch, CURLOPT_POST, 1);curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);$output = curl_exec($ch);curl_close($ch);if(strpos($output,"failed") > -1) {header("Location: http://onlinestor.net/desktop/?action=logout");exit();}echo '<p class="navbar-text">Hello, ' . $output . '</p> &nbsp;&nbsp;<a href="/redirect" class="navbar-btn btn btn-info">Enter WebTop</a>&nbsp;&nbsp;<a href="/desktop?action=logout" class="navbar-btn btn btn-danger">Log out</a>';} else echo '<a href="/en/register" class="navbar-btn btn btn-success">Register</a> <a href="/en/login" class="navbar-btn btn btn-primary">Log In</a>';?>
+            </div>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<header>
+    <div class="container">
+        <div class="intro-text" style="text-shadow:0 0 5px black;">
+            <div class="intro-heading">Your PC has moved to the Clouds</div><div class="intro-lead-in">Try your web PC right now</div>
+
+            <a href="/en/register" class="btn btn-primary btn-xl" style="text-shadow:none;">Start using</a>
+        </div>
+    </div>
+</header>
+
+<!-- Services Section -->
+<section id="services">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">What is OnlineStor?</h2>
+                <h3 class="section-subheading text-muted">OnlineStor - is a web-based desktop system, which you can use to open and edit uploaded files and work in cloud PC.</h3>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fa fa-shopping-cart fa-stack-1x fa-inverse"></i>
+                    </span>
+                <h4 class="service-heading">Convenient</h4>
+                <p class="text-muted">Your files will be available from all your favourite devices. There are several GUI versions to make your work convenient everywhere you go,</p>
+            </div>
+            <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fa fa-laptop fa-stack-1x fa-inverse"></i>
+                    </span>
+                <h4 class="service-heading">Ever-present</h4>
+                <p class="text-muted">It is available in any part of the Globe.</p>
+            </div>
+            <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
+                    </span>
+                <h4 class="service-heading">Safe</h4>
+                <p class="text-muted">HTTPS connection provides you the most safe working experience available today.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Portfolio Grid Section -->
+<section id="portfolio" class="bg-light-gray">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">Variants of Web Desktop</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-sm-6 portfolio-item">
+                <a href="/en/products/desktop" class="portfolio-link">
+                    <div class="portfolio-hover">
+                        <div class="portfolio-hover-content">
+                            <i class="fa fa-plus fa-3x"></i>
+                        </div>
+                    </div>
+                    <img src="/libs/img/big1.png" class="img-responsive" alt="">
+                </a>
+                <div class="portfolio-caption">
+                    <h4>For desktop PCs and Macs</h4>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 portfolio-item">
+                <a href="/en/products/mobile" class="portfolio-link">
+                    <div class="portfolio-hover">
+                        <div class="portfolio-hover-content">
+                            <i class="fa fa-plus fa-3x"></i>
+                        </div>
+                    </div>
+                    <img src="/libs/img/big2.png" class="img-responsive" alt="">
+                </a>
+                <div class="portfolio-caption">
+                    <h4>For any mobile devices</h4>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 portfolio-item">
+                <a href="/en/products/mediacenter" class="portfolio-link">
+                    <div class="portfolio-hover">
+                        <div class="portfolio-hover-content">
+                            <i class="fa fa-plus fa-3x"></i>
+                        </div>
+                    </div>
+                    <img src="/libs/img/big3.png" class="img-responsive" alt="">
+                </a>
+                <div class="portfolio-caption">
+                    <h4>For Smart TV systems</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">Are you ready to start using the Future?</h2>
+            </div>
+        </div>
+        <div class="text-center">
+            <div id="success"></div>
+            <a href="/en/register" class="btn btn-xl btn-primary">Yes, sure!</a>
+        </div>
+    </div>
+</section>
+<script src="/libs/js/jquery.min.js"></script>
+<style>
+    #bg {
+        position: fixed;top:0;left:0;
+        width: 100vw;
+        height: 100vh;
+        background-image: url(/images/blue.jpg);
+        background-size:cover;
+        background-position:center;
+        z-index: -1;
+    }
+
+    @media(min-width:768px){ .thumbnail.col-sm-3 {
+        margin-right: 5px;
+        width: calc(25% - 5px);
+        height: 300px;
+    }}
+    .thumbnail .text-right {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        width: 100%;
+    }
+</style>
+
+<script src="/libs/js/bootstrap.min.js"></script>
+<br><br>
+<nav class="navbar navbar-default hidden-xs navbar-fixed-bottom" style="margin:0;">
+    <div class="container">
+        <div class="navbar-header" style="width: 100%;    margin-left: 0;">
+            <!-- HotLog -->
+            <span id="hotlog_counter" style="margin: 10px;display: inline-block;"></span>
+            <span id="hotlog_dyn"><script src='https://js.hotlog.ru/dcounter/2541598.js' async></script></span>
+            <div class="navbar-text pull-right">©2014-2017 OnlineStor™. All rights reserved by a <a href="/license">Creative Commons</a> license.</div>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

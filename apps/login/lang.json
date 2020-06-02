@@ -1,0 +1,16 @@
+{
+	"en": {
+		"Login":"Login to OnlineStor",
+		"User":"User",
+		"Pass":"Password",
+		"OK":"Enter",
+		"Exit":"Shut Down"
+	},
+	"ru": {
+		"Login":"Войти в onlineStor",
+		"User":"Пользователь",
+		"Pass":"Пароль",
+		"OK":"Войти",
+		"Exit":"Выйти"
+	}
+}

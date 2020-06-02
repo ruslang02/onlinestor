@@ -1,0 +1,15 @@
+{
+	"ru": {
+		"Contacts":"Контакты",
+		"New contact":"Новый контакт",
+		"View contact info":"Просмотр информации о контакте",
+		"Name":"Имя",
+		"Loading...":"Идет загрузка...",
+		"Contacts List":"Ваша контактная книга",
+		"First Name:":"Имя:",
+		"Last Name:":"Фамилия:",
+		"Phone No.":"Телефон",
+		"Welcome to Contacts":"Добро пожаловать в приложение Контакты",
+		"We've finally finished Contacts, the contact manager and address book. It makes easier to manage your contact book.":"Приложение Контакты было недавно обновлено, теперь стало еще легче пользоваться сервисом адресной книги."
+	}
+}

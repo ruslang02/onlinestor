@@ -1,0 +1,194 @@
+<script src="https://cdn.jsdelivr.net/ace/1.2.3/noconflict/ace.js"></script>
+<content class="webdeveloper">
+	<header class="menubar">
+		<button data-to-menu="devfilemenu" class="menubutton" onclick="API.ToggleMenu(this,'devfilemenu');" translate>File</button>
+		<div class="menu hide" id="devfilemenu"><vert-bar></vert-bar>
+			<button id="newFile" onclick="API.Open('webdeveloper/newfile')"><img src="/icons/small/page_add.png"/> <span translate>New File...</span></button>
+			<button disabled onclick="API.Open('webdeveloper/newproject')" id="newProject"><img src="/icons/small/brick_add.png"/> <span translate>New Project...</span></button>
+			<divider></divider>
+			<button id="openFile" onclick="API.OpenFileDialog('[name=openFilePath]','HTML/XHTML файлы (*.html); CSS файлы (*.css); XML файлы (*.xml); PHP файлы (*.php)')"><img src="/icons/small/folder_page.png"/> <span translate>Open File...</span></button>
+			<button disabled id="openProject"><img src="/icons/small/folder_brick.png"/> <span translate>Open Project...</span></button>
+			<divider></divider>
+			<button disabled id="closeProject" translate>Close Project</button>
+			<divider></divider>
+			<button id="saveFile"><img src="/icons/small/diskette.png"/> <span translate>Save File</span></button>
+			<button disabled id="saveProject" translate>Save Project</button>
+			<button id="saveFileAs" onclick="API.SaveFileDialog(ace.edit('editor').getValue(),'#wd-savefile')"><img src="/icons/small/save_as.png"/> <span translate>Save File As...</span></button>
+			<button disabled id="saveProjectAs" translate>Save Project As...</button>
+			<divider></divider>
+			<button disabled id="exportFile"><img src="/icons/small/page_go.png"/> <span translate>Export File...</span></button>
+			<divider></divider>
+			<button id="close" onclick='API.Close()' translate>Exit</button>
+			<over></over>
+		</div>
+		<button data-to-menu="projectmenu" class="menubutton" translate>Project</button>
+		<div class="menu hide" id="projectmenu"><vert-bar></vert-bar>
+			<button><img src="/icons/small/run_macros.png"/> <span translate>Execute</span></button>
+			<over></over>
+		</div>
+		<button data-to-menu="windowsmenu" class="menubutton" translate>Windows</button>
+		<div class="menu hide" id="windowsmenu"><vert-bar></vert-bar>
+			<button><img src="/icons/small/form_wizard.png"/> <span translate>Start page</span></button>
+			<divider></divider>
+			<button><img src="/icons/small/brick_edit.png"/> <span translate>Project settings</span></button>
+			<over></over>
+		</div>
+		<button data-to-menu="helpmenu" class="menubutton" translate>Help</button>
+		<div class="menu hide" id="helpmenu"><vert-bar></vert-bar>
+			<button><img src="/icons/small/question.png"/> <span translate>Contents</span></button>
+			<divider></divider>
+			<button><img src="/icons/small/info_rhombus.png"/> <span translate>About...</span></button>
+			<over></over>
+		</div>
+	</header>
+	<section id="startpage">
+		<div class="header" translate>
+			Welcome!
+		</div>
+		<p translate>
+			Here you can make new web applications, which will make webtop era closer.
+		</p>
+		<div>
+			<button class="list-style" onclick="API.Open('webdeveloper/newfile')">
+				<img src="/icons/small/add.png"/><span translate>New File...</span>
+			</button>
+			<button class="list-style" onclick="API.OpenFileDialog('[name=openFilePath]','HTML/XHTML файлы (*.html); CSS файлы (*.css); XML файлы (*.xml); PHP файлы (*.php)')">
+				<img src="/icons/small/folder.png"/><span translate>Open File...</span>
+			</button>
+		</div>
+	</section>
+	<div id="editor" class="hide">&lt;div class="class">content&lt;/div></div>
+
+</content>
+
+<section hidden>
+	<input type="text" name="openFilePath" id="openFilePath" onchange="openFile()"/>
+	<input type="hidden" id="wd-saveFile"/>
+</section>
+
+
+<style type="text/css" media="screen">
+	.webdeveloper {
+		background:white;
+	}
+	.webdeveloper #startpage {
+		margin:10px;
+		width:250px;
+	}
+	.webdeveloper .header {
+		color: darkblue;
+		font-size: 14pt;
+		padding: 5px;
+	}
+	.webdeveloper header.menubar {
+		background: #F0F0F0;
+		padding:3px;
+	}
+	.webdeveloper header.menubar > button {
+		border:1px solid transparent;
+		color:black;
+		padding:2px;
+		margin-right:3px;
+	}
+	.webdeveloper header.menubar > button:hover {
+		border:1px solid #3399FF;
+		background-color: #C0DDFF;
+	}
+
+	.webdeveloper #editor { 
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		margin-top:28px;
+	}
+
+	.webdeveloper #editor *{ 
+		font-family:inherit;
+	}
+	.webdeveloper button.menubutton.open {
+		border: 1px solid #097BED;
+		background-color: #8EC2FF;
+	}
+	.webdeveloper div.menu {
+		margin-top:3px;
+	}
+</style>
+<script>
+	$("#openFilePath").change(openFile);
+</script>
+<script>
+	var editor;
+	var API;
+    var editor = editor;
+    var webdeveloper = {
+        filename: "",
+        safefilename: "",
+        fileExist: false
+    }
+    webdeveloper.windowID = $(".window:last-child").attr("id");
+	$(function() {
+	    API = new API(window,'webdeveloper','Web IDE','form_design',111);
+    })
+	function initializeAce(mode) {
+		mode = mode || "xml";
+		editor = ace.edit("editor");
+		editor.setTheme("ace/theme/chrome");
+		editor.getSession().setMode("ace/mode/" + mode);
+		$("#editor").removeClass("hide");
+	}
+</script>
+<script>
+
+</script>
+
+<script>
+	function createFile(ext) {
+		closeProject();
+		ext = ext.toLowerCase();
+		var filename = "File." + ext;
+		webdeveloper.fileExist = false;
+		$("#saveFile").attr("disabled","disabled");
+		webdeveloper.filename = filename;
+		webdeveloper.safefilename = filename.substring(filename.lastIndexOf("/") + 1);
+		API.Change(filename + " - Web IDE",null);
+		initializeAce(ext);
+		$("#closeProject,#saveProject,#saveProjectAs").attr("disabled","disabled");
+	}
+	
+	function openFile() {
+		API.Server("getFile",{path: $("#openFilePath").get(0).value},function(a,b,c) {
+			var editor = ace.edit("editor");
+			editor.getSession().setMode("ace/mode/" + $("#openFilePath").get(0).value.substring($("#openFilePath").get(0).value.lastIndexOf(".") + 1));
+			editor.session.setValue(a);
+
+			$("#editor").removeClass("hide");
+			webdeveloper.filename = $("#openFilePath").get(0).value;
+			webdeveloper.safefilename = $("#openFilePath").get(0).value.substring($("#openFilePath").get(0).value.lastIndexOf("/") + 1);
+			API.Change(webdeveloper.safefilename + " - Web IDE");
+		},"text");
+	}
+	
+	function saveFile() {
+		$.get(filename,{},function(a,b) {
+			if(b != "success") {
+				saveFileAs();
+			} else {
+				// Save File
+			}
+		})
+	}
+	function saveFileAs() {
+		// Save File As...
+	}
+
+	function closeProject() {
+		var editor = ace.edit("editor");
+		editor.session.setValue("");
+		$("#editor").addClass("hide");
+	}
+	function closeProjectImmediate() {
+		editor.setValue("");
+	}
+</script>

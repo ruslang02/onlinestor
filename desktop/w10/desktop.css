@@ -1,0 +1,271 @@
+.loadingApp {
+    display: none;
+    position: absolute;
+    padding: 15px;
+    right: 5px;
+    bottom: 45px;
+    top: auto !important;
+}
+
+.preview {
+    text-align: right;
+    position: absolute;
+    bottom: 45px;
+    right: 5px;
+    color: white;
+    opacity: 0.7;
+    z-index: 0;
+    font-size: 18pt;
+    font-weight: 100;
+}
+
+#PROMO {
+    z-index: 0;
+}
+
+#info .info-sidebar {
+    position: absolute;
+    display: inline-block;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.39);
+    color: white;
+}
+
+#info .info-date {
+    color: white;
+    font-size: 1.5em;
+    text-align: center;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 150px;
+    margin: auto
+}
+
+.info-sidebar button {
+    font-size: 14px;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    border: 0;
+    width: 29px;
+    padding: 7px;
+}
+
+.info-sidebar button:active {
+    background: black;
+}
+
+.notificationBalloon {
+    position: absolute;
+    background: rgb(247, 251, 252);
+    background: -moz-linear-gradient(top, rgba(247, 251, 252, 1) 0%, rgba(217, 237, 242, 1) 40%, rgba(173, 217, 228, 1) 100%);
+    background: -webkit-linear-gradient(top, rgba(247, 251, 252, 1) 0%, rgba(217, 237, 242, 1) 40%, rgba(173, 217, 228, 1) 100%);
+    background: linear-gradient(to bottom, rgba(247, 251, 252, 1) 0%, rgba(217, 237, 242, 1) 40%, rgba(173, 217, 228, 1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f7fbfc', endColorstr='#add9e4', GradientType=0);
+    min-width: 250px;
+    min-height: 70px;
+    box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.52);
+    border-radius: 3px;
+    border: 1px solid rgb(56, 56, 56);
+    padding: 5px 10px;
+    z-index: 10000;
+}
+
+.notificationBalloon .closeNote {
+    float: right;
+    margin-top: 3px;
+}
+
+.notificationBalloon .closeNote:hover {
+    filter: brightness(150%);
+    -webkit-filter: brightness(150%);
+}
+
+.notificationBalloon .closeNote:active {
+    filter: brightness(50%);
+    -webkit-filter: brightness(50%);
+}
+
+#info.calendar {
+    width: 320px !important;
+    position: absolute;
+    bottom: 45px;
+    margin:5px;
+    right:0;
+    padding: 5px;
+    box-shadow: 0px 0px 2px 0px #000;
+    height: 220px !important;
+}
+
+div.widget {
+    position: absolute;
+
+}
+
+.widget:hover .widget-controls {
+    opacity: 1;
+}
+
+.widget .widget-controls {
+    float: right;
+    position: relative;
+    right: -16px;
+    opacity: 0;
+    height: 0;
+    transition: opacity .3s ease;
+}
+
+.widget .widget-controls * {
+    background: rgba(62, 62, 62, 0.79);
+    color: rgb(255, 255, 255);
+    border: 0px;
+    width: 16px;
+    height: 16px;
+    display: block;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.widget .widget-controls *:last-child {
+    border-radius: 0px 0px 3px 3px;
+    background: rgba(62, 62, 62, 0.79) !important;
+}
+
+.widget .widget-controls *:first-child {
+    border-radius: 3px 3px 0px 0px;
+}
+
+.widget .widget-controls button:hover {
+    background-image: -moz-linear-gradient(rgba(255, 255, 255, 0.5) 0%, rgba(241, 241, 241, 0.5) 50%, rgba(188, 173, 173, 0.38) 51%, rgba(176, 176, 176, 0) 100%);
+    background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.5) 0%, rgba(241, 241, 241, 0.5) 50%, rgba(188, 173, 173, 0.38) 51%, rgba(176, 176, 176, 0) 100%);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.5) 0%, rgba(241, 241, 241, 0.5) 50%, rgba(188, 173, 173, 0.38) 51%, rgba(176, 176, 176, 0) 100%);
+}
+
+.widget .widget-close:hover {
+    background-color: red;
+}
+
+.widget-close::after {
+    content: "\D7";
+    margin: -8px;
+    display: inline-block;
+    font-size: 14pt;
+    margin-top: -7px;
+}
+
+.widget-move::after {
+    content: "\205E\205E\205E";
+    font-family: sans-serif;
+    font-size: 13px;
+    color: #AAAAAA;
+    font-weight: 900;
+    cursor: default;
+}
+
+#taskbar {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    z-index: 10000;
+    height: 40px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.9);
+}
+
+#taskbar a.clock {
+    color: rgb(255, 255, 255) !important;
+    cursor: default;
+    font-size: large;
+    display:none;
+}
+#taskbar #Start {
+    float:left;
+    text-align: center;
+}
+#Start.open {
+    background: rgb(76, 175, 80) !important;
+}
+
+#taskbar .navbar-right {
+    width: 300px;
+    text-align: right;
+    HEIGHT: 40px;
+    float: right;
+    margin-bottom: 0;
+}
+
+#taskbar .navbar-btn {
+    display: inline-block;
+    width: 50px;
+    border: 0;
+    color: white;
+    font-size: 24px;
+    line-height: 38px;
+    height:100%;
+}
+
+#taskbar .navbar-btn img {
+    width: 24px;
+    vertical-align: top;
+    margin: 6px;
+}
+
+#taskbar .navbar-btn:hover {
+    background: rgba(255,255,255,0.4);
+}
+
+#taskbar button.navbar-btn.active-btn {
+    box-shadow: 0px 0px 0px 10000px #4CAF50 inset;
+}
+
+#taskbar .navbar-btn:not(.no) {
+    box-shadow: 0px -3px 0px 0px #4CAF50 inset;
+}
+
+#taskbar .navbar-btn.notification {
+    width: 25px;
+    padding: 0px 5px;
+    height: 100%;
+}
+
+#taskbar .notification img {
+    width: 16px
+}
+
+.desk {
+    width: 100%;
+    height: 100%;
+    padding-top: 10px;
+}
+
+.desk desktopfiles .list-style {
+    margin: 10px;
+    padding: 5px;
+    width: 75px;
+    border: 1px solid transparent;
+    vertical-align: top;
+    text-align: center;
+    display: block;
+}
+
+.desk desktopfiles .list-style .name {
+    color: white;
+    text-shadow: 1px 1px 2px black, 1px 1px 2px black, 1px 1px 2px black;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: block;
+}
+
+.desk desktopfiles .list-style img{
+    filter: drop-shadow(3px 3px 1px rgba(0, 0, 0, 0.5));
+    -webkit-filter: drop-shadow(3px 3px 1px rgba(0, 0, 0, 0.5))
+}
+
+.desk desktopfiles .list-style:not(:disabled):focus, .desk desktopfiles .list-style:not(:disabled):hover:focus {
+    background-color: rgba(0,0,0, 0.3);
+}

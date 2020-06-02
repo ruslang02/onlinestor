@@ -1,0 +1,207 @@
+<content class="music-body">
+    <input type="hidden" onchange="change()" name="musicFile">
+    <input type="hidden" onchange="changePlaylist()" name="playlist">
+    <audio class="player" autoplay></audio>
+	<div class="music-menu desktoponly">
+		<button class="menubutton" onclick="API.ToggleMenu(this,'musicMenu')" translate>File</button>
+		<div class="menu hide" id="musicMenu">
+			<button onclick="API.OpenFileDialog('[name=musicFile]','MP3 файлы (*.mp3); Windows Media Audio (*.wma)')" translate>Open</button>
+			<button onclick="API.OpenFileDialog('[name=playlist]','Плей-листы (*.play)')" translate>Open Playlist</button>
+			<button onclick='API.Close()' translate>Exit</button>
+			<over></over>
+		</div>
+		<button class="menubutton" onclick="API.ToggleMenu(this,'musicEditMenu')" translate>Settings</button>
+		<div class="menu hide" id="musicEditMenu">
+			<button class="loop" translate>Loop</button>
+			<button class="mute" translate>Mute</button>
+			<over></over>
+		</div>
+		<span id="nowState">0:00</span>
+		<span id="duration">0:00</span>
+	</div>
+	<div class="control-bar">
+		<progress max="1" value="0"></progress>
+		<img class="disabled" id="stopMusic" src="/icons/big/control_stop.png">
+		<img class="disabled" id="playMusic" src="/icons/big/control_play.png">
+		<img class="loop" id="repeatMusic" src="/icons/big/control_repeat.png">
+	</div>
+	
+	<ul id="sidebar">
+	</ul>
+
+	<style>
+		.music-body {
+			background:black;
+			height: 100%;
+			color:white;
+		}
+		.music-body .control-bar {
+			position: absolute;
+			bottom: 0;
+			text-align: center;
+			padding: 10px;
+			width: 100%;
+		}
+		#nowState:after{content: " / "}
+		.music-body .control-bar progress {
+			border: 1px solid white;
+			border-radius: 1000px;
+			height: 6px; width: 100%;
+			margin-bottom:1rem;
+		}
+		.music-body .control-bar img:not(.disabled):hover {
+			filter:brightness(150%);
+			-moz-filter:brightness(150%);
+			-o-filter:brightness(150%);
+			-webkit-filter:brightness(150%);
+		}
+		.music-body .control-bar img:not(.disabled):hover:active,.music-body .control-bar img:not(.disabled):active {
+			filter:brightness(50%);
+			-moz-filter:brightness(150%);
+			-o-filter:brightness(150%);
+			-webkit-filter:brightness(150%);
+		}
+		over {
+			position: fixed;
+			top: 0px;
+			left: 0px;
+			width: 100%;
+			height: 100%;
+			z-index: -1;
+		}
+		.music-body .menubutton {
+			color:white;
+			margin: 5px;
+		}
+		.music-body .menu {
+			margin-top:-5px;
+			margin-left:5px;
+		}
+		.music-body label {
+			font-weight: 400;
+			display: block;
+			padding: 2px;
+			margin: 0;
+		}
+		.music-body input {
+			vertical-align: top;
+			margin: 2px;
+			z-index:-2;
+		}
+	</style>
+	<script>
+        $.fn.bindFirst = function(name, fn) {
+            var elem, handlers, i, _len;
+            this.bind(name, fn);
+            for (i = 0, _len = this.length; i < _len; i++) {
+                elem = this[i];
+                handlers = jQuery._data(elem).events[name.split('.')[0]];
+                handlers.unshift(handlers.pop());
+            }
+        };
+        var API;
+        var player = $(".player").get(0);
+
+        $(function() {
+            API = new API(window,"musicplayer","Music Player","music",111,300,300);
+            $("[name=musicFile]").change(change);
+            $("[name=playlist]").change(changePlaylist);
+            $(".music-body .loop").click(loop);
+            $(".music-body .mute").click(mute);
+            $(".music-body #playMusic").click(function() {
+                if(player.readyState != 0) if(player.paused) player.play(); else player.pause();
+            });
+            $(".player").on({
+                timeupdate: function() {
+                    $(".music-body .control-bar progress").val(player.currentTime);
+                    var minutes = Math.floor((Math.floor(player.currentTime) / 60));
+                    var seconds = Math.floor(Math.floor(player.currentTime) - 60 * minutes);
+                    if (seconds < 10) seconds = "0" + seconds.toString();
+                    $("#nowState").text(minutes + ":" + seconds);
+                },
+                play: function() {
+                    $("#playMusic").attr("src","/icons/big/control_pause_blue.png");
+                    $("#stopMusic").removeClass("disabled");
+                    $("#playMusic").removeClass("disabled");
+                    $("#stopMusic").attr("src","/icons/big/control_stop_blue.png");
+                    $(".music-body .control-bar progress").attr("max",player.duration);
+                },
+                pause: function() {
+                    $("#playMusic").attr("src","/icons/big/control_play_blue.png");
+                    $("#stopMusic").removeClass("disabled");
+                    $("#stopMusic").attr("src","/icons/big/control_stop_blue.png");
+                },
+                ended: function() {
+                    $("#playMusic").attr("src","/icons/big/control_play_blue.png");
+                    $("#stopMusic").attr("src","/icons/big/control_stop.png");
+                    $("#stopMusic").addClass("disabled");
+                },
+                durationchange: function() {
+                    $(".music-body .control-bar progress").attr("max",player.duration);
+                    var minutes = Math.floor((Math.floor(player.duration) / 60));
+                    var seconds = Math.floor(Math.floor(player.duration) - 60 * minutes);
+                    minutes = minutes || 0;
+                    seconds = seconds || 0;
+                    if (seconds < 10) seconds = "0" + seconds.toString();
+                    $("#duration").text(minutes + ":" + seconds);
+                }
+            });
+            $("#stopMusic").bindFirst("click",function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                if(player.readyState != 0) {
+                    $("#playMusic").attr("src","/icons/big/control_play_blue.png");
+                    $("#stopMusic").attr("src","/icons/big/control_stop.png");
+                    player.currentTime = 0;
+                    player.pause();
+                    $(this).addClass("disabled");
+                    }
+                }
+            );
+            player.preload = "auto";
+            if(API.getArgument("file")) $("[name=musicFile]").val(API.getArgument("file")).change();
+        });
+
+		function change() {
+				player.src = "/server/api.php?token=" + parent.token + "&path=" + $("[name=musicFile]").val();
+				player.load();
+				player.play();
+		}
+		
+		function changePlaylist() {
+			$.getJSON("/server/api.php?token=" + parent.token + "&path=" + $("[name=musicFile]").val(),function(plays) {
+				plays.forEach(function(item) {
+					$("#sidebar").append("<li><a href='#' current='current' path='" + item + "'>" + item.substring(item.lastIndexOf('/') + 1) + "</a></li>");
+				});
+				player.src = "/server/api.php?token=" + parent.token + "&path=" + $("#sidebar [current]").attr("path");
+				player.load();
+				player.play();
+				player.onended = function() {
+					$("#sidebar [current]").removeClass("current").parent().next().children("a").addClass("current");
+					player.src = "/server/api.php?token=" + parent.token + "&path=" + $("#sidebar [current]").attr("path");
+					player.load();
+					player.play();
+				}
+			})
+		}
+		function loop() {
+			if ($(".player").prop("loop")) {
+				$(".player").prop("loop",false);
+				$("#repeatMusic").attr("src","/icons/big/control_repeat.png");
+			} else {
+				$(".player").prop("loop",true);
+				$("#repeatMusic").attr("src","/icons/big/control_repeat_blue.png");
+			}
+		}
+		function mute() {
+			if ($(".player").prop("muted")) {
+				$(".player").prop("muted",false)
+			} else {
+				$(".player").prop("muted",true)
+			}
+		}
+	</script>
+
+	<script>
+	</script>
+</content>

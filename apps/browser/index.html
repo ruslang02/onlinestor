@@ -1,0 +1,67 @@
+<content id="browser-body">
+	<nav>
+		<input type="text" class="textarea form-control">
+	</nav>
+    <script>
+        if (!String.prototype.startsWith) {
+            String.prototype.startsWith = function(searchString, position) {
+                position = position || 0;
+                return this.substr(position, searchString.length) === searchString;
+            };
+        }
+
+        var API;
+        $(function() {
+            API = new API(window,"browser","Web Browser","orbit",111,loadScript)
+        });
+
+        function loadScript() {
+            var url = API.getArgument("url");
+            if (url == "") {
+                $("#browser-body iframe").attr("src", "https://start.duckduckgo.com");
+            } else {
+                if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("ftp://")) {
+                    $("#browser-body iframe").attr("src", url);
+                } else {
+                    $("#browser-body iframe").attr("src", "http://" + url);
+                }
+
+            }
+
+            $("#browser-body .textarea").change(function(e) {
+                var url = $(this).val();
+                if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("ftp://")) {
+                    try {
+                        var ajaxRequest = $.ajax({
+                            url : url,
+                            async : false
+                        });
+                    } catch(e) {
+                        $("#browser-body iframe").attr("src", "http://onlinestor.net/apps/browser/sameorigin.php?url=" + url);
+                    }
+                    if(ajaxRequest.statusText.search("NetworkError")) $("#browser-body iframe").attr("src",url); else $("#browser-body iframe").attr("src", "http://onlinestor.net/apps/browser/sameorigin.php?url=" + url);
+                } else {
+                    try {
+                        var ajaxRequest = $.ajax({
+                            url : "https://" + url,
+                            async : false
+                        });
+                    } catch(e) {
+                        $("#browser-body iframe").attr("src", "http://onlinestor.net/apps/browser/sameorigin.php?url=https://" + url);
+                    }
+                    if(ajaxRequest.statusText.search("NetworkError")) $("#browser-body iframe").attr("src","http://" + url); else $("#browser-body iframe").attr("src", "http://onlinestor.net/apps/browser/sameorigin.php?url=https://" + url);
+                }
+            });
+        }
+    </script>
+
+	<script>
+
+	</script>
+	<iframe id="browser-iframe" sandbox="allow-forms allow-pointer-lock allow-scripts allow-same-origin" style="width:100%;height:100%;border:0; background:white;"></iframe>
+		<style>
+			#browser-body .textarea {
+				width: 100%;
+			}
+		</style>
+</content>

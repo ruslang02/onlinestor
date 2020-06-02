@@ -1,0 +1,158 @@
+<content>
+	<div class="note-body">
+		<div class="note-menu" style="/* position: relative; */height: 28px;"><button class="menubutton" onclick="API.ToggleMenu(this,'fileMenu')" translate="" style="
+    height: 100%;
+">Файл</button>
+			<div class="menu hide" id="fileMenu" style="left: 0px;">
+				<button class="list-group-item" id="open" translate="">Open</button>
+				<button class="list-group-item" id="save" translate="">Save</button>
+				<button class="list-group-item" onclick="printTextArea()" translate="">Print</button>
+				<button class="list-group-item" onclick="API.Close()" translate="">Exit</button><over></over>
+			</div>
+			<button class="menubutton" onclick="API.ToggleMenu(this,'editMenu')" translate="" style="
+    height: 100%;
+">Правка</button>
+			<div class="menu hide" id="editMenu" style="left: 55.1563px;">
+				<button class="list-group-item" disabled="" translate="">Cut</button>
+				<button class="list-group-item" disabled="" translate="">Copy</button>
+				<button class="list-group-item" disabled="" translate="">Paste</button>
+				<button class="list-group-item" onclick="deleteText()" translate="">Delete</button><divider></divider>
+				<button class="list-group-item" onclick="selectAll()" translate="">Select All</button>
+				<button class="list-group-item" onclick="datetime()" translate="">Date/Time</button><over></over>
+			</div>
+			<div class="titlebar" translate="" style="display: inline-block;width: calc(100% - 225px);font-size: 10pt; text-align: center;">Notepad</div>
+    <buttons><button onclick="parent.hideWindow(API.ID)" class="minus material-icons">expand_more</button><button onclick="parent.fullWindow(API.ID)" class="plus material-icons">expand_less</button><button onclick="parent.closeWindow(API.ID)" class="close material-icons">close</button></buttons>
+		</div>
+		<input type="hidden" name="file-note" value="" onchange="change()">
+		<div style="height:100%">
+			<textarea id="printNeed" style="border: none;" spellcheck="false"></textarea>
+		</div>
+		<script>
+            var API;
+            $(function() {
+                API = new API(window,'notepad',"Notepad",'note',111,null,null,true,true);
+                ready();
+				API.thisWindow.find(".up").css({
+					"width": "calc(100% - 220px)",
+    				"left": "110px"
+				});
+                var textarea = $('.note-body textarea');
+                textarea.bind("blur", function() {setTimeout(function() {if(textarea.parent(".window").hasClass("activeWin"))textarea.focus();}, 0);});
+                var window_now;
+                $(".note-body #open").on({
+                    click : function() {
+                        API.OpenFileDialog("*[name=file-note]",'Текстовые файлы (*.txt); XML файлы (*.xml);');
+                    }
+                });
+                $(".note-body #save").on({
+                    click : function() {
+                        API.SaveFileDialog($(".note-body textarea").get(0).value)
+                    }
+                });
+                $("*[name=file-note]").change(function() {
+                    change();
+                });
+            });
+            function ready() {
+                if (API.getArgument("file")) {
+					$(".titlebar").text(API.getArgument("file").substring(API.getArgument("file").lastIndexOf("/") + 1) + " - Блокнот")
+                	API.Change(API.getArgument("file").substring(API.getArgument("file").lastIndexOf("/") + 1) + " - Блокнот");
+                API.Server("getFile", {
+                    path: API.getArgument("file")
+                }, function (a, b, c) {
+                    $("#printNeed").val(a);
+                });
+                }
+            }
+			function selectAll() {
+				$(".note-body textarea").prop('selectionStart',0).prop('selectionEnd',$(".note-body textarea").val().length);
+			}
+			function datetime() {
+				var cursorPos = $('.note-body textarea').prop('selectionStart');
+    var v = $('.note-body textarea').val();
+    var textBefore = v.substring(0,  cursorPos);
+    var textAfter  = v.substring(cursorPos, v.length);
+
+    $('.note-body textarea').val(textBefore + new Date().toLocaleString() + textAfter);
+			}
+			function deleteText() {
+				var cursorPos = $('.note-body textarea').prop('selectionStart');
+				var cursorPosEnd = $('.note-body textarea').prop('selectionEnd');
+            var v = $('.note-body textarea').val();
+            var textBefore = v.substring(0,  cursorPos );
+            var textAfter  = v.substring( cursorPosEnd, v.length );
+            $('.note-body textarea').val( textBefore+textAfter );
+						$('.note-body textarea').prop('selectionStart',cursorPos);
+						$('.note-body textarea').prop('selectionEnd',cursorPos);
+			}
+		</script>
+		<script>
+
+			function change() {
+				API.Server("getFile", {
+					path : $("*[name='file-note']").val()
+				}, function(xhr, name, go) {
+					$(".titlebar").text($("*[name='file-note']").val().substring($("*[name='file-note']").val().lastIndexOf("/") + 1) + " - Блокнот");
+                    API.Change($("*[name='file-note']").val().substring($("*[name='file-note']").val().lastIndexOf("/") + 1) + " - Блокнот");
+					$('.note-body textarea').val(go.responseText)
+				});
+			}
+
+			function printTextArea() {
+				childWindow = window.open('', 'childWindow', 'location=yes, menubar=yes, toolbar=yes');
+				childWindow.document.open();
+				childWindow.document.write('<html><head></head><body>');
+				childWindow.document.write(document.getElementById('printNeed').value.replace(/\n/gi, '<br>'));
+				childWindow.document.write('</body></html>');
+				childWindow.print();
+				childWindow.document.close();
+				childWindow.close();
+			}
+
+			function copy() {
+				var copyTextarea = $("#printNeed").get(0);
+				copyTextarea.select();
+
+				try {
+					var successful = document.execCommand('copy');
+					var msg = successful ? 'successful' : 'unsuccessful';
+					console.log('Copying text command was ' + msg);
+				} catch (err) {
+					console.log('Oops, unable to copy');
+				}
+			}
+		</script>
+
+		<style>
+			.note-body {
+				height: 100%;
+			}
+			.note-body textarea {
+				display: block;
+				width: 100%;
+				height: 100%;
+				border: 1px solid rgb(110, 110, 110);
+				background: white none repeat scroll 0% 0%;
+				resize: none;
+				font-size: 16px;
+				padding: 5px;
+			}
+            
+buttons {
+	float: right;
+	height: 100%;
+	display: inline-block;
+}
+buttons button:hover {
+    color: #666;
+}
+buttons button:active {box-shadow: 0px 0px 5px -2px black inset !important}
+buttons button {
+	height: 100%;
+	border: 0;
+	-webkit-text-stroke: 1px lightgray;
+	line-height: 28px !important;
+}
+		</style>
+	</div>
+</content>

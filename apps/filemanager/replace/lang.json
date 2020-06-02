@@ -1,0 +1,8 @@
+{
+	"ru": {
+		"File Manager":"Файловый менеджер",
+		"This file already exists. Rewrite?":"Этот файл уже существует. Заменить его?",
+		"Rewrite":"Заменить",
+		"Cancel":"Отмена"
+	}
+}

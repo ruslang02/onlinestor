@@ -1,0 +1,138 @@
+﻿button::-moz-focus-inner {border:none}
+
+* {
+	outline:0;
+	box-sizing: border-box;
+	background:none;
+	font-family: Segoe UI,Trebuchet MS,Tahoma,sans-serif;
+}
+
+code, samp, output {
+	font-family:Consolas,Courier New,monospace;
+}
+
+
+
+
+
+
+a.link {
+	margin: 5px;
+	color: rgb(47, 47, 180);
+	text-shadow: 0px 0px 3px white;
+	cursor: url('/cursors/Link Select.cur'),pointer !important;
+}
+
+
+
+
+.form-control {
+	background: white;
+	border: 2px inset lightgray;
+	font-size:inherit
+}
+.form-control:disabled:focus,.form-control.disabled:focus,.form-control[readonly]:focus {
+	background:lightgray;
+	color:grey;
+}
+
+
+content {
+	width:100%;
+	display:block;
+	height:100%;
+	overflow:hidden;
+}
+
+
+.abtn {
+	border: 2px outset rgb(211, 211, 211);
+background: rgb(211, 211, 211);
+min-width: 75px;
+padding: 2px;
+font-size: inherit;
+display: inline-block;
+text-align: center;
+}
+.abtn:disabled {
+	color:grey !important;
+	pointer-events:none !important;
+}
+.abtn.disabled {
+	pointer-events: none;
+	color: grey;
+}
+.abtn:active,.abtn.activebtn {
+	outline: 2px inset lightgray;
+	background: #AAAAAA;
+}
+
+
+
+.menubutton {
+	background: none;
+	border: 2px solid transparent;
+	padding: 2px;
+	min-width: 50px;
+	margin-right: 1px;
+}
+.menubutton.open {
+	background:#AAAAAA;
+	border: 2px outset lightgray;
+}
+
+.menu {
+position: absolute;
+min-width: 130px;
+max-width: 200px;
+z-index: 2000;
+background: lightgray;
+border: 2px outset lightgray;
+}
+.menu button {
+width: 100%;
+text-align: left;
+padding: 2px 26px 2px;
+}
+
+.menu button:hover:not(:disabled) {
+	background-color: darkblue;
+	color: white;
+}
+.menu button:disabled img {
+	filter: grayscale(100%);
+}
+.menu button:disabled {
+	color:grey !important;
+}
+.menu vert-bar {
+width: 1px;
+display: inline-block;
+height: 100%;
+position: absolute;
+top: 0px;
+border-right: 1px solid grey;
+left: 22px;
+z-index: -1;
+}
+.menu divider {
+height: 1px;
+border-bottom: 1px solid grey;
+margin: 3px 0px 5px;
+width: calc(100% - 22px);
+float: right;
+}
+.menu over {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+}
+.menu img {
+	position: relative;
+	left: -27px;
+	vertical-align: bottom;
+	margin-right: -20px;
+}

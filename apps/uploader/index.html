@@ -1,0 +1,187 @@
+<div class="file-uploader-body">
+        <div translate>Upload your files here. Note, that you can't upload a file, which size is bigger than 15
+            Megabytes because of disk space limits.
+        </div>
+    <form id="my-form" method="post" action="/server/action.php" enctype="application/x-www-form-urlencoded">
+        <br>
+
+        <div>
+            <label translate>Link to uploadable files:</label>
+            <input multiple name="image[]" id="image" type="file"><br>
+        </div>
+
+        <div>
+            <label translate>Uploading files into</label>
+            <input name="path" class="form-control" value="/Documents">
+        </div>
+
+        <div>
+            <label translate>If exists:</label>
+            <select class="form-control" name="overwrite">
+                <option selected value="yes" translate>Overwrite</option>
+                <option value="no" translate>Add Suffix</option>
+            </select>
+        </div>
+    </form>
+    <footer>
+        <progress max="100" value="0"></progress>
+        <label class="progress-label error hide">При загрузке файла произошла ошибка.</label>
+        <label class="progress-label loading hide">Идет загрузка...</label>
+        <label class="progress-label success hide">Файл загружен успешно.</label>
+        <button id="upload" form="my-form" class="abtn active" disabled translate>Upload</button>
+    </footer>
+</div>
+<style>
+    footer {
+        padding: 1em;
+        text-align: right;
+        background: lightgrey;
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+    }
+    #selectFile {
+        width: 100px;
+        height: 26px;
+        margin-left: -100px;
+    }
+    fieldset input {
+        flex-grow: 2;
+    }
+    form div {
+        display: flex;    margin-bottom: 10px;
+    }
+    form input {flex-grow:2}
+
+    div label {
+        width: 160px;
+        line-height: 22px;
+        height: 22px;
+    }
+
+    form {
+        margin: 0;
+    }
+
+    .file-uploader-body {
+        background-color: #fff;
+        font-size:9pt;
+        padding: 1em;
+    }
+
+    option:empty {
+        display: none;
+    }
+
+    .hide {
+        display: none !important
+    }
+
+    progress {
+        color: green;
+        background: white;
+        border: 1px solid grey;
+        height: 20px;
+        float: left;
+        width: 300px;
+        margin: 2px;
+    }
+
+    .progress-label {
+        display: inline-block;
+        position: absolute;
+        left: 15px;
+        top: 15px;
+        color: white;
+        width: 298px;
+        height: 18px;
+        text-align: center;
+    }
+
+    .progress-label.success {
+        background: green;
+    }
+
+    .progress-label.error {
+        background: red;
+    }
+
+    .progress-label.loading {
+        background: transparent;
+    }
+
+    .locked#my-form * {
+        color: grey;
+        border-color: grey;
+        pointer-events: none;
+    }
+</style>
+<script>
+    var API;
+    $(function () {
+        $("[name=token]").val(parent.token);
+        $("input:file").on({
+            mousedown: function() {
+                $('#selectFile').addClass('activebtn')
+            },
+            mouseover: function() {
+                $('#selectFile').addClass('hover')
+            },
+            mouseout: function() {
+                $('#selectFile').removeClass('hover').removeClass('activebtn')
+            },
+            change: function() {
+                $('#fileURL').val($(this).val()); $('#upload').prop('disabled',false);
+            }
+        });
+        API = new API(window, 'uploader', 'Upload files...', 'upload_for_cloud', 1101, 500, 245);
+        $("#upload").click(function (e) {
+            e.preventDefault();
+            $("#my-form").addClass("locked");
+            $("#upload").attr("disabled", "disabled");
+            var $upload = new FormData($('form')[0]);
+            var progressBar = $("progress")[0];
+            $upload.append("action","store");
+            $upload.append("token",parent.token);
+            $(".progress-label.success").addClass("hide");
+            $(".progress-label.error").addClass("hide");
+            $(".progress-label.loading").removeClass("hide");
+            $.ajax({
+                url: '/server/action.php',
+                type: 'POST',
+                data: $upload,
+                cache: false,
+                contentType: false,
+                processData: false,
+                xhr: function() {
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) {
+                        // For handling the progress of the upload
+                        myXhr.upload.addEventListener('progress', function(e) {
+                            if (e.lengthComputable) {
+                                progressBar.value = (e.loaded / e.total) * 100;
+                                progressBar.textContent = progressBar.value;
+                            }
+                        } , false);
+                    }
+                    return myXhr;
+                },
+                success: function() {
+                    $(".progress-label.success").removeClass("hide");
+                    $(".progress-label.error").addClass("hide");
+                    $(".progress-label.loading").addClass("hide");
+                    $("#my-form").removeClass("locked");
+                    $("#upload").removeAttr("disabled");
+                },
+                error: function() {
+                    $(".progress-label.success").addClass("hide");
+                    $(".progress-label.error").removeClass("hide");
+                    $(".progress-label.loading").addClass("hide");
+
+                }
+            });
+        });
+    });
+
+</script>

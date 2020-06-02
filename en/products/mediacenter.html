@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OnlineStor™ Mobile</title>
+    <link href="/libs/img/favicon.ico" rel="shortcut icon">
+    <link href="/libs/img/favicon.ico" rel="icon">
+    <link href="/libs/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {position: relative;}
+        .container #promo {width:100%;}
+
+        .container #promoheader {text-align:center;}
+        .container #promoheader h1 {
+            font-size: 26px;
+            font-weight: 100;
+        }
+        .container #promoheader i.lead {
+            font-size: 16px;
+            font-weight: 100;
+        }
+    </style>
+</head>
+
+<body>
+<nav class="navbar navbar-default navbar-static-top" style="margin:0;">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand active" href="/en" ><img height="20" src="/libs/img/logoLong.png" style="display: inline-block;"><a href="/" style="vertical-align: sub;font-size: 12px;color: darkgreen;">русский</a></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Projects <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/en/products/desktop">OnlineStor™ Desktop</a></li>
+                        <li><a href="/en/products/mobile">OnlineStor™ Mobile</a></li>
+                        <li class="active"><a href="/en/products/mediacenter">OnlineStor™ Media Center</a></li>
+                    </ul>
+                </li>
+                <li><a href="/en/news">News</a></li>
+                <li><a href="/support">Support (rus)</a></li>
+            </ul>
+            <div class="navbar-right">    
+                <?php if(!empty($_SESSION['token'])) { $url = "http://onlinestor.net/server/action.php"; $post_data = array("action" => "getsid","token" => $_SESSION['token']);$ch = curl_init();curl_setopt($ch, CURLOPT_URL, $url);curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);curl_setopt($ch, CURLOPT_POST, 1);curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);$output = curl_exec($ch);curl_close($ch);if(strpos($output,"failed") > -1) {header("Location: http://onlinestor.net/desktop/?action=logout");exit();}echo '<p class="navbar-text">Hello, ' . $output . '</p> &nbsp;&nbsp;<a href="/redirect" class="navbar-btn btn btn-info">Enter WebTop</a>&nbsp;&nbsp;<a href="/desktop?action=logout" class="navbar-btn btn btn-danger">Log out</a>';} else echo '<a href="/en/register" class="navbar-btn btn btn-success">Register</a> <a href="/en/login" class="navbar-btn btn btn-primary">Log In</a>';?>
+
+            </div>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="container">
+    <div>
+        <img id="promo" src="/libs/img/big3.png">
+        <div id="promoheader">
+            <h1>Your Smart TV became more smart</h1>
+            <i class="lead">With a new OnlineStor™ application</i>
+        </div>
+    </div>
+    <br>
+    <hr>
+    <h3 style="text-align: right;">Easy and practical<br><small>Specially developed type of Webtop will make your experience from the sofa more comfortable than earlier...
+        </small>
+    <br><hr>
+    <h3>Modern theme<br><small>
+        Metro UI CSS provided our Webtop Windows 8 look and experience, so that it would be easy to control it using your remote.
+    </small>
+    <br><hr>
+    <h3 style="text-align: right;">Like on Desktop<br><small>
+        Most apps are optimized for working in this type of laptop, so you won't forget about a meeting watching a movie.
+        </small><hr>
+</div>
+<script src="/libs/js/jquery.min.js"></script>
+<script src="/libs/js/bootstrap.min.js"></script>
+<nav class="navbar navbar-default hidden-xs navbar-static-bottom" style="margin:0;">
+    <div class="container">
+        <div class="navbar-header" style="width: 100%;    margin-left: 0;">
+            <!-- HotLog -->
+            <span id="hotlog_counter" style="margin: 10px;display: inline-block;"></span>
+            <span id="hotlog_dyn"><script src='https://js.hotlog.ru/dcounter/2541598.js' async></script></span>
+            <div class="navbar-text pull-right">©2014-2017 OnlineStor™. All rights reserved by a <a href="/license">Creative Commons</a> license.</div>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

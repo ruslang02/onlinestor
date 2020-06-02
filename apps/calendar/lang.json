@@ -1,0 +1,15 @@
+{
+  "ru":{
+    "Calendar":"Календарь",
+    "New event":"Новое...",
+    "Events List":"Все события",
+    "Loading...":"Загрузка...",
+    "View event":"Просмотр события",
+    "Name:":"Название:",
+    "Description:":"Описание:",
+    "Date:":"Дата:",
+    "Welcome to Calendar":"Добро пожаловать в Календарь",
+    "Calendar has been updated. We've changed interface and the way it works in a whole.":"Мы обновили Календарь, изменили интерфейс и изменил его работу в целом.",
+    "Open Google Maps":"Открыть карту"
+  }
+}

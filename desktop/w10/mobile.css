@@ -1,0 +1,187 @@
+body.mobile .menu {
+	padding:0;
+}
+body:not(.mobile) .mobileonly {
+	display:none;
+}
+body.mobile .mobileonly {
+	display:initial;
+}
+body.mobile .desktoponly {
+	display:none;
+}
+body.mobile .mobilemenu {
+	width: 100%;
+	height: 35px;
+	padding:2px;
+	color: white;
+	font-size: 16px;
+	padding-left: 20px;
+	font-weight: 400;
+	display: inline-block;
+}
+body.mobile button.mobilemenu {
+	padding-left: 2px;
+}
+body.mobile .mobilemenu h3 {
+	font-size: 18px;
+	display: inline-block;
+	margin: 4px;
+	font-weight: 300;
+}
+body:not(.mobile) h3 {display:none;}
+body.mobile .menu button {
+	border-radius: 0px;
+	border: 0px none;
+	padding: 5px;
+}
+body.mobile .window {
+	padding:0;
+	width:100% !important;
+	height: calc(100% - 40px) !important;
+	bottom: auto;
+}
+body.mobile * {
+	font-family: 'Roboto', sans-serif;font-size:14px;
+}
+body.mobile {
+	height:100vh;
+	width:100vw;
+	overflow:hidden;
+}
+body.mobile .window .up {
+	display:none;
+}
+body.mobile .window .body {
+	height:100%;
+}
+body.mobile .window{
+	box-shadow:none !important;
+}
+body.mobile .window .theme {
+	position:fixed;
+	bottom:0;
+	left:0;
+	width:100%;
+	height: 40px;
+	z-index:100;
+	display:inline-block;
+	content:" ";
+	background:white;
+}
+body.mobile .window .ui-resizable-handle {display:none;}
+
+body.mobile .allapps {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	color: white;
+	padding: 1em;
+	overflow: auto;
+	z-index:1000;
+	background-image: url('/images/img1.jpg');
+	background-size: cover;
+	box-shadow: 0px 0px 0px 100vw rgba(0, 0, 0, 0.52) inset;
+}
+body.mobile .window .mobilemenu.hide {
+	display: inline-block !important;
+	position: absolute;
+	right: 40px;
+	min-width: 0px;
+	width: 30px;
+	height: 30px;
+	margin: 1px;
+	z-index: 1000;
+	display: inline-block;
+}
+body.mobile .allapps button {
+	border:1px solid transparent;
+	font-size: inherit !important;
+}
+body.mobile .desk {
+	position: absolute;
+	bottom: 40px;
+	height: auto;
+}
+body.mobile > .clock {
+	color: #aaa;
+	font-size: 1.5em !important;
+	text-align: center;
+	pointer-events: none;
+}
+body.mobile > .clock:first-line {
+	color: white;
+	font-size: 60pt !important;
+	font-weight:100;
+	text-align: center;
+	pointer-events: none;
+}
+body.mobile .wintasks {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	z-index:1000;
+	background-image: url('/images/img1.jpg');
+	background-size: cover;
+	box-shadow: 0px 0px 0px 100vw rgba(0, 0, 0, 0.52) inset;
+	padding:0 1em;
+}
+body.mobile .window > .abtn.hide {
+	display:inline-block;
+	position: absolute;
+	right: 0px;
+	min-width: 0px;
+	width: 30px;
+	height: 30px;
+	margin: 3px;
+	z-index:1000;
+}
+body.mobile .window > .abtn.hide > span{
+	font-size: 19px;
+	margin: -3px 0px 0px;
+	font-weight: 900;
+	display: inline-block;
+}
+body.mobile .wintasks button {
+	width: 100%;
+	text-align: left;
+	padding: 10px;
+	margin:2em 0;
+}
+body.mobile img {
+	vertical-align:middle;
+}
+body.mobile .menu button {
+	font-size: 16px;
+}
+body.mobile #taskbar .navbar-btn:active,body.mobile #taskbar .navbar-btn:focus,body.mobile #taskbar .navbar-btn:hover,body.mobile .desk button:active, body.mobile .desk button:focus,body.mobile .desk button:hover,body.mobile .allapps button:active,body.mobile .allapps button:hover,body.mobile .allapps button:focus {
+	border: 1px solid transparent !important;
+	background: none !important;
+	filter:brightness(70%);
+	-moz-filter:brightness(70%);
+	-webkit-filter:brightness(70%);
+	-ie-filter:brightness(70%);
+	-o-filter:brightness(70%);
+}
+body.mobile .desk span {
+	font-size:auto !important;
+}
+body.mobile #taskbar {
+	background: none;
+}
+body.mobile .form-control {
+	border:0px;
+	border-bottom:2px solid lightgrey;
+}
+body.mobile .form-control:focus {
+	outline: none;
+	border-bottom: 2px solid dodgerblue;
+}
+body.mobile .form-control[disabled]:focus {
+	outline: none;
+	border-bottom: 2px solid orange;
+}

@@ -1,0 +1,729 @@
+
+<!--suppress ALL -->
+<script src="https://apis.google.com/js/client.js?onload=gcheckAuth"></script>
+
+<content class="file-body">
+	<div class="file-loader" style="position:absolute;width:100%;height:100%;z-index:100;background:rgba(255,255,255,0.4)">
+		<div class="cssload-thecube">
+			<div class="cssload-cube cssload-c1"></div>
+			<div class="cssload-cube cssload-c2"></div>
+			<div class="cssload-cube cssload-c4"></div>
+			<div class="cssload-cube cssload-c3"></div>
+		</div>
+	</div>
+	<nav>
+		<button class="inactive file-nav-button back" onclick="goBack()" disabled>
+			<i class="material-icons">chevron_left</i>
+		</button>
+
+		<button class="inactive file-nav-button forward" onclick="goForward()" disabled>
+			<i class="material-icons">chevron_right</i>
+		</button>
+		<div class="file-directory text-center">This Web Desktop </div>
+		<button class="file-nav-button" onclick="parent.hideWindow(API.ID)">
+			<i class="material-icons">expand_more</i>
+		</button>
+		<button class="file-nav-button" onclick="parent.fullWindow(API.ID)">
+			<i class="material-icons">expand_less</i>
+		</button>
+		<button class="file-nav-button" onclick="parent.closeWindow(API.ID)">
+			<i class="material-icons">close</i>
+		</button>
+	</nav>
+	<div class="body-container">
+		<section class="right-bar" sortby="list">
+            <b transalte>Locations</b>
+			<button class="btn-file folder list-style" onclick='navigateTo("/Desktop",true);'><i class="material-icons">desktop_windows</i><span class="name" translate>Desktop</span></button>
+			<br>
+			<button class="btn-file folder list-style" onclick='navigateTo("",true);'><i class="material-icons">cloud</i><span class="name" translate>My Cloud</span></button>
+			<div style="padding-left:10px;">
+				<button class="btn-file folder list-style" onclick='navigateTo("/Videos",true);'><i class="material-icons">local_movies</i><span class="name" translate>Videos</span></button>
+				<button class="btn-file folder list-style" onclick='navigateTo("/Documents",true);'><i class="material-icons">content_copy</i><span class="name" translate>Documents</span></button>
+				<button class="btn-file folder list-style" onclick='navigateTo("/Pictures",true);'><i class="material-icons">crop_original</i><span class="name" translate>Pictures</span></button>
+				<button class="btn-file folder list-style" onclick='navigateTo("/Music",true);'><i class="material-icons">music_note</i><span class="name" translate>Music</span></button>
+			</div>
+			<button class="btn-file folder list-style" id="authorize-button" onclick='ghandleAuthClick(event)'><span class="name" translate>Google Drive</span></button>
+			<button class="btn-file folder list-style" id="dauthorize-button" onclick='dhandleAuthClick(event)'><span class="name" translate>Dropbox</span></button>
+		</section>
+		<div class="file-container" sortby="bigtiles">
+		</div>
+	</div>
+	<div class="menu hide" id="filemenu">
+		<vert-bar></vert-bar>
+		<button type="button" class="list-group-item" id="fileopen"><b translate>Open</b></button>
+		<button type="button" class="list-group-item" action="openwith" translate>Open With...</button>
+		<divider></divider>
+		<button type="button" class="list-group-item" action="cut" translate>Cut</button>
+		<button type="button" class="list-group-item" action="copy" translate>Copy</button>
+		<button type="button" class="list-group-item" action="paste" translate>Paste</button>
+		<button type="button" class="list-group-item" action="delete" translate>Delete</button>
+		<over onclick="$(this).parent('.menu').addClass('hide');"></over>
+	</div>
+	<div class="menu hide" id="normalmenu">
+		<vert-bar></vert-bar>
+		<button type="button" id="viewbutton" onmouseout="$('#viewmenu').addClass('hide')" onmouseover="$('#viewmenu').removeClass('hide')" class="list-group-item">
+			Вид ->
+
+		</button>
+		<button type="button" class="list-group-item" onclick='navigate($(".file-directory").get(0).value);'><img src="/icons/small/arrow_refresh.png"><span translate>Refresh</span></button>
+		<button type="button" disabled class="list-group-item" action="paste"><img src="/icons/small/clipboard_empty.png"><b translate>Paste</b></button>
+
+		<divider></divider>
+		<button type="button" onclick="API.Open('uploader')" class="list-group-item"><img src="/icons/small/page_white_get.png"><span translate>Upload Files...</button>
+		<over onmouseover="$('#viewmenu').addClass('hide')" onclick="$(this).parent('.menu').addClass('hide');"></over>
+		<div class="menu hide" onmouseout="$('#viewmenu').addClass('hide')" onmouseover="$('#viewmenu').removeClass('hide')" style="transform: translate(125px, -108px);position: fixed;" id="viewmenu">
+			<vert-bar></vert-bar>
+			<button type="button" class="list-group-item" onclick="$('#normalmenu').addClass('hide');$('#viewmenu').addClass('hide'); $('.file-container').attr('sortby','bigtile');navigate($('.file-directory').get(0).value);" translate>Big Tiles</button>
+			<button type="button" class="list-group-item" onclick="$('#normalmenu').addClass('hide');$('#viewmenu').addClass('hide'); $('.file-container').attr('sortby','smalltile');navigate($('.file-directory').get(0).value);" translate>Small Tiles</button>
+			<button type="button" class="list-group-item" onclick="$('#normalmenu').addClass('hide');$('#viewmenu').addClass('hide'); $('.file-container').attr('sortby','list');navigate($('.file-directory').get(0).value);" translate>List</button>
+		</div>
+
+	</div>
+	<div class="bottom-bar hide">
+		<div class="input-group mode">
+			<input class="form-control" oninput="fileChanged()" readonly id="oFD-file" type="text">
+			<select class="form-control" id="oFD-ext">
+				<option value="." translate>All Files (*.*)</option>;navigate($('.file-directory').get(0).value);
+			</select>
+		</div>
+		<span class="pull-right">
+			<button id="closeButton" onclick="API.Close()" class="abtn" translate>Cancel</button>
+			<button id="choose" disabled class="abtn active" translate>Select</button>
+		</span>
+	</div>
+	<style>
+		_:-moz-tree-row(hover), .body-container {
+			height:0
+		}
+		.file-body > nav {
+			min-height: 29px;
+			display: flex;
+			border-width: 0 0 1px 0;
+			border-color: grey;
+			border-style: solid;
+		}
+		.file-body {background:white;
+    display: flex;
+    flex-direction: column;
+		}
+        button {border:none}
+		.bottom-bar {
+			padding: 10px;
+		}
+		.file-body .input-group {
+			margin-bottom: 10px;
+			display:flex;padding:2px;
+		}
+		.file-body .nomode #ofd-ext {
+			display:none;
+		}
+		.file-body .mode #oFD-file {
+			flex-grow: 2;
+		}
+		.file-body .mode #oFD-ext {
+			width: 150px;
+padding: 2px;
+margin-left: 5px;
+		}
+		.file-body .file-directory {
+			flex-grow: 2;
+			padding: 4px 0;
+			font-size: small;
+            text-align:center;
+		}
+		.file-body .file-nav-button {
+			    padding: 0px 6px;
+    overflow: hidden;
+    text-align: left;
+    color: black;
+    border: none;
+		}
+
+		.file-body .file-nav-button.inactive {
+			display:none;
+		}
+		.file-body .file-nav-button:not(.inactive):hover {
+			color:#666
+		}
+		.file-body .file-nav-button:not(.inactive):active {
+			color:black;
+		}
+		.file-body .file-nav-button i.fa {
+			font-size: 14px;
+		}
+		.file-body #filemenu,#normalmenu {
+			position:fixed;
+		}
+		.file-body .body-container {
+			display: flex;
+			flex-grow: 2;
+		}
+		.file-body .file-container {    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-flow: wrap;
+    align-content: flex-start;
+    background:white;
+    border-width: 1px 0px 0 1px;
+    border-color: grey;
+    border-style: solid;
+    flex-grow: 2;
+		}
+		.file-body files {
+			padding: 5px;
+			overflow: auto;
+		}
+		.file-body .right-bar {
+			min-width: 150px;
+			border-right: 1px solid grey;
+			width: 33%;
+		}
+		/* List styles */
+		/* Tiles */
+		.file-body .btn-file .size {display:none}
+		.file-body files:empty:before {
+			content: "Нет элементов";
+			color: gray;
+			text-align: center;
+			display: block;
+			padding: 0.5em;
+		}
+
+
+		/* List */
+
+		.file-body [sortby=list] button {
+            padding:5px;border:none;width:100%;
+		}
+		.file-body [sortby=list] button:hover,.file-body [sortby=list] button:focus {border:none;background:rgba(0,0,0,0.15)}
+		.file-body [sortby=list] button:active {box-shadow:inset 0px 0px 8px -3px;}
+		.file-body [sortby=list] .size {display:block}
+		.file-body .file-container button.btn-active,
+        .file-body .file-container button:active,
+        .file-body .file-container button:focus{
+			filter: brightness(80%) !important;
+		}
+		button.list-style:hover {filter: brightness(120%);}
+		.file-body [sortby=list] button .name {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			font-size: 14px;
+		}
+		.file-body [sortby=list] button .descr {
+			color:grey;
+		}
+		.file-body .right-bar .list-style {
+			display:block;
+            text-align:left;
+		}
+
+
+	</style>
+	<script>
+        var API;
+        var clipboard;
+        var clipAction;
+        var path = $(".file-directory").val();
+        var directory;
+        var fileExt;
+        var exHistory = [path];
+        var currentHistory = 0;
+        var action;
+        var mode;
+        var file;
+        var CLIENT_ID = '298931091939-ujjbhnk7355hiaopnfbl0ijoumqg54k6.apps.googleusercontent.com';
+        var SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly','https://www.googleapis.com/auth/drive','https://www.googleapis.com/auth/drive.file','https://www.googleapis.com/auth/drive.appdata'];
+        $(function() {
+            API = new API(window,"filemanager","File Manager","folder_stand",111,true,true,true,true);
+            API.thisWindow.find(".up").css({
+                "width": 'calc(100% - 175px)',
+                "left": "70px"
+            })
+            action = API.getArgument("action");
+            mode = API.getArgument("mode");
+            file = API.getArgument("file");
+            file_init();
+            if (action) {
+                $(".file-body div.bottom-bar").append('<span style="position: fixed;top: 0px;left: 0px;width: 100%;height: 100%;z-index: -1;background: rgba(0, 0, 0, 0.35);"></span>');
+                $(".bottom-bar").removeClass("hide");
+                if (action == "save") {
+                    $("button#choose").on({
+                        click: function () {
+                            if ($(".file-body .bottom-bar #oFD-file").get(0).value.trim() == $(".btn-active .name").text().trim()) {
+                                API.Open("filemanager/replace");
+                            } else {
+                                saveFile();
+                            }
+                        }
+                    });
+                    $(".file-body div.bottom-bar input").removeAttr("readonly");
+                }
+                if (action == "open") {
+                    $("button#choose").click(function () {
+                        var file = directory + "/" + $(".file-body #oFD-file").get(0).value;
+                        $(API.thisWindow).parent("body").find("#" + API.getArgument("window")).find("iframe").contents().find("body").find(API.getArgument("element")).val(file).change().trigger("change");
+                        API.Close();
+                    });
+                    $(".bottom-bar .input-group").removeClass("nomode");
+                    $(".bottom-bar .input-group").addClass("mode");
+                    mode = mode.split(";");
+                    mode.forEach(function (item, i, arr) {
+                        var itemExt = item.slice(item.lastIndexOf(".") + 1, -1);
+                        $(".file-body .bottom-bar select#oFD-ext").append("<option value='" + itemExt + "'>" + item + "</option>");
+                    });
+                }
+            }
+
+            navigateTo("",true);
+            try {if(API.getArgument("path") != undefined) navigateTo(API.getArgument("path"),true)} catch(e) {}
+        });
+     function fileChanged() {
+         if ($(".file-body .bottom-bar input").val().trim() == "") { $("#choose").attr("disabled", "disabled") } else { $("#choose").removeAttr("disabled") }
+     }
+     function saveFile() {
+         API.Server("write", {path: directory + "/" + $(".file-body #oFD-file").get(0).value, arg: file });
+         API.Close();
+     }
+     function file_init() {
+		 $("[action=paste]").bind("click", function () {
+             if (clipboard) {
+                 API.Server("copy", {path: clipboard, path2: $(".file-directory").get(0).value }, function () {
+                     if (clipAction == "cut") {
+                         API.Server("delete", {path: clipboard });
+                     }
+                     setTimeout('navigate($(".file-directory").get(0).value)', 500);
+                 });
+             }
+         });
+
+         $(".file-body .bottom-bar select").change(function () {
+             $(".file-body .bottom-bar select option:selected").each(function () {
+                 fileExt = $(this).val();
+                 navigate($(".file-directory").get(0).value);
+             });
+         });
+         $(".file-body [action=exit]").click(API.Close);
+         $(".file-container files").attr("tabindex", "0").click(unsel).contextmenu(function (e) {
+             e.preventDefault();
+             $(".file-body #normalmenu").removeClass("hide").css("top", e.pageY + 1).css("left", e.pageX + 1);
+             if (clipboard) $(".file-body #normalmenu [action=paste]").prop("disabled", false); else $(".file-body #normalmenu [action=paste]").prop("disabled", true);
+         });
+         $(".file-container files  .folder").on({
+             click: function (e) {
+                 e.stopImmediatePropagation();
+                 selFile($(this));
+                 $(".file-body files .list-style").removeClass("btn-active");
+                 $(this).addClass("btn-active");
+                 makeTheMenu($(".file-directory").val() + "/" + $(this).children(".name").text().trim(), false);
+             }, contextmenu: function (event) {
+                 event.stopImmediatePropagation();
+                 event.preventDefault();
+                 API.ToggleMenu(this,"filemenu",{left: event.pageX, top: event.pageY});
+                 $(".file-body .menu #fileopen").off().on({
+                     click: function () {
+                         var name = thiss.children(".name").text();
+                         parent.startApp(name);
+                     }
+                 }).removeClass("hide");
+             }
+         });
+         $(".file-container files  .file").on({
+             mousedown: function (e) {
+                 e.stopImmediatePropagation();
+                 selFile($(this));
+                 $(".file-body .list-style").removeClass("btn-active");
+                 $(this).addClass("btn-active");
+                 makeTheMenu($(".file-directory").val() + "/" + $(this).children(".name").text().trim(), false);
+             },
+             click: function (e) { e.stopPropagation(); },
+             dblclick: function (e) {
+                 e.stopImmediatePropagation();
+                 e.preventDefault();
+                 var name = directory + "/" + $(this).children(".name").text();
+                 if (mode == "google") gopenFile(".btn-active");
+                 else if (!action) parent.startApp(name);
+             }, contextmenu: function (event) {
+                 event.stopImmediatePropagation();
+                 event.preventDefault();
+                 API.ToggleMenu(this,"filemenu",{left: event.pageX, top: event.pageY});
+                 $(".file-body .menu #fileopen").off().on({
+                     click: function () {
+                         var name = thiss.children(".name").text();
+                         parent.startApp(name);
+                     }
+                 });
+             }
+         });
+         $(".file-container files .folder").one({
+             dblclick: function () {
+                 navigateTo($(this).children(".name").text(), false);
+             },
+			 contextmenu: function(event) {event.stopImmediatePropagation();}
+         });
+     }
+     function navigate(where) {
+         mode = "files";
+         $(".file-body .file-loader").show();
+         API.Server("listFiles", { path: where, ext: fileExt }, function (a, b, c) {
+             $(".file-container *").remove();
+             $(".file-directory").val(where);
+             directory = where;
+             var json = $.parseJSON(a);
+             $(".file-container").append("<files></files>");
+             json.forEach(function(item) {
+                 if(item.type == "folder") $(".file-container files").append("<button class='list-style folder'><img src='//png.icons8.com/folder/color/48'><div class='name'>" + item.name + "</div></button>");
+                 if(item.type == "file") $(".file-container files").append("<button class='list-style file'><img src='//png.icons8.com/" + item.extension + "/color/48'><div class='name'>" + item.name + "</div></button>");
+
+             });
+             file_init();
+             unsel();
+             $(".file-body .file-loader").hide();
+             directory = directory.replace("///", "/").replace("//", "/");
+             $(".file-body .file-directory").text(directory);
+         });
+     }
+     function navigateTo(elem, absolute) {
+         var name = elem;
+         if (absolute) {
+             var startPath = "";
+         } else {
+             var startPath = $(".file-directory").val();
+         }
+         navigate(startPath + "/" + name);
+         currentHistory = currentHistory + 1;
+         exHistory.length = currentHistory + 1;
+         exHistory[currentHistory] = startPath + "/" + name;
+         $(".file-body .back").removeClass("inactive");
+         $(".file-body .back").removeAttr("disabled");
+         $(".file-body .forward").attr("disabled", "disabled");
+         $(".file-body .forward").addClass("disabled");
+     }
+     function fileError(elem) {
+         $(this).get(0).src = "/icons/big/page_white.png";
+     }
+
+     function goBack() {
+         currentHistory = currentHistory - 1;
+         navigate(exHistory[currentHistory]);
+         $(".file-body .forward").removeClass("inactive");
+         $(".file-body .forward").removeAttr("disabled");
+         if (currentHistory != -1) {
+             $(".file-body .back").addClass("inactive");
+             $(".file-body .back").attr("disabled", "disabled");
+         }
+     }
+
+     function selFile(elem) {
+         $(".file-body files .file").removeClass("btn-active");
+         elem.addClass("btn-active");
+         if (elem.hasClass("file")) {
+             $(".file-body button#choose").removeClass("disabled");
+             $(".file-body button#choose").removeAttr("disabled");
+             $(".file-body #oFD-file").val(elem.children(".name").text());
+             if (action == "open") {
+                 $(".file-body button#choose").off();
+                 $(".file-body button#choose").on({
+                     click: function () {
+                         $(API.thisWindow).parent("body").find("#" + API.getArgument("window")).find("iframe").contents().find("body").find(API.getArgument("element")).val(directory + "/" + $("#oFD-file").get(0).value).trigger("change").change();
+                         API.Close();
+                     }
+                 });
+             }
+         } else {
+             $(".file-body button#choose").attr("disabled", "disabled");
+         }
+         $("[data-for='file']").removeClass("hide");
+     }
+     function unsel() {
+         $("[data-for='file']").addClass("hide");
+         $(".file-body files *").removeClass("btn-active");
+         if (clipboard) {
+             $(".file-body [action=paste]").prop("disabled", false);
+         } else {
+             $(".file-body [action=paste]").prop("disabled", true);
+         }
+         $(".file-body button#choose").click(function (e) {
+         });
+     }
+     function goForward() {
+         currentHistory = currentHistory + 1;
+         navigate(exHistory[currentHistory]);
+         $(".file-body .back").removeClass("inactive");
+         $(".file-body .back").removeAttr("disabled");
+         if (currentHistory == exHistory.length - 1) {
+             $(".file-body .forward").addClass("inactive");
+             $(".file-body .forward").attr("disabled", "disabled");
+         }
+     }
+     function newFile() {
+         $(".file-body files").append('<button class="btn-file"><img src="/icons/big/page_white.png"><input type="text" style="display:block;text-align:center;" value="Новый файл" name="fileName"></button>');
+         $(".file-body .overflow").show();
+         $(".file-body [name='fileName']").focus();
+         $(".file-body [name='fileName']").select();
+         $(".overflow").on({
+             click: function () {
+                 var name = $(".file-body *[name='fileName']").get(0).value;
+                 $(".file-body [name='fileName']").remove();
+                 $(".file-container .btn-file:last-child").append("<span class='name'>" + name + "</span>");
+                 create($(".file-directory").val() + "/" + name);
+                 $(".overflow").hide();
+             }
+         });
+     }
+     function newFolder() {
+         $(".file-body files").append('<button class="list-style btn-file folder"><img src="/icons/big/folder.png"><input class="form-control" style="display: block; text-align: center; width: 100%;" value="New Folder" name="fileName" type="text"></button>');
+         $(".overflow").show();
+         $(".file-body [name='fileName']").focus();
+         $(".file-body [name='fileName']").select();
+         $(".overflow").on({
+             click: function () {
+                 var name = $(".file-body [name='fileName']").val();
+                 console.log(name);
+                 $(".file-body [name='fileName']").remove();
+                 $(".file-container .btn-file:last-child").append("<span class='name'>" + name + "</span>");
+                 create($(".file-directory").val() + "/" + name);
+                 $(".overflow").hide();
+             }
+         });
+     }
+     function makeTheMenu(file, multiple) {
+         if (multiple) {
+             $(".file-body [action=delete]").bind("click", function () {
+                 deleteFiles($(".btn-active"));
+             });
+         } else {
+             $(".file-body #fileactions * ").unbind();
+             $(".file-body [action]").unbind();
+             $(".file-body [action=delete]").bind("click", function () {
+                 if(mode == "google")
+                     gapi.client.drive.files.delete({
+                         'fileId': $(".btn-active").attr("data-file-id")
+                     }).execute(glistFiles);
+                 else deleteFiles(file);
+             });
+             if(mode == "google")
+                 $("[action=copy],[action=cut],[action=paste],[action=openwith]").hide();
+			 else $("[action=copy],[action=cut],[action=paste],[action=openwith]").show();
+             $(".file-body [action=copy]").bind("click", function () {
+                 clipboard = file;
+                 clipAction = "copy";
+             });
+             $(".file-body [action=open]").bind("click", function () {
+                 if(mode == "google")
+                     gopenFile(".btn-active");
+                 else if (file.indexOf(".") != -1) {
+                     parent.startApp(file);
+                 } else {
+                     navigate(file);
+                     currentHistory = currentHistory + 1;
+                     exHistory[currentHistory] = file;
+                     $(".file-body .back").removeClass("inactive");
+                     $(".file-body .back").removeAttr("disabled");
+                 }
+             });
+             $(".file-body [action=share]").bind("click", function (e) {
+                 e.stopImmediatePropagation();
+             });
+             $(".file-body [action=props]").bind("click", function () {
+                 API.Open("fileProperties", { file: file });
+             });
+             $(".file-body [action=rename]").bind("click", function () {
+                 API.Open("filemanager/rename", {
+                     shortname: file.substring(file.lastIndexOf("/") + 1),
+                     name: file,
+                     dir: directory
+                 });
+             });
+             $(".file-body [action=cut]").bind("click", function () {
+                 clipboard = file;
+                 clipAction = "cut";
+                 $(".file-body .btn-file img").css("opacity", "1");
+                 $(".file-body .btn-active img").css("opacity", "0.5");
+             });
+             $(".file-body [action=openwith]").bind("click", function () {
+                 API.Open("openwith", { file: file });
+             });
+
+         }
+     }
+     function deleteFiles(files) {
+         API.Server("delete",{ path: files }).done(function () {
+             setTimeout('navigate($(".file-directory").get(0).value)', 500);
+         });
+     }
+     function toClipboard(files) {
+     }
+     function create(files) {
+         API.Server("create",{ path: files });
+         setTimeout('navigate($(".file-directory").get(0).value)', 500);
+     }
+
+        function gcheckAuth() {
+            gapi.auth.authorize({
+                'client_id': CLIENT_ID,
+                'scope': SCOPES.join(' '),
+                'immediate': true
+            }, ghandleAuthResult);
+        }
+        function ghandleAuthResult(authResult) {
+            if (authResult && !authResult.error) gloadDriveApi();
+        }
+        function ghandleAuthClick(event) {
+            gapi.auth.authorize(
+                {client_id: CLIENT_ID, scope: SCOPES, immediate: false},
+                ghandleAuthResult);
+            return false;
+        }
+        function gloadDriveApi() {
+            gapi.client.load('drive', 'v3', glistFiles);
+        }
+        function glistFiles() {
+         mode = "google";
+            $("files").html("");
+            var request = gapi.client.drive.files.list({
+                'pageSize': 10,
+                'fields': "nextPageToken, files(id, name)"
+            });
+
+            request.execute(function (resp) {
+                var files = resp.files;
+                if (files && files.length > 0) {
+                    for (var i = 0; i < files.length; i++) {
+                        var file = files[i];
+                        var request2 = gapi.client.drive.files.get({
+                            'fileId': file.id,
+                            'fields': "name,id,fullFileExtension, iconLink, size, mimeType"
+                        });
+                        request2.execute(function (resp) {
+                            if(resp.size == undefined) resp.size = "н/д";
+                            if(resp.fullFileExtension == undefined) resp.fullFileExtension = "Google";
+                            $(".file-container files").append("<button data-file-id='" + resp.id + "' class='list-style gdrive file'><span class='name'>" + resp.name + "</span><div class='descr'>Файл (" + resp.fullFileExtension + "). Размер: " + resp.size + ".</div></button>");
+                            file_init();
+                            unsel();
+                            $(".file-body .file-loader").hide();
+                            $(".file-body .file-directory").text("Google Drive");
+                        });
+                    }
+                } else {
+                    $("files").attr("data-empty","true");
+                }
+            });
+        }
+
+        function gopenFile(element) {
+            var request = gapi.client.drive.files.get({
+                'fileId': $(element).attr("data-file-id"),
+                'fields': "webViewLink"
+            });
+
+            request.execute(function (resp) {
+                API.Open("webapp",{url: resp.webViewLink,title: "Просмотр документа из Google Drive",icon: "google"});
+            });
+        }
+
+        function dhandleAuthClick() {
+            $.post("https://api.dropboxapi.com/oauth2/token",{
+                client_id: "63zl1121uxhl94o",
+                client_secret: "5lz3gcd3gy9ywrp"
+            },function(auth_data) {
+                dropboxlist("");
+            },"json");
+        }
+
+        function dropboxlist(dir) {
+         mode = "dropbox";
+            $("files").html("");
+
+            $.ajax("https://api.dropboxapi.com/2/files/list_folder",{
+                dataType:"json",
+                data: '{"path": "' + dir + '"}',
+                method: "post",
+                statusCode: {
+                    401: function() {
+                        console.log("Истек срок токена (401)")
+                    },
+                    409: function() {
+                        console.log("Ошибка в JSON (409)")
+                    },
+                    429: function() {
+                        console.log("Превышение лимита запросов (429)")
+                    }
+                },
+                beforeSend: function(xhr){
+                    xhr.setRequestHeader('Authorization', 'Bearer JhBPAwdWbvAAAAAAAAAAEynAl9v4u8DDhtArHkvoGs3RtsNfPCMOOfy_n89U-fWg');
+                    xhr.setRequestHeader('Content-type', 'application/json');
+                },
+                error: function(xhr,error,errno) {
+                    parent.Notification("Ошибка API DropBox","Возникла ошибка при попытки отправки запроса: " + error + ". Код ошибки:" + errno);
+                },
+                success: function(folderList) {
+                    $(".file-body .file-directory").text("Dropbox/" + dir);
+                    file_init();
+                    unsel();
+                    $(".file-body .file-loader").hide();
+                    folderList = folderList.entries;
+                    $.map(folderList, function(value, index) {
+                        return [value];
+                    });
+                    folderList.forEach(function(item) {
+                        if(item[".tag"] == "folder") {
+                            $(".file-container files").append("<button data-path='" + item.path_display + "' class='list-style dropbox folder'><span class='name'>" + item.name + "</span><div class='descr'>Папка</div></button>");
+                        }
+                        if(item[".tag"] == "file") {
+                            $(".file-container files").append("<button data-path='" + item.path_display + "' class='list-style dropbox file'><span class='name'>" + item.name + "</span><div class='descr'>Файл (" + item.name.substring(item.name.lastIndexOf(".") + 1) + "). Размер: " + item.size + "</div></button>");
+                        }
+                    })
+                }
+            });
+		}
+	</script>
+	<style>
+.cssload-thecube {
+	width: 73px;
+	height: 73px;
+	margin: auto;
+	position: relative;
+	transform: rotateZ(45deg);
+		-o-transform: rotateZ(45deg);
+		-ms-transform: rotateZ(45deg);
+		-webkit-transform: rotateZ(45deg);
+		-moz-transform: rotateZ(45deg);
+	position:absolute;top:0;left:0;right:0;bottom:0;
+}
+.cssload-thecube .cssload-cube {
+	position: relative;
+	transform: rotateZ(45deg);
+		-o-transform: rotateZ(45deg);
+		-ms-transform: rotateZ(45deg);
+		-webkit-transform: rotateZ(45deg);
+		-moz-transform: rotateZ(45deg);
+}
+.cssload-thecube .cssload-cube {
+	float: left;
+	width: 50%;
+	height: 50%;
+	position: relative;
+	transform: scale(1.1);
+		-o-transform: scale(1.1);
+		-ms-transform: scale(1.1);
+		-webkit-transform: scale(1.1);
+		-moz-transform: scale(1.1);
+}
+.cssload-thecube .cssload-cube:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgb(43,160,199);
+	animation: cssload-fold-thecube 2.76s infinite linear both;
+		-o-animation: cssload-fold-thecube 2.76s infinite linear both;
+		-ms-animation: cssload-fold-thecube 2.76s infinite linear both;
+		-webkit-animation: cssload-fold-thecube 2.76s infinite linear both;
+		-moz-animation: cssload-fold-thecube 2.76s infinite linear both;
+	transform-origin: 100% 100%;
+		-o-transform-origin: 100% 100%;
+		-ms-transform-origin: 10

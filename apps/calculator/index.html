@@ -1,0 +1,96 @@
+<content class="calc-body">
+<style>
+    .window-buttons {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 35px;
+        margin-right: 5px;
+        cursor: default;
+        user-select:none;
+    }
+    .window-buttons i {
+        line-height:35px;
+        height: 35px;
+        cursor: default;
+        -webkit-text-stroke: 1px lightgray;
+    }
+    .window-buttons i:hover {
+        color:#666;
+    }
+    .calc-body .abtn {
+            width: calc(25% - 10px);
+    height: calc(20% - 17px);
+    font-size: large;
+    margin: 5px;
+    min-width: auto;
+    }
+    .result {
+        padding: 5px;
+        width: 100%;
+        border: 0;
+        pointer-events: none;
+        font-size: large;
+        border-bottom: 1px solid grey;
+    box-shadow: inset 0px -1px 1px 0px rgba(255, 255, 255, 0.8), 0px 1px 1px 0px rgba(255, 255, 255, 0.8);
+    }
+    ::-webkit-input-placeholder {color: black}
+    :-moz-placeholder {color: black;opacity: 1}
+    ::-moz-placeholder {color: black;opacity: 1}
+    :-ms-input-placeholder {color: black}
+</style>
+<div class="window-buttons">
+    <i onclick="parent.hideWindow(API.ID)" action="min" class="material-icons">expand_more</i>
+    <i onclick="parent.closeWindow(API.ID)" action="close" class="material-icons">close</i></div>
+
+<input class="result" id="result" placeholder="0" type="text"><br>
+<button class="abtn">7</button><button class="abtn">8</button><button class="abtn">9</button><button class="abtn">*</button><br>
+<button class="abtn">4</button><button class="abtn">5</button><button class="abtn">6</button><button class="abtn">/</button><br>
+<button class="abtn">3</button><button class="abtn">2</button><button class="abtn">1</button><button class="abtn">-</button><br>
+<button class="abtn">0</button><button class="abtn">.</button><button class="abtn">10</button><button class="abtn">+</button><br>
+<button class="abtn">100</button><button class="abtn btn-c">C</button><button class="abtn btn-equal" style="width: calc(50% - 10px);">=</button><br>
+<script>
+    var API;
+    $(function() {
+        API = new API(window,"calculator","Calculator","calculator",1101,300,400,false,true);
+        API.thisWindow.find(".up").css({
+            "height": "35px",
+            "position": "absolute",
+            "top": "0",
+            "left": "0",
+            "width": "calc(100% - 50px)"
+        });
+        $(".calc-body .btn-c").on("click",turnOn);
+        $(".calc-body .btn-equal").on("click",e);
+        $(".calc-body .abtn:not(.btn-equal,.btn-c)").on("click",function() {c($("#result").val() + $(".abtn:hover").text())});
+    });
+    function c(val) {
+        $(".result").val(val);
+    }
+    function v(val) {
+        $(".result").val($(".result").val() + val);
+    }
+    function errorCalc() {
+        $(".label-err").css("color","#777");
+        $(".result").css("pointer-events","none");
+        $(".calc-body .abtn:not(.btn-c)").attr("disabled","disabled");
+        $(".calc-body .abtn:not(.btn-c)").addClass("disabled");
+    }
+    function turnOn() {
+        $(".label-err").css("color","#e6e6e6");
+        $(".result").css("pointer-events","initial");
+        $(".calc-body .abtn").removeAttr("disabled");
+        $(".calc-body .abtn").removeClass("disabled");
+        c("");
+    }
+
+    function e() {
+        try {
+            if(eval($("#result").val()) != "Infinity") c(eval($("#result").val())); else errorCalc();
+        }
+
+        catch(e) {
+            errorCalc();
+        }
+    }
+</script></content>

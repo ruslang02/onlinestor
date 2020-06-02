@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteRule ^desktop$ /products/desktop.html [L]
+RewriteRule ^mobile$ /products/mobile.html [L]
+RewriteRule ^mediacenter$ /products/mediacenter.html [L]
+RewriteRule ^apps$ /products/apps.html [L]

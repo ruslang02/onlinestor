@@ -1,0 +1,51 @@
+<content class="pic-body">
+    <div class="pic-picture"><div id="image"></div>
+	<input type="hidden" name="picFile">
+</content>
+<script>
+    var API;
+    $(function() {
+        API = new API(window,"imageview","Image Viewer","image",111);
+        var picarg = API.getArgument("file");
+        if(picarg) {
+            $("#image").css("backgroundImage","url('/server/api.php?token=" + parent.token + "&path=" + picarg + "')");
+            API.Change(picarg.substring(picarg.lastIndexOf("/") + 1));
+        }
+    })
+</script>
+<style>
+    .pic-body {
+        height:100%;
+        width:100%;
+        overflow:hidden;
+    }
+    .pic-body .pic-picture {
+		height: 100%;
+		width:100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		margin: auto;
+		z-index: 0;
+		overflow: auto;
+        background:white;
+		background-image: -moz-linear-gradient(45deg, rgb(239, 239, 239) 25%, transparent 25%, transparent 75%, rgb(239, 239, 239) 75%, rgb(239, 239, 239)), -moz-linear-gradient(45deg, rgb(239, 239, 239) 25%, transparent 25%, transparent 75%, rgb(239, 239, 239) 75%, rgb(239, 239, 239));
+        background-position: 0px 0px, 10px 10px;
+        background-size: 21px 21px;
+    }
+	.pic-body .pic-picture #image {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		margin: auto;
+        height: 100%;
+        width: 100%;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+	}
+</style>

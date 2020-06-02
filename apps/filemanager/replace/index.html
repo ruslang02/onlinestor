@@ -1,0 +1,28 @@
+<script>
+	var API;
+	$(function() {
+	    API = new API(window,'filemanager/replace','File Manager','page_copy',1001,400,200);
+	})
+</script>
+<content class="fs-save" style="background:white;padding:6px;">
+	<span style="position: fixed;top: 0px;left: 0px;width: 100%;height: 100%;z-index: -1;background: rgba(0, 0, 0, 0.35);"></span>
+	<img src="/icons/big/question.png" style="float: left;margin: 3px 10px 3px 5px;">
+	<span translate>This file already exists. Rewrite?</span>
+	<div class="bottom-bar">
+		<button class="abtn active" onclick="API.Close();API.parent.saveFile();" id="replace" translate>Rewrite</button><button onclick="API.Close()" class="abtn" translate>Cancel</button>
+	</div>
+</content>
+<style>
+	content.fs-save .bottom-bar {
+		position: absolute;
+		bottom: 0;	
+		text-align: right;
+		padding: 10px;
+		width: 100%;
+		background: lightgrey;
+		left: 0;
+	}
+	content.fs-save .abtn {
+		margin-right:5px;
+	}
+</style>

@@ -1,0 +1,78 @@
+#startmenus {
+	position: fixed;
+	bottom: 40px;
+	left: 0;
+	z-index: 1000;
+	height: 450px;
+	padding:1px;
+}
+
+#startmenus .list-group {
+    height: 100%;
+    overflow: auto;
+    width: 250px;
+	background:white;
+}
+#startmenus .folder-list:hover {
+	cursor:pointer;
+	text-decoration:underline !important;
+}
+#startmenus .folder-item button {
+	padding-left:10px;
+}
+.quickstart {
+	height: 100%;
+	position: relative;
+	transition: color .5s ease;
+	animation: color .5s ease;    overflow: hidden;
+}
+.quickstart button {
+	width: 100%;
+	padding: 7px;
+	font-weight: 100;
+	color: white;
+	border: 0;
+	height:50px;
+	font-size:12pt;
+}
+.quickstart i {
+	font-size: 24px;
+	-webkit-text-stroke: 0.6px rgba(76, 175, 80, 0.9);
+	vertical-align: top;
+	color:white;
+}
+
+.quickstart button:hover {
+	background: rgba(255,255,255,0.2);
+}
+.quickstart.min {
+	width: 50px;
+}
+.quickstart.min span {
+	opacity:0;
+}
+.quickstart.min button {
+	text-align: left;
+	padding: 0;
+	width: 350px;
+}
+.quickstart.min i {
+	text-align: center;
+	width: 50px;
+	padding: 0;
+}
+.quickstart.max {
+	width: 185px;
+}
+.quickstart.max span {
+	opacity:1;
+}
+.quickstart.max button {
+	text-align: left;
+	padding: 0;
+}
+.quickstart.max i {
+	padding-right: 5px;
+	width: 50px;
+	text-align: center;
+}

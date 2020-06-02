@@ -1,0 +1,97 @@
+<?php session_start(); ?>
+<?php
+if(isset($_POST['user'])) {
+$ok=false;
+    if(filter_var($_POST['user'], FILTER_VALIDATE_EMAIL)) {
+        $conn = new mysqli("localhost","rus580_themain","234567yujnbvcdfrt56y7u8iop0o9ij!","rus580_onlinestordb");
+        $stmt = $conn->prepare("SELECT Name,Password FROM users WHERE Email=?");
+        $stmt->bind_param("s", $_POST['user']);
+        $stmt->execute();
+        $stmt->bind_result($user,$pass);
+        if ($stmt->fetch()) {
+            mail($_POST['user'],"Восстановление пароля","Здравствуйте!\r\n\r\nВы запрашивали пароль от своего аккаунта OnlineStor.\r\nПароль: $pass\r\nЕсли это были не вы, прогнорируйте письмо.",'From: OnlineStor <noreply@onlinestor.net>');
+            $ok=true;
+        }
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Восстановление пароля - OnlineStor™</title>
+    <link href="/libs/img/favicon.ico" rel="shortcut icon">
+    <link href="/libs/img/favicon.ico" rel="icon">
+    <link href="/libs/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Навигация</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand active" href="/" ><img height="20" src="/libs/img/logoLong.png" style="display: inline-block;"><a href="/en" style="vertical-align: sub;font-size: 12px;color: darkgreen;">english</a></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Продукты <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/products/desktop">OnlineStor™ Desktop</a></li>
+                        <li><a href="/products/mobile">OnlineStor™ Mobile</a></li>
+                        <li><a href="/products/mediacenter">OnlineStor™ Media Center</a></li>
+                    </ul>
+                </li>
+                <li><a href="/news">Новости</a></li>                 <li><a href="/support">Поддержка</a></li>
+                <li><a href="/about">О нас</a></li>
+            </ul>
+            <div class="navbar-right">    <?php if(!empty($_SESSION['token'])) { $url = "http://onlinestor.net/server/action.php"; $post_data = array("action" => "getsid","token" => $_SESSION['token']);$ch = curl_init();curl_setopt($ch, CURLOPT_URL, $url);curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);curl_setopt($ch, CURLOPT_POST, 1);curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);$output = curl_exec($ch);curl_close($ch);if(strpos($output,"failed") > -1) {header("Location: http://onlinestor.net/desktop?action=logout");exit();}echo '<p class="navbar-text">Здравствуйте, ' . $output . '</p> &nbsp;&nbsp;<a href="/redirect" class="navbar-btn btn btn-info">Перейти в Вебтоп</a>&nbsp;&nbsp;<a href="/desktop?action=logout" class="navbar-btn btn btn-danger">Выход</a>';} else echo '<a href="/register" class="navbar-btn btn btn-success">Зарегистрироваться</a> <a href="/login" class="navbar-btn btn btn-primary">Войти</a>';?>
+
+            </div>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="container">
+    <center><h1>Восстановление пароля</h1></center>
+    <hr />
+    Еще не внедрено. Пишите администратору на почту <a href="mailto:webmaster@onlinestor.net">webmaster@onlinestor.net</a>.
+    <?php if($_GET['admin'] == 'yes') {?>
+    <?php if ($ok) {?><div class="alert-success alert">
+        Ваш пароль выслан вам на почтовый ящик.
+    </div><?php } elseif (!$ok && $_POST['user']) {?><div class="alert-danger alert">
+    Почтовый ящик не зарегистрирован в системе.
+</div><?php } ?>
+    <form action="/forgot" method="post" style="max-width:300px;"><input type="email" required placeholder="Электронный адрес аккаунта" class="form-control" name="user"><br><button class="btn btn-primary" type="submit">Выслать пароль</button><br><br></form>
+<?php }?></div>
+<script src="/libs/js/jquery.min.js"></script>
+<script src="/libs/js/bootstrap.min.js"></script>
+<nav class="navbar navbar-default hidden-xs navbar-static-bottom" style="margin:0;">
+    <div class="container">
+        <div class="navbar-header" style="width: 100%;    margin-left: 0;">
+            <!-- HotLog -->
+            <span id="hotlog_counter" style="margin: 10px;display: inline-block;"></span>
+            <span id="hotlog_dyn"></span>
+            <script type="text/javascript">
+                var hot_s = document.createElement('script');
+                hot_s.type = 'text/javascript'; hot_s.async = true;
+                hot_s.src = 'https://js.hotlog.ru/dcounter/2541598.js';
+                hot_d = document.getElementById('hotlog_dyn');
+                hot_d.appendChild(hot_s);
+            </script><div class="navbar-text pull-right">©2014-2016 OnlineStor™. Все права защищены лицензией <a href="/license">Creative Commons</a>.</div>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

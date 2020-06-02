@@ -1,0 +1,71 @@
+﻿#startmenus {
+	position: fixed;
+	bottom: 40px;
+	left: 0;
+	z-index:1000;
+	height: 450px;
+	outline: 2px outset lightgray;
+}
+
+#startmenus .list-group {
+	float: left;
+	height: 441px;
+	overflow: auto;
+	width: 250px;
+	background: #fff;
+	margin: 5px;
+	padding:3px;
+	margin-top:5px;
+}
+#startmenus .list-group-item,.list-style {
+	padding: 2px;
+	margin-bottom:3px;
+	width:100%;
+	text-align:left;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+
+#startmenus .list-group-item img,.list-style img {
+	margin: 1px 6px 0 1px;
+	vertical-align:top;
+}
+
+#startmenus .list-group-item:hover,#startmenus .list-group-item:active,.list-style:hover,.list-style:active,.list-style:focus {
+	background-color: darkblue;
+	text-decoration: none;
+}
+#startmenus .list-group img {
+	height:16px;
+}
+#startmenus .list-group hr {
+	height: 0px;
+	width: calc(100% - 60px);
+	float: right;
+	position: relative;
+	margin: 10px 5px;
+}
+#startmenus .folder-item button {
+	padding-left:10px;
+}
+
+.quickstart {
+	width: 185px;
+	padding: 5px 5px 0px;
+	height: 100%;
+}
+.quickstart button {
+	width: 100%;
+	text-align: left;
+	font-size: 12px;
+	padding: 7px;
+	border-radius: 5px;
+	border: none;
+	background-color:transparent;
+	margin-bottom:5px;
+}
+
+.quickstart button:hover {
+	background: darkblue;
+}

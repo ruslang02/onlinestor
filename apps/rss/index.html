@@ -1,0 +1,190 @@
+<content class="rss-body">
+	<div class="toolbar desktoponly">
+		<button onclick='API.Open("rss/add");'><img src="/icons/small/rss_add.png"> <span translate>New Channel</span></button>
+		<span id="numfeeds" class="pull-right">
+			<span translate>Number of Articles:</span> 
+			<select id="num">
+				<option value="5">5</option>
+				<option value="10">10</option>
+				<option value="30">30</option>
+				<option value="50">50</option>
+			</select>
+			<span class="forselect">▼</span>
+		</span>
+	</div>
+	<div id="home">
+		<select id="lines" size="5">
+			<option value="" class="rssdefault" id="rss-loader" disabled translate>Loading...</option>
+			<option id="rss-root" value="" class="rssdefault hide" disabled translate>Feed List</option>
+		</select>
+		<style>#rss-loader::before {content:"\f110";font-family:'FontAwesome'; padding:0 3px;} #rss-root::before {content:"\f1ea";font-family:'FontAwesome'; padding:0 3px;}</style>
+		<div id="rss-output">
+			<div class="rss-header" style="font-size:1.5em; color: rgb(76, 175, 80); padding:10px;padding-bottom:0" translate>Welcome to oNews, the news aggregator</div>
+			<p style="padding:10px" translate>To create a new news feed, press "New Channel" and specify a name and URL of RSS-feed. To view a news feed, select it on the left panel.</p>
+		</div>
+		<div id="rss-error" class="hide">
+			<div class="text-center">
+				<span class="fa-stack fa-3x">
+					<i aria-hidden="true" class="fa fa-circle-o fa-stack-2x"></i>
+					<i aria-hidden="true" class="fa fa-remove fa-stack-1x"></i>
+				</span>
+				<h3 style="font-size:1.5em;" class="text-danger" translate>There was an error loading the feed.</h3>
+			</div>
+		</div>
+	</div>
+	<style>
+	.rssdefault {color:black;pointer-events:none;font-family:'FontAwesome',Tahoma;}
+	#rss-root,#rss-loader {pointer-events:none;}
+	.rss-body option:not(:first-child)::before {
+		padding:0 5px;
+		content:"\f112";
+		transform:rotate(180deg);
+		font-family:'FontAwesome';
+		display:inline-block;
+	}
+	#rss-error div {position:absolute;top:0;left:0;right:0;bottom:0;margin:auto;height:115px;}
+		#home {
+			overflow: initial;
+			line-height: 35px;
+			height: calc(100% - 30px);
+			display:flex;
+		}
+		.rss-body .toolbar {
+			height: 29px;
+			border-bottom: 1px solid rgb(76, 175, 80);
+			padding: 2px;
+		}
+		.rss-body .toolbar button,.rss-body .toolbtn {
+			border:1px solid white;
+			height:24px;
+			float:left;
+			margin-right: 5px;
+			border-radius: 3px;
+		}
+		.rss-body .top-rss {
+	height: 40px;
+	padding: 10px;
+	background: rgb(127, 255, 124) none repeat scroll 0% 0%;
+	width: 100%;
+}
+		.rss-body .top-rss b {
+			 overflow: hidden; display: block; white-space: nowrap; vertical-align: top; text-overflow: ellipsis;text-align:left;
+		}
+		.rss-body .toolbar button:focus,.rss-body .toolbtn:focus,.rss-body .toolbar button:hover,.rss-body .toolbtn:hover,.rss-body .toolbar button:active,.rss-body .toolbtn:active {
+			border: 1px solid rgba(76, 175, 80,0.4);
+		}
+		.rss-body .toolbar button:hover,.rss-body .toolbtn:hover,.rss-body .toolbar button:active,.rss-body .toolbtn:active  {
+			background: rgba(76, 175, 80,0.3);
+		}
+		.rss-body .toolbar button:active,.rss-body .toolbtn:active {
+			box-shadow: inset 0 0 5px 0 black;
+		}
+		.rss-body .toolbar img {
+			vertical-align:top;
+		}
+
+		.rss-body #rss-output,.rss-body #rss-error {
+			order: 2;
+			flex-grow: 1;
+			overflow:auto;
+			position:relative;
+		}
+.rss-body #rss-output .channel {
+	text-align: left;
+	background: rgb(127, 255, 124);
+	overflow: hidden;
+	color: transparent;
+	margin: 0px;
+	height: 36px;
+	padding-left: 15px;
+}
+		.rss-body #rss-output .channel a{
+			font-size: 12pt;
+			text-decoration: none;
+		}
+		.rss-body #rss-output .news {
+			background: rgba(76, 175, 80,0.3);
+
+			padding: 6px;
+			text-align: left;
+			margin: 12px;
+			outline: 1px solid #a48e4f;
+		}
+		.rss-body #numfeeds {
+			height: 100%;
+			display: inline-block;
+			padding: 2px;
+		}
+		.rss-body #numfeeds select {
+			border: 1px solid rgb(76, 175, 80);
+			border-radius: 3px;
+			-moz-appearance: none;
+			-o-appearance: none;
+			-webkit-appearance: none;
+			appearance: none;
+			width: 40px;
+		}
+		.rss-body select#lines {
+width: 30%;
+border: 0;
+border-right: 1px solid rgb(76, 175, 80);
+min-width: 180px;
+max-width: 250px;
+order: 1;
+		}
+		.rss-body .rss-active {font-weight:bold;font-style:italic}
+		.rss-body .forselect {
+			transform: translate(-15px,-1px);
+			display: inline-block;
+			color: rgb(76, 175, 80);
+			font-weight: 900;
+			font-size:7px;
+			pointer-events: none;
+			width: 0px;
+		}
+.rss-body #LINES option:not(:first-child)::before {
+	content: "\f112";
+	font-family: 'FontAwesome';
+	padding-right: 5px;
+	padding-left: 5px;
+	transform: rotate(180deg);
+	display: inline-block;
+}
+	</style>
+	<script>
+        var API;
+        var numFeeds = 5;
+        var lastFeed;
+        $(function() {
+            API = new API(window,'rss','News Feed','newspaper',111);
+            $( "#lines" )
+                .change(function () {
+                    $("#lines option").removeClass("rss-active");
+                    $(this.selectedOptions[0]).addClass("rss-active");
+                    showRSS($(this).val());
+                    lastFeed = $(this).val();
+                })
+                .change();
+            backToHome();
+        });
+		function showRSS(str) {
+			if(str) {
+			$.get("rss.php?q=" + str + "&numFeeds=" + numFeeds,function(a,b,c) {
+				$("#rss-output").removeClass("hide");
+				$("#rss-error").addClass("hide");
+				$("#rss-output").html("<div class='top-rss'><b>" + str + "</b> <span class='pull-right'></span></div>" + c.responseText);
+			}).fail(function(e) {
+				$("#rss-output").addClass("hide");
+				$("#rss-error").removeClass("hide");
+			});
+			}
+		}
+		function backToHome() {
+			API.Server("getFile",{path: "/AppData/rssreader.xml"},function(a,b,c) {
+				$("#rss-loader").remove();
+				$("#rss-root").removeClass("hide");
+				$("#lines").append(c.responseText);
+			});
+		}
+	</script>
+</content>

@@ -1,0 +1,2 @@
+php_value include_path "D:\home\site\wwwroot\apps\"
+php_value auto_prepend_file "prepend.html"

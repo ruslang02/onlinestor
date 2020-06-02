@@ -1,0 +1,172 @@
+button::-moz-focus-inner {border:none}
+
+* {
+	outline:0;
+	box-sizing: border-box;
+	background:none;
+	font-family: 'Noto Sans';
+}
+body {margin:0}
+code, samp, output {
+	font-family:Consolas,Courier New,monospace;
+}
+
+ 
+
+
+
+
+a.link {
+	margin: 5px;
+	color: rgb(47, 47, 180);
+	text-shadow: 0px 0px 3px white;
+	cursor: url('/cursors/Link Select.cur'),pointer !important;
+}
+
+
+
+
+.form-control {
+	background: white;
+	border: 1px solid grey;
+	font-size:inherit
+}
+.form-control:focus {
+	border:1px solid white;
+	outline:1px solid dodgerblue;
+	padding:2px
+}
+.form-control.form-control-inverse {
+	border: 1px solid transparent;
+	outline: 1px solid rgba(255,255,255,0.7);
+	outline-offset: 1px;
+	padding-right: 0;
+	background: rgba(255,255,255,0.7);
+	display: inline-block;
+	margin-left: -1px;
+	padding:1px;
+	transition: all .5s ease;
+}
+.form-control.form-control-inverse:hover {background:white; outline:1px solid white;}
+.form-control.form-control-inverse:focus {border: transparent 1px solid;outline:1px solid white; background:white;}
+.form-control:disabled:focus,.form-control.disabled:focus,.form-control[readonly]:focus {
+	outline:1px solid rgb(255, 197, 30) !important;
+	border:1px solid white !important;
+}
+
+
+content {
+	width:100%;
+	display:block;
+	height:100%;
+	overflow:hidden;
+}
+
+
+.abtn {
+	border: 1px solid white;
+	background: rgb(164, 164, 164) none repeat scroll 0% 0%;
+	outline: 1px solid rgb(164, 164, 164);
+	min-width:75px;
+	padding: 2px;
+	font-size:inherit;
+	display:inline-block;
+	text-align:center;
+}
+.abtn:disabled {
+	color:grey !important;
+	pointer-events:none !important;
+	background: rgb(164, 164, 164) none repeat scroll 0% 0% !important;
+	outline: 1px solid rgb(164, 164, 164) !important;
+	text-shadow:none !important;
+}
+.abtn.disabled {
+	pointer-events: none;
+	color: grey;
+}
+.abtn.active {
+	background:dodgerblue;
+	outline:1px solid dodgerblue;
+	color:white;
+	text-shadow:0px 0px 1px black;
+}
+.abtn:focus {
+	outline:1px solid dodgerblue;
+}
+.abtn:hover,.abtn.hover {
+	filter: brightness(130%);
+	-webkit-filter: brightness(130%);
+}
+.abtn:active,.abtn.activebtn {
+	filter: brightness(70%);
+	-webkit-filter: brightness(70%);
+}
+
+
+
+.menubutton {
+	background: none;
+	border: 1px solid transparent;
+	padding: 2px;
+	min-width: 50px;
+	margin-right: 1px;
+}
+.menubutton.open:not(.menubutton-inverse) {
+	background: white;
+	color: black;
+	outline: 1px solid white;
+	border: 1px solid dodgerblue;
+}
+.menubutton-inverse.open {
+	background: dodgerblue;
+	color: white;
+	border: 1px solid dodgerblue;
+}
+
+.menu {
+position: absolute;
+min-width: 130px;
+max-width: 200px;
+z-index: 2000;
+background: rgb(255, 255, 255);
+outline: 1px solid #fff;
+border: 1px solid dodgerblue;
+}
+.menu button {
+width: 100%;
+text-align: left;
+padding: 2px 26px 2px;
+border: 1px solid transparent;
+}
+
+.menu button:hover:not(:disabled) {
+	background-color: dodgerblue;
+	color: white;
+}
+.menu button:disabled img {
+	filter: grayscale(100%);
+}
+.menu button:disabled {
+	color:grey !important;
+}
+.menu vert-bar {
+display:none
+}
+.menu divider {
+display:none
+}
+.menu over {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+}
+.menu img {
+	position: relative;
+	left: -27px;
+	vertical-align: bottom;
+	margin-right: -20px;
+}
+.hide {display:none !IMPORTANT;}

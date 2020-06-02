@@ -1,0 +1,111 @@
+<content style="background:white;line-height:30px;padding:10px;" id="new-event">
+	<div class="hide"></div>
+
+	<div class="header" translate>Create an event</div>
+
+	<label><span translate>Date:</span> 
+		
+		<input type="year" class="form-control" id="iDate">
+		<script>
+		$("#iDate").datepicker({
+			dateFormat: "dd.mm.yy"
+		});
+		$("#iDate").on("click mousedown mouseup focus",function(e) {e.stopPropagation()});
+		</script>
+		
+	</label>
+	<label><span translate>Name:</span> <input class="descr form-control" type="text"></label>
+	<label><span translate>Description:</span> <textarea style="resize:vertical;width:100%" class="moredescr form-control"></textarea></label>
+	<div id="new-event-nocoords" translate>To bind this event to a map, create event from Google Maps.</div>
+	<div id="new-event-coords" class="hide" translate>Map is binded to this event.</div>
+
+	<div class="bottom-bar">
+		<button class="abtn active" id="event-add"><span translate>Save</span></button><button onclick="API.Close()" class="abtn" translate>Cancel</button>
+	</div>
+
+<style>
+#ui-datepicker-div {
+	background: white none repeat scroll 0% 0%;
+	border: 1px solid dodgerblue;
+	padding: 5px;
+	z-index:1000 !important;
+	display:none;
+}
+#ul-datepicker-div * {
+	user-select:none;
+	-o-user-select:none;
+	-webkit-user-select:none;
+	-ie-user-select:none;
+	-moz-user-select:none;
+}
+#ui-datepicker-div .ui-datepicker-prev {float:left;border: 1px solid #1e90ff;height: 2em;padding: 5px;}
+#ui-datepicker-div .ui-datepicker-next {float:right;border: 1px solid #1e90ff;height: 2em;padding: 5px;}
+#ui-datepicker-div .ui-datepicker-prev::before {content: "<<"}
+#ui-datepicker-div .ui-datepicker-next::before {content: ">>"}
+#ui-datepicker-div .ui-datepicker-title {text-align:center;line-height:2em;}
+#ui-datepicker-div table a {
+	text-decoration: none;
+	text-align: center;
+	border: 1px solid dodgerblue;
+	width: 100%;
+	display: inline-block;
+	padding: 3px;
+	color: black;
+}
+#new-event .bottom-bar {
+		position: absolute;
+		bottom: 0;
+		text-align: right;
+		padding: 10px;
+		width: 100%;
+		background: lightgrey;
+		left: 0;
+	}
+#new-event .header {
+		color: darkblue;
+		font-size: 14pt;
+		padding: 5px;
+	}
+	#new-event .abtn {
+		margin-left:1em;
+	}
+    #new-event label {display:flex;    margin: 5px 0;}
+#new-event label input,#new-event label textarea {flex-grow:2;margin-left: 10px;}
+#new-event label span {line-height:18px;}
+
+</style>
+
+<script>
+    var API;
+    var eventsL;
+    var wID = $(".window").last().attr("id");
+    $(function() {
+        API = new API(window,"calendar/new","Create/Edit event","calendar_add",111,450,350);
+        if(API.getArgument('local')) {
+            $("#event-add").off().click(function(e) {e.stopImmediatePropagation();addEventLocal();});
+            if(API.getArgument('coords')) {$("#new-events-nocoords").addClass("hide");$("#new-events-coords").removeClass("hide");}
+        }
+        if(myID = API.getArgument('id')) {
+            API.Server("getFile",{path: "/AppData/calendar.json"},function(a) {
+                var json = $.parseJSON(a);
+                json = Object.keys(json).map(function (key) { return json[key]; });
+                json = json[myID];
+                $("#iDate").val(json.date);
+                $(".descr").val(json.name);
+                $(".moredescr").val(json.description);
+                API.Change("Редактирование события","calendar_edit");
+            });
+        }
+        $("#event-add").off("click").on("click",addEventLocal);
+    });
+	function addEventLocal() {
+		API.Server("getFile",{path: "/AppData/calendar.json"},function(a,b,c) {
+			eventsL = $.parseJSON(c.responseText);
+			eventsL[eventsL.length] = {name:$(".descr").val(),description:$(".moredescr").val(),date:$("#iDate").val(),coords:API.getArgument('coords')};
+			API.Server("write",{path: "/AppData/calendar.json",arg: JSON.stringify(eventsL)});
+			parent.Notification("Календарь","Событие было успешно создано.","fa fa-calendar",function() {API.Open("calendar")});
+			API.Close();
+		});
+	}
+</script>
+</content>

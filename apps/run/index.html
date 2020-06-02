@@ -1,0 +1,40 @@
+<div class="run-body">
+	<img src="/icons/big/application_add.png" style="float: left;margin: 3px 10px 3px 5px;">
+	<span translate>Write app's name and press Execute.</span><br>
+	<form style="margin:0">
+		<label for="file-run" style="margin: 3px 2px 9px;"><span translate style="line-height: 22px">Application:</span> <input autofocus class="form-control" type="text" name="file-run"></label>
+		<div style="text-align:right">
+			<button class="abtn" translate>Cancel</button>
+			<button type="submit" class="abtn active" translate>Execute</button>
+		</div>
+	</form>
+</div>
+<style>
+	.run-body {
+		padding: 5px;
+	}
+	.run-body button{
+		margin-left: 5px;
+	}
+	.run-body label {
+		display:flex;
+	}
+	.run-body input {
+		order: 1;
+		flex-grow: 1;
+		margin-left: 5px;
+	}
+</style>
+
+<script>
+    var API;
+    $(function() {
+        API = new API(window,'run','Run...','application_xp_terminal',101,400,121);
+        $(".run-body form").submit(function(e) {
+            e.preventDefault();
+            var name = $(".run-body input[name=file-run]").val();
+            API.Open(name);
+            API.Close();
+        });
+    })
+</script>

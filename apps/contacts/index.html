@@ -1,0 +1,172 @@
+<content class="contacts-body">
+		<div class="toolbar">
+			<button onclick="API.Open('contacts/new');"><img src="/icons/small/vcard_add.png"> <span translate>New contact</span></button>
+		</div>
+		<div class="contacts-home">
+		<select size="20" id="contacts-list">
+			<option value="" class="contacts-default" id="contacts-loader" disabled translate>Loading...</option>
+			<option id="contacts-root" value="" class="contacts-default hide" disabled translate>Contacts List</option>
+		</select>
+		<div id="contacts-output">
+			<div id="contacts-view" class="hide">
+				<h3 class="header" translate>View contact info</h3>
+				<b translate>First Name:</b> <span id="contacts-firstname"></span>
+				<br>
+				<b translate>Last Name:</b> <span id="contacts-lastname"></span>
+				<br>
+				<b translate>Phone No.:</b> <span id="contacts-telephone"></span>
+			</div>
+			<div id="contacts-home">
+				<div class="header" translate>Welcome to Contacts</div>
+				<div translate>We've finally finished Contacts, the contact manager and address book. It makes easier to manage your contact book.</div>
+			</div>
+		</div>
+		</div>
+<script>
+    var API;
+    var contacts;
+    $(function() {
+        API = new API(window,"contacts","Contacts","vcard",111,null,null,contactsLoadEvents)
+    });
+	function contactsAddEvent(firstName,lastName,telephone) {
+		contacts[contacts.length] = {firstName:firstName,lastName:lastName,telephone:telephone};
+		API.Server("write",{path: "/AppData/contacts.json",arg: JSON.stringify(contacts)});
+		contactsLoadEvents();
+		contactsInit();
+	}
+
+	function contactsDeleteEvent(id) {
+		contacts.splice(id,1);
+		API.Server("write",{path: "/AppData/contacts.json",arg: JSON.stringify(contacts)});
+		contactsLoadEvents();
+		contactsInit();
+	}
+function contactsLoadEvents() {
+	$("#contacts-list option:not(.contacts-default)").remove();
+	$(".contacts-default").addClass("hide");
+	$("#contacts-loader").removeClass("hide");
+	API.Server("getFile",{path: "/AppData/contacts.json"},function(a,b,c) {
+		contacts = $.parseJSON(c.responseText);
+		contacts.forEach(function(item,i,arr) {
+			$(".contacts-default").addClass("hide");
+			$("#contacts-root").removeClass("hide");
+			$("#contacts-list").append("<option value=" + i + ">" + item.lastName + " " + item.firstName + "</option>"); 
+		});
+		contactsInit();
+	});
+}
+function contactsInit() {
+	$("#contacts-list").change(function(e) {
+		var contact = contacts[$(this).val()];
+		$("#contacts-home").addClass("hide");
+		$("#contacts-view").removeClass("hide");
+		$("#contacts-firstname").text(contact.firstName);
+		$("#contacts-lastname").text(contact.lastName);
+		$("#contacts-telephone").text(contact.telephone);
+	});
+}
+</script>
+<style>
+	.contacts-body #contacts-list {
+width: 30%;
+border: 0;
+border-right: 1px solid grey;
+min-width: 180px;
+max-width: 250px;
+order: 1;
+	}
+	#contacts-output {
+		order:2;
+		flex-grow:1;
+		padding: 1em;
+		line-height: 1.5;
+		font-size: 14px;
+	}
+	.contacts-body .contacts-active {font-weight:bold;font-style:italic}
+	.contacts-default {color:black;pointer-events:none;}
+	#contacts-root,#contacts-loader {pointer-events:none;}
+	.contacts-body .header {
+		color: darkblue;
+		font-size: 1.5em;
+	}
+	#contacts-root::before {
+		padding:0 5px;
+		content:"\f10b";
+		font-family:'FontAwesome';
+		display:inline-block;
+	}
+	#contacts-loader::before {
+		padding:0 5px;
+		content:"\f110";
+		font-family:'FontAwesome';
+		display:inline-block;
+	}
+	.contacts-body option:not(.contacts-default)::before {
+		padding:0 5px;
+		content:"\f112";
+		transform:rotate(180deg);
+		font-family:'FontAwesome';
+		display:inline-block;
+	}
+	.contacts-body {
+		background:white;
+		height: 100%;
+	}
+	.contacts-home {overflow: initial;
+        line-height: 35px;
+        height: calc(100% - 30px);
+        display: flex;}
+
+	.contacts-body .toolbar {
+		height: 29px;
+		padding: 2px;
+		border-bottom:1px solid grey;
+	}
+	.contacts-body .toolbar button,.contacts-body .toolbtn {
+		border:1px solid white;
+		height:24px;
+		float:left;
+		margin-right: 5px;
+		border-radius: 3px;
+	}
+	.contacts-body .toolbar button:focus,.contacts-body .toolbtn:focus,.contacts-body .toolbar button:hover,.contacts-body .toolbtn:hover,.contacts-body .toolbar button:active,.toolbtn:active{
+		border: 1px solid rgb(51, 255, 0);
+	}
+	.contacts-body .toolbar button:hover,.contacts-body .toolbtn:hover,.contacts-body .toolbar button:active,.toolbtn:active{
+		background: rgba(92, 245, 0, 0.3);
+	}
+	.contacts-body .toolbar button:active,.toolbtn:active {
+		box-shadow: inset 0 0 5px 0 black;
+	}
+	.contacts-body .toolbar img {vertical-align: bottom}
+
+	.contacts-body .header {
+		color: darkblue;
+		font-size: 14pt;
+		padding: 5px;
+	}
+	.contacts-body .app-contacts name {
+		width: 25%;
+display: inline-block;
+text-align: center;
+	}
+	.contacts-body .app-contacts{
+		padding:5px;
+	}
+	.contacts-body .app-contacts contact {
+		display: block;
+	}
+	.contacts-body .app-contacts id {
+		display: none;
+	}
+	.contacts-body .contact-header {
+		padding: 2px;
+	}
+	.contacts-body .contact-header span:first-child {
+		width: 25%; display: inline-block; border-right: 1px solid grey;
+	}
+	.window[data-app=contacts] {
+		background: #5bdd53;
+	}
+</style>
+</content>

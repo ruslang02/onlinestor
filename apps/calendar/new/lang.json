@@ -1,0 +1,13 @@
+{
+	"ru":{
+		"Create/Edit event":"Создание/редактирование события",
+		"Create an event":"Создание события",
+		"Date:":"Дата:",
+		"Name:":"Название:",
+		"Description:":"Описание:",
+		"Save":"Сохранить",
+		"Cancel":"Отмена",
+		"To bind this event to a map, create event from Google Maps.":"Чтобы привязать событие к карте, создайте его из Google Карт.",
+		"Map is binded to this event.":"Событие привязано к карте."
+	}
+}

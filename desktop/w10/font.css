@@ -1,0 +1,49 @@
+@font-face {
+    font-family: "SegoeUIRegular";
+    src: url("../fonts/SegoeUIRegular/SegoeUIRegular.eot");
+    src: url("../fonts/SegoeUIRegular/SegoeUIRegular.eot?#iefix")format("embedded-opentype"),
+    url("../fonts/SegoeUIRegular/SegoeUIRegular.woff") format("woff"),
+    url("../fonts/SegoeUIRegular/SegoeUIRegular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+/* font-family: "SegoeUIBold"; */
+@font-face {
+    font-family: "Segoe UI";
+    src: url("/font/SegoeUIBold/SegoeUIBold.eot");
+    src: url("/font/SegoeUIBold/SegoeUIBold.eot?#iefix")format("embedded-opentype"),
+    url("/font/SegoeUIBold/SegoeUIBold.woff") format("woff"),
+    url("/font/SegoeUIBold/SegoeUIBold.ttf") format("truetype");
+    font-style: normal;
+    font-weight: bold;
+}
+/* font-family: "SegoeUIItalic"; */
+@font-face {
+    font-family: "Segoe UI";
+    src: url("/font/SegoeUIItalic/SegoeUIItalic.eot");
+    src: url("/font/SegoeUIItalic/SegoeUIItalic.eot?#iefix")format("embedded-opentype"),
+    url("/font/SegoeUIItalic/SegoeUIItalic.woff") format("woff"),
+    url("/font/SegoeUIItalic/SegoeUIItalic.ttf") format("truetype");
+    font-style: italic;
+    font-weight: normal;
+}
+/* font-family: "SegoeUILight"; */
+@font-face {
+    font-family: "Segoe UI";
+    src: url("/font/SegoeUILight/SegoeUILight.eot");
+    src: url("/font/SegoeUILight/SegoeUILight.eot?#iefix")format("embedded-opentype"),
+    url("/font/SegoeUILight/SegoeUILight.woff") format("woff"),
+    url("/font/SegoeUILight/SegoeUILight.ttf") format("truetype");
+    font-style: normal;
+    font-weight: lighter;
+}
+/* font-family: "SegoeUISemiBold"; */
+@font-face {
+    font-family: "Segoe UI";
+    src: url("/font/SegoeUISemiBold/SegoeUISemiBold.eot");
+    src: url("/font/SegoeUISemiBold/SegoeUISemiBold.eot?#iefix")format("embedded-opentype"),
+    url("/font/SegoeUISemiBold/SegoeUISemiBold.woff") format("woff"),
+    url("/font/SegoeUISemiBold/SegoeUISemiBold.ttf") format("truetype");
+    font-style: normal;
+    font-weight: bolder;
+}

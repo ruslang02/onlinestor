@@ -1,0 +1,135 @@
+#startmenus {
+	position: fixed;
+	bottom: 50px;
+	left: 10px;
+	z-index:1000;
+	max-height: 550px;
+	/* max-width: 550px; */
+	border-radius: 5px;
+	display: block;
+	background: white;
+	box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 35px 0px;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	min-height: 400px;
+	width: 400px;
+}
+
+section#startmenus {}
+#startmenus .panel-title img {
+	width: 80px;
+	border: 4px solid rgba(255, 255, 255, 0.6);
+	position: absolute;
+	right: 55px;
+}
+
+#startmenus .list-group {
+	float: left;
+	height: 100%;
+	overflow: auto;
+	width: 100%;
+	background: #fff;
+}
+#startmenus .list-group-item,.list-style {
+	padding: 2px;
+	margin-bottom:3px;
+	text-align: center;
+	border: 0;
+	width: 25%;
+	font-weight: 600;
+	color: #333;
+}
+
+#startmenus .list-group-item img,.list-style img {
+	margin: auto;
+	vertical-align:top;
+}
+
+#startmenus .list-group-item:hover,#startmenus .list-group-item:active,.list-style:hover,.list-style:active,.list-style:focus {filter: brightness(120%);}
+#startmenus .list-group img {
+}
+#startmenus .list-group hr {
+	height: 0px;
+	width: calc(100% - 60px);
+	float: right;
+	position: relative;
+	margin: 10px 5px;
+}
+#startmenus .folder-item button {
+	padding-left:10px;
+}
+#startmenus div.username {
+	text-align: center;
+	color: white;
+	font-size: 18pt;
+	font-weight: 900;
+	text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.5);
+}
+
+.list-group section {
+    display: none;
+}
+
+section[selected] {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.quickstart {
+	width: 185px;
+	padding: 5px 5px 0px;
+	height: 100%;
+}
+.quickstart button {
+	width: 100%;
+	text-align: left;
+	font-size: 12px;
+	padding: 7px;
+	border-radius: 5px;
+	border: none;
+	background-color:transparent;
+	margin-bottom:5px;
+}
+
+.quickstart button:hover {
+	box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.79) inset;
+	background: rgba(255, 255, 255, 0.49);
+}
+
+.quickstart button:active {
+	box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.3) inset;
+	background: rgba(255, 255, 255, 0.3);
+}
+.startGroup button {
+    display: inline-block;
+    border: 0;
+    background: lightgrey;
+    height: 5px;
+    width: 30%;
+    border-radius: 4px;
+    color: grey;
+    /* margin-right: 5px; */
+}
+
+.startGroup {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding-bottom: 25px;
+    display: flex;
+    text-align: center;
+    justify-content: space-evenly;
+}
+
+.startGroup button::after {
+    content: attr(name);
+    /* color: grey; */
+    margin: 9px;
+    display: inline-block;
+}
+
+.startGroup button[selected] {
+    background: dodgerblue;
+    color: dodgerblue !important;
+    font-weight: bold;
+}

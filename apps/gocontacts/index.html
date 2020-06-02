@@ -1,0 +1,74 @@
+<script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
+<script>
+    var API;
+    var CLIENT_ID = '298931091939-ujjbhnk7355hiaopnfbl0ijoumqg54k6.apps.googleusercontent.com';
+    var SCOPES = ["https://www.googleapis.com/auth/contacts.readonly"];
+    $(function () {
+        API = new API(window, 'gocontacts', 'Google Contacts', 'google_talk', 111);
+
+    });
+    function checkAuth() {
+        gapi.auth.authorize(
+            {
+                'client_id': CLIENT_ID,
+                'scope': SCOPES.join(' '),
+                'immediate': true
+            }, handleAuthResult);
+    }
+    function handleAuthResult(authResult) {
+        if (authResult && !authResult.error) {
+            $("#authorize-div").hide();
+            loadPeopleApi();
+        }
+    }
+    function handleAuthClick(event) {
+        gapi.auth.authorize(
+            {client_id: CLIENT_ID, scope: SCOPES, immediate: false},
+            handleAuthResult);
+        return false;
+    }
+    function loadPeopleApi() {
+        gapi.client.load('https://people.googleapis.com/$discovery/rest', 'v1', listConnectionNames);
+    }
+    function listConnectionNames() {
+        var request = gapi.client.people.people.me.connections.list({
+            'pageSize': 10,
+        });
+
+        request.execute(function (resp) {
+            var connections = resp.connections;
+            if (connections.length > 0) {
+                for (i = 0; i < connections.length; i++) {
+                    var person = connections[i];
+                    $("#contacts").append("<button class='list-style'><img width=16 height=16 src='" + person.photos[0].url + "'> " + person.names[0].displayName + "</button>")
+                }
+            }
+        });
+    }
+
+</script>
+<header class="menubar">
+    <button data-to-menu="filemenu" class="menubutton list-style" onclick="API.ToggleMenu(this,'filemenu');" translate>File</button>
+    <div class="menu hide" id="filemenu">
+        <button id="authorize-button" onclick='handleAuthClick(event)' translate>Log in</button>
+        <button id="close" onclick='API.Close()' translate>Exit</button>
+        <over></over>
+    </div>
+</header>
+<div id="contacts">
+
+</div>
+<style>
+
+    header.menubar {
+        background: #F0F0F0;
+        padding:3px;
+    }
+    header.menubar > button {
+        padding:2px;
+        margin:0;
+        margin-right:3px;
+        width:auto;
+    }
+    #contacts {padding:5px;}
+</style>

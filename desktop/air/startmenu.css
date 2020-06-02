@@ -1,0 +1,85 @@
+#startmenus {
+    position: fixed;
+    bottom: 37px;
+    left: 0;
+    z-index: 1000;
+    height: 455px;
+    background-image: linear-gradient(transparent,rgba(0, 0, 0, 0.23),transparent);
+    box-shadow: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(0, 0, 0, 0.51);
+    border-radius: 10px 10px 0 0;
+}
+
+#startmenus .list-group {
+    float: left;
+    height: 441px;
+    overflow: auto;
+    width: 250px;
+    background: #fff;
+    margin: 6px;
+    padding: 3px;
+    box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.35);
+    border: 1px solid darkblue;
+    border-radius: 5px;
+}
+#startmenus .list-group-item,.list-style {
+	padding: 2px;
+	margin-bottom:3px;
+	width:100%;
+	text-align:left;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border: 1px solid transparent;
+}
+
+#startmenus .list-group-item img,.list-style img {
+	margin: 1px 6px 0 1px;
+	vertical-align:top;
+}
+
+#startmenus .list-group-item:hover,#startmenus .list-group-item:active,.list-style:hover,.list-style:active,.list-style:focus {
+	background: -moz-linear-gradient(top, #ddecfd, #c2dcfd);
+	background: -webkit-linear-gradient(top, #ddecfd, #c2dcfd);
+	background: linear-gradient(top, #ddecfd, #c2dcfd);
+	background-color: #ddecfd;
+	border-color: #7da2ce;
+	text-decoration: none;
+}
+#startmenus .list-group img {
+	height:16px;
+}
+#startmenus .list-group hr {
+	height: 0px;
+	width: calc(100% - 60px);
+	float: right;
+	position: relative;
+	margin: 10px 5px;
+}
+#startmenus .folder-item button {
+	padding-left:10px;
+}
+
+.quickstart {
+	width: 185px;
+	padding: 5px 5px 0px;
+	height: 100%;
+}
+.quickstart button {
+    width: 100%;
+    text-align: left;
+    font-size: 12px;
+    padding: 7px;
+    border-radius: 5px;
+    color: white;
+    border: 1px solid transparent;
+    background-color: transparent;
+    margin-bottom: 5px;
+}
+
+.quickstart button:hover {
+    border: 1px solid #707070;
+    border-radius: 4px;
+    background: linear-gradient(rgba(255, 255, 255, 0.39) 0%,rgba(255, 255, 255, 0.18) 48%, transparent 49%, rgba(255, 255, 255, 0.19) 89%);
+    box-shadow: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.41), 0px 0px 1px white;
+}

@@ -1,0 +1,144 @@
+<content class="apps-body" style="background:white;padding:5px;">
+	<div class="apps-container" sortby="bigtile">
+		<button class="btn-file list-style" app="notepad">
+			<img src="/icons/big/note.png">
+			<span class="name">Блокнот</span>
+		</button>
+		<button class="btn-file list-style" app="run">
+			<img src="/icons/big/application_go.png">
+			<span class="name">Выполнить</span>
+		</button>
+		<button class="btn-file list-style" app="imageview">
+			<img src="/icons/big/image.png">
+			<span class="name">Просмотр изображений</span>
+		</button>
+		<button class="btn-file list-style" app="taskmgr">
+			<img src="/icons/big/sheduled_task.png">
+			<span class="name">Диспетчер задач</span>
+		</button>
+		<button class="btn-file list-style" app="uploader">
+			<img src="/icons/big/upload_for_cloud.png">
+			<span class="name">Загрузка файлов</span>
+		</button>
+		<button class="btn-file list-style" app="calculator">
+			<img src="/icons/big/calculator.png">
+			<span class="name">Калькулятор</span>
+		</button>
+		<button class="btn-file list-style" app="about">
+			<img src="/icons/big/info_rhombus.png">
+			<span class="name">Справка</span>
+		</button>
+		<button class="btn-file list-style" app="filemanager">
+			<img src="/icons/big/folder_stand.png">
+			<span class="name">Проводник</span>
+		</button>
+		<button class="btn-file list-style" app="musicplayer">
+			<img src="/icons/big/music.png">
+			<span class="name">Музыкальный плэер</span>
+		</button>
+		<button class="btn-file list-style" app="sendFeedback">
+			<img src="/icons/big/submit_support_request.png">
+			<span class="name">Оставить отзыв</span>
+		</button>
+		<button class="btn-file list-style" app="stor">
+			<img src="/icons/big/basket_shopping.png">
+			<span class="name">Магазин приложений</span>
+		</button>
+		<button class="btn-file list-style" app="browser">
+			<img src="/icons/big/orbit.png">
+			<span class="name">Браузер</span>
+		</button>
+		<button class="btn-file list-style" app="shareLink">
+			<img src="/icons/big/shared_private.png">
+			<span class="name">Поделиться файлом</span>
+		</button>
+		<button class="btn-file list-style" app="calendar">
+			<img src="/icons/big/outlook_calendar_day.png">
+			<span class="name">Календарь</span>
+		</button>
+		<button class="btn-file list-style" app="contacts">
+			<img src="/icons/big/vcard.png">
+			<span class="name">Контакты</span>
+		</button>
+		<button class="btn-file list-style" app="rss">
+			<img src="/icons/big/feed_magnify.png">
+			<span class="name">Новости</span>
+		</button>
+		<button class="btn-file list-style" app="ckeditor">
+			<img src="/icons/big/text.png">
+			<span class="name">CKEditor</span>
+		</button>
+		<button class="btn-file list-style" app="office">
+			<img src="/apps/office/icon.png">
+			<span class="name">Microsoft Office Viewer</span>
+		</button>
+		<button class="btn-file list-style" app="zohowriter">
+			<img src="/icons/word.png">
+			<span class="name">Zoho Writer</span>
+		</button>
+		<button class="btn-file list-style" app="zohosheet">
+			<img src="/icons/excel.png">
+			<span class="name">Zoho Sheet</span>
+		</button>
+		<button class="btn-file list-style" app="zohoshow">
+			<img src="/icons/powerpoint.png">
+			<span class="name">Zoho Show</span>
+		</button>
+		<button class="btn-file list-style" app="code">
+			<img src="/icons/big/source_code.png">
+			<span class="name">Редактор кода</span>
+		</button>
+		<button class="btn-file list-style" app="webdeveloper">
+			<img src="/icons/big/form_design.png">
+			<span class="name">Web IDE</span>
+		</button>
+		<button class="btn-file list-style" app="control">
+			<img src="/icons/big/control_panel.png">
+			<span class="name">Панель управления</span>
+		</button>
+		<button class="btn-file list-style" app="maps">
+			<img src="https://www.google.com/images/branding/product/1x/maps_32dp.png">
+			<span class="name">Google Карты</span>
+		</button>
+		<button class="btn-file list-style" app="vkontakte">
+			<img src="http://vkstuff.ru/img/mainlink.png">
+			<span class="name">ВКонтакте</span>
+		</button>
+	</div>
+	<style>
+		.apps-body .btn-file {
+			margin:1px;
+			padding:3px;
+			vertical-align:top;
+			border-radius:5px;
+			width:auto;
+			text-align:center;
+			width:85px;
+
+		}
+		.apps-container button {max-width: 85px;}
+		.apps-body [sortby*=tile] button.btn.btn-active.btn-sm.btn-default{
+			border: 1px solid rgba(102, 102, 102, 0.5);
+			background: rgba(26, 154, 236, 0.5)
+		}
+		.apps-body [sortby*=tile] .btn-file .name {
+			display: block;
+			font-size: 12px;
+		}
+		.apps-body [sortby=bigtile] .btn-file img {
+			width:32px;
+			margin:0;
+		}
+	</style>
+    <script>
+        var API;
+        $(function() {
+            API = new API(window,"apps","All applications","application_double",111);
+            $(".apps-body .list-style").click(function(e) {
+                API.Open($(this).attr("app"));
+            });
+        });
+    </script>
+	<script>
+	</script>
+</content>

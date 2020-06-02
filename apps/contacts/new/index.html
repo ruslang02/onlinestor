@@ -1,0 +1,65 @@
+<content style="background:white;line-height:30px;padding:10px;" id="new-contact">
+	<div class="header" translate>Create contact</div>
+	<label><span translate>First Name:</span> <input name="firstname" class="form-control" type="text"></label>
+	<label><span translate>Last Name:</span> <input name="lastname" class="form-control" type="text"></label>
+	<label><span translate>Phone No.:</span> <input name="phone" class="form-control" type="tel"></label>
+
+	<div class="bottom-bar">
+		<button class="abtn active" id="event-add"><span translate>Save</span></button><button onclick="API.Close()" class="abtn" translate>Cancel</button>
+	</div>
+
+<style>
+	#new-contact .bottom-bar {
+		position: absolute;
+		bottom: 0;
+		text-align: right;
+		padding: 10px;
+		width: 100%;
+		background: lightgrey;
+		left: 0;
+	}
+	#new-contact .header {
+		color: darkblue;
+		font-size: 14pt;
+		padding: 5px;
+	}
+	#new-contact .abtn {
+		margin-left:10px;
+	}
+    #new-contact label {display:flex;    margin: 5px 0;}
+    #new-contact label input,#new-contact label textarea {flex-grow:2;margin-left: 10px;}
+    #new-contact label span {line-height:18px;}
+
+</style>
+
+<script>
+    var API;
+    var myID;
+    var eventsL;
+    $(function() {
+        API = new API(window,"contacts/new","Add a contact","vcard_add",1111,400,225);
+        if(API.getArgument('id')) {
+            myID = API.getArgument('id');
+            API.Server("getFile",{path: "/AppData/contacts.json"},function(a) {
+                var json = $.parseJSON(a);
+                json = Object.keys(json).map(function (key) { return json[key]; });
+                json = json[myID];
+                $("input[name=firstname]").val(json.firstName);
+                $("input[name=lastname]").val(json.lastName);
+                $("input[name=telephone]").val(json.telephone);
+                API.Change("Редактирование контакта","vcard_edit");
+            });
+        }
+        $("#event-add").off("click").on("click", addEventLocal);
+    });
+	function addEventLocal() {
+		API.Server("getFile",{path: "/AppData/contacts.json"},function(a,b,c) {
+			eventsL = $.parseJSON(c.responseText);
+			eventsL[eventsL.length] = {firstName:$("input[name=firstname]").val(),lastName:$("input[name=lastname]").val(),telephone:$("input[name=telephone]").val()};
+			API.Server("write",{path: "/AppData/calendar.json",arg: JSON.stringify(eventsL)});
+			parent.Notification("Контакты","Элемент успешно добавлен в контактную книгу.","fa fa-users",function() {API.Open("contacts")});
+			API.Close();
+		});
+	}
+</script>
+</content>

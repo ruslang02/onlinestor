@@ -1,0 +1,46 @@
+<script>
+    var API;
+    $(function() {
+        API = new API(window,'webdeveloper/closedialog','Web IDE','form_design',1,400,130);
+    });
+</script>
+<content class="webdeveloper-closedialog">
+	<over></over>
+	<img src="/icons/big/question.png" class="pull-left" style="margin:10px;"/>
+	<div class="error-message" style="padding-top:8px;">
+		Вы уверены, что хотите выйти из приложения?<br>Некоторые данные могли быть не сохранены.
+	</div>
+	<div class="bottom-bar">
+		<button class="abtn" onclick="API.CloseProject()">Выйти</button>
+		<button class="abtn active" onclick="API.Close()">Отмена</button>
+	</div>
+</content>
+<style>
+	.webdeveloper-closedialog .bottom-bar {
+		position: absolute;
+		bottom: 0;
+		text-align: right;
+		padding: 10px;
+		width: 100%;
+		background: lightgrey;
+		left: 0;
+	}
+	.webdeveloper-closedialog .abtn {
+		padding: 2px;
+		margin-left: 5px;
+		width:70px;
+	}
+	.webdeveloper-closedialog {
+		background:white;
+	}
+	.webdeveloper-closedialog over {
+		position: fixed;
+		top: 0px;
+		left: 0px;
+		right: 0px;
+		bottom: 0px;
+		background: black none repeat scroll 0% 0%;
+		z-index: -1;
+		opacity: 0.3;
+	}
+</style>

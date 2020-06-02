@@ -1,0 +1,61 @@
+<content class="control-body">
+    <section class="right-bar" sortby="list">
+        <button class="list-style" onclick='openMyData()'><img src="/icons/small/user_level_filtering.png"><span class="name">Мои данные</span>
+        </button>
+        <button class="list-style" onclick='openMyServices()'><img src="/icons/small/account_menu.png"><span class="name">Сервисы</span>
+        </button>
+    </section>
+    <main>
+        <section id="myservices-page" data-before="Подключенные сервисы" class="control-page">
+        </section>
+        <section id="mydata-page" data-before="Мои данные" class="control-page">
+            <div><label>Логин:</label> <span id="mdsid"></span></div>
+            <div><label>Имя:</label> <input type="text" id="mdname"></div>
+            <div><label>Фамилия:</label> <input type="text" id="mdsurname"></div>
+            <br><br>
+            <div><label>Пароль:</label> <input type="password" value="••••••••" readonly disabled></div>
+            <div><button class="abtn">Изменить пароль</button>&nbsp;&nbsp;<button class="abtn">Сохранить</button></div>
+        </section>
+    </main>
+</content>
+<style>
+    .control-body {
+        overflow: hidden;
+        display: flex;
+        background: rgba(255, 255, 255, 0.7);
+    }
+
+    .window[data-app=stor] {
+        min-width: 550px;
+    }
+    .control-page::before {
+        content: attr(data-before);
+        font-size: 1.5em;
+        padding: 10px;
+        display: block;
+    }
+
+    .control-body main {
+        flex-grow: 2;
+    }
+
+    .control-page {
+        overflow: auto;
+        height: 100%;
+    }
+
+    .control-body .right-bar {
+        min-width: 150px;
+        width: 30%;
+        border-right: 1px solid grey;
+        padding: 5px;
+    }
+</style>
+<script>
+    var API;
+    $(function () {
+        API = new API(window, 'control', 'Control Panel', 'interface_preferences', 111);
+        API.Server("getsid",function(a) {$("#sid").text(a)});
+
+    });
+</script>

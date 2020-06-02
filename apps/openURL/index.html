@@ -1,0 +1,37 @@
+<content class="openURL-body">
+	<img src="/icons/big/external.png">
+	<span translate>You are going to open a link. It will be opened in the new tab/window of your browser. Are you sure you want to open </span>"<span id="openURL-text"></span>"?
+	<div class="text-right" style="padding:5px"><a target=_blank href=# onclick="API.Close();" class="abtn active"><span translate>Open</span> <i class="fa fa-external-link"></i></a> <button class="abtn" onclick="closeWindow($('.window').last().attr('id'));" translate>Cancel</button>
+	<over></over>
+</content>
+<script>
+    var API;
+    $(function() {
+        API = new API(window,'openURL','Open URL?',"external",1100,400,200);
+        $("#openURL-text").text(API.getArgument("url"));
+        $(".openURL-body .active").attr("href",API.getArgument("url"));
+    })
+</script>
+<style>
+	.openURL-body {
+		background: white;
+		padding: 5px;
+		padding-top: 9px;
+		overflow-wrap: break-word;
+		word-wrap: break-word;
+		-ms-word-break: break-all;
+		word-break: break-all;
+		word-break: break-word;
+		-ms-hyphens: auto;
+		-moz-hyphens: auto;
+		-webkit-hyphens: auto;
+		hyphens: auto;
+	}
+	.openURL-body img {
+		margin:5px;margin-top:0;float:left
+	}
+	over {
+		z-index:-1;
+		position:fixed;top:0;left:0;right:0;bottom:0;margin:auto;background:rgba(0,0,0,0.3)
+	}
+</style>

@@ -1,0 +1,3 @@
+<content style="background:white;" appName="<img src='/icons/big/shop.png'> Test">
+Это тестовое приложение...
+</content>

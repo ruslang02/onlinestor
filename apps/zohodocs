@@ -1,0 +1,12 @@
+<content appName="<img src='/desktop/icons/big/document_notes.png'> Zoho Office" class="zoho">
+<button>Открыть файл...</button>
+</content>
+<style>
+.zoho {
+	background:white;border:1px solid grey;
+}
+	.zoho button {
+		background-color: #4b88b8 !important;
+		border:1px solid grey;
+	}
+</style>
